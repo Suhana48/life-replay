@@ -1,5 +1,7 @@
 package com.suhana.lifereplay.service;
 
+import com.suhana.lifereplay.dto.LoginRequest;
+import com.suhana.lifereplay.security.JwtService;
 import com.suhana.lifereplay.dto.RegisterRequest;
 import com.suhana.lifereplay.entity.User;
 import com.suhana.lifereplay.repository.UserRepository;
@@ -13,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public User registerUser(RegisterRequest request) {
 
@@ -31,5 +34,21 @@ public class UserService {
         );
 
         return userRepository.save(user);
+    }
+
+    public String loginUser(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPasswordHash())) {
+
+            throw new IllegalArgumentException("Invalid email or password");
+        }
+
+        return jwtService.generateToken(user.getEmail());
     }
 }
