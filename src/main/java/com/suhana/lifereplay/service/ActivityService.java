@@ -17,7 +17,8 @@ public class ActivityService {
     public Activity createActivity(
             String name,
             String description,
-            User user) {
+            String category,
+            User user)  {
 
         if (activityRepository.existsByNameAndUser(name, user)) {
             throw new IllegalArgumentException(
@@ -29,6 +30,7 @@ public class ActivityService {
 
         activity.setName(name);
         activity.setDescription(description);
+        activity.setCategory(category);
         activity.setUser(user);
 
         return activityRepository.save(activity);
@@ -41,6 +43,7 @@ public class ActivityService {
             Long activityId,
             String name,
             String description,
+            String category,
             User user) {
 
         Activity activity = activityRepository
@@ -60,6 +63,7 @@ public class ActivityService {
 
         activity.setName(name);
         activity.setDescription(description);
+        activity.setCategory(category);
 
         return activityRepository.save(activity);
     }

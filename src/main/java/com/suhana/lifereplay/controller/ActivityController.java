@@ -25,6 +25,7 @@ public class ActivityController {
     public ResponseEntity<ActivityResponse> createActivity(
             @RequestParam String name,
             @RequestParam(required = false) String description,
+            @RequestParam String category,
             Authentication authentication) {
 
         String email = authentication.getName();
@@ -36,6 +37,7 @@ public class ActivityController {
         Activity activity = activityService.createActivity(
                 name,
                 description,
+                category,
                 user
         );
 
@@ -43,6 +45,7 @@ public class ActivityController {
                 activity.getId(),
                 activity.getName(),
                 activity.getDescription(),
+                activity.getCategory(),
                 activity.getCreatedAt()
         );
 
@@ -68,6 +71,7 @@ public class ActivityController {
                                 activity.getId(),
                                 activity.getName(),
                                 activity.getDescription(),
+                                activity.getCategory(),
                                 activity.getCreatedAt()
                         ))
                         .toList();
@@ -80,6 +84,7 @@ public class ActivityController {
             @PathVariable Long id,
             @RequestParam String name,
             @RequestParam(required = false) String description,
+            @RequestParam String category,
             Authentication authentication) {
 
         String email = authentication.getName();
@@ -92,6 +97,7 @@ public class ActivityController {
                 id,
                 name,
                 description,
+                category,
                 user
         );
 
@@ -99,9 +105,9 @@ public class ActivityController {
                 activity.getId(),
                 activity.getName(),
                 activity.getDescription(),
+                activity.getCategory(),
                 activity.getCreatedAt()
         );
-
         return ResponseEntity.ok(response);
     }
     @DeleteMapping("/{id}")
