@@ -7,6 +7,7 @@ import com.suhana.lifereplay.entity.DailyActual;
 import com.suhana.lifereplay.entity.User;
 import com.suhana.lifereplay.repository.ActivityRepository;
 import com.suhana.lifereplay.repository.DailyActualRepository;
+import com.suhana.lifereplay.dto.DailyActualUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +74,33 @@ public class DailyActualService {
                 .stream()
                 .map(this::toResponse)
                 .toList();
+    }
+    public DailyActualResponse updateActual(
+            Long id,
+            DailyActualUpdateRequest request,
+            User user) {
+
+        DailyActual actual = dailyActualRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Actual time not found"
+                        ));
+
+        if (!actual.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException(
+                    "You are not allowed to update this actual time"
+            );
+        }
+
+        actual.setActualMinutes(
+                request.getActualMinutes()
+        );
+
+        DailyActual updatedActual =
+                dailyActualRepository.save(actual);
+
+        return toResponse(updatedActual);
     }
 
     private DailyActualResponse toResponse(

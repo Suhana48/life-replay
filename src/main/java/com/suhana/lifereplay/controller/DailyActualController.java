@@ -5,6 +5,7 @@ import com.suhana.lifereplay.dto.DailyActualResponse;
 import com.suhana.lifereplay.entity.User;
 import com.suhana.lifereplay.repository.UserRepository;
 import com.suhana.lifereplay.service.DailyActualService;
+import com.suhana.lifereplay.dto.DailyActualUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +54,23 @@ public class DailyActualController {
                         user
                 )
         );
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<DailyActualResponse> updateActual(
+            @PathVariable Long id,
+            @Valid @RequestBody DailyActualUpdateRequest request,
+            Authentication authentication) {
+
+        User user = getAuthenticatedUser(authentication);
+
+        DailyActualResponse response =
+                dailyActualService.updateActual(
+                        id,
+                        request,
+                        user
+                );
+
+        return ResponseEntity.ok(response);
     }
 
     private User getAuthenticatedUser(
