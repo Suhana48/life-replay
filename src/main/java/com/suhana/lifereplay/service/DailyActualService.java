@@ -102,6 +102,25 @@ public class DailyActualService {
 
         return toResponse(updatedActual);
     }
+    public void deleteActual(
+            Long id,
+            User user) {
+
+        DailyActual actual = dailyActualRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Actual time not found"
+                        ));
+
+        if (!actual.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException(
+                    "You are not allowed to delete this actual time"
+            );
+        }
+
+        dailyActualRepository.delete(actual);
+    }
 
     private DailyActualResponse toResponse(
             DailyActual actual) {

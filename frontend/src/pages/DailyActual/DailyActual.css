@@ -285,3 +285,152 @@
         gap: var(--space-3);
     }
 }
+.daily-actual-row-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.daily-actual-edit-button {
+    min-height: 36px;
+
+    padding: 0 var(--space-3);
+
+    color: var(--color-accent);
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.daily-actual-edit-button:hover {
+    color: var(--color-text-primary);
+
+    background: rgba(139, 124, 255, 0.1);
+
+    border-color: rgba(139, 124, 255, 0.3);
+}
+.daily-actual-edit {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.daily-actual-edit input {
+    width: 90px;
+    min-height: 36px;
+
+    padding: 0 var(--space-3);
+
+    color: var(--color-text-primary);
+    background: var(--color-background);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-sm);
+
+    outline: none;
+
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.daily-actual-edit input:focus {
+    border-color: var(--color-accent);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 124, 255, 0.12);
+}
+
+.daily-actual-edit button {
+    min-height: 36px;
+
+    padding: 0 var(--space-3);
+
+    color: var(--color-text-secondary);
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.daily-actual-edit button:hover:not(:disabled) {
+    color: var(--color-text-primary);
+
+    background: var(--color-background);
+
+    border-color: var(--color-text-muted);
+}
+
+.daily-actual-edit button:first-of-type {
+    color: var(--color-accent);
+
+    border-color: var(--color-accent);
+}
+
+.daily-actual-edit button:first-of-type:hover:not(:disabled) {
+    color: var(--color-text-primary);
+
+    background: rgba(139, 124, 255, 0.1);
+}
+
+.daily-actual-edit button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.daily-actual-delete-button {
+    min-height: 36px;
+
+    padding: 0 var(--space-3);
+
+    color: #ff6b6b;
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.daily-actual-delete-button:hover:not(:disabled) {
+    color: #ff6b6b;
+
+    background: rgba(255, 107, 107, 0.08);
+
+    border-color: rgba(255, 107, 107, 0.4);
+}
+
+.daily-actual-delete-button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

@@ -3,6 +3,8 @@ import "./DailyActual.css";
 import {
     createDailyActual,
     getDailyActuals,
+    updateDailyActual,
+    deleteDailyActual,
 } from "../../services/dailyActualService";
 
 
@@ -28,6 +30,9 @@ import { getActivities } from "../../services/activityService";
     const [formError, setFormError] = useState("");
 
     const [saving, setSaving] = useState(false);
+    const [editingId, setEditingId] = useState(null);
+
+    const [editMinutes, setEditMinutes] = useState("");
 
     useEffect(() => {
         loadActuals();
@@ -115,6 +120,77 @@ const handleSubmit = async (event) => {
         setSaving(false);
     }
 };
+const handleEdit = (actual) => {
+    setEditingId(actual.id);
+    setEditMinutes(String(actual.actualMinutes));
+};
+const handleSaveEdit = async (id) => {
+    const minutes = Number(editMinutes);
+
+    if (
+        !Number.isInteger(minutes) ||
+        minutes < 1 ||
+        minutes > 1440
+    ) {
+        setError(
+            "Actual time must be between 1 and 1440 minutes."
+        );
+        return;
+    }
+
+    try {
+        setSaving(true);
+        setError("");
+
+        await updateDailyActual(
+            id,
+            minutes
+        );
+
+        setEditingId(null);
+        setEditMinutes("");
+
+        await loadActuals();
+    } catch (err) {
+        setError(
+            err.response?.data?.message ||
+            "Unable to update actual time."
+        );
+    } finally {
+        setSaving(false);
+    }
+};
+const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditMinutes("");
+    setError("");
+};
+const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+        "Are you sure you want to delete this actual time record?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        setSaving(true);
+        setError("");
+
+        await deleteDailyActual(id);
+
+        await loadActuals();
+    } catch (err) {
+        setError(
+            err.response?.data?.message ||
+            "Unable to delete actual time."
+        );
+    } finally {
+        setSaving(false);
+    }
+};
+
 
     const totalActualMinutes = actuals.reduce(
         (total, actual) =>
@@ -436,21 +512,83 @@ const handleSubmit = async (event) => {
                                             )}
                                         </span>
 
-                                        <div>
-                                            <h3>
-                                                {actual.activityName}
-                                            </h3>
+                                       {editingId === actual.id ? (
+                                           <div className="daily-actual-edit">
 
-                                            <p>
-                                                Actual time recorded
-                                            </p>
-                                        </div>
+                                               <input
+                                                   type="number"
+                                                   min="1"
+                                                   max="1440"
+                                                   value={editMinutes}
+                                                   onChange={(event) =>
+                                                       setEditMinutes(event.target.value)
+                                                   }
+                                               />
 
-                                        <span className="daily-actual-time">
-                                            {formatMinutes(
-                                                actual.actualMinutes
-                                            )}
-                                        </span>
+                                               <button
+                                                   type="button"
+                                                   onClick={() =>
+                                                       handleSaveEdit(actual.id)
+                                                   }
+                                                   disabled={saving}
+                                               >
+                                                   {saving ? "Saving..." : "Save"}
+                                               </button>
+
+                                               <button
+                                                   type="button"
+                                                   onClick={handleCancelEdit}
+                                                   disabled={saving}
+                                               >
+                                                   Cancel
+                                               </button>
+
+                                           </div>
+                                       ) : (
+                                           <>
+                                               <div>
+                                                   <h3>
+                                                       {actual.activityName}
+                                                   </h3>
+
+                                                   <p>
+                                                       Actual time recorded
+                                                   </p>
+                                               </div>
+
+                                             <div className="daily-actual-row-actions">
+
+                                                 <span className="daily-actual-time">
+                                                     {formatMinutes(
+                                                         actual.actualMinutes
+                                                     )}
+                                                 </span>
+
+                                                 <button
+                                                     type="button"
+                                                     className="daily-actual-edit-button"
+                                                     onClick={() =>
+                                                         handleEdit(actual)
+                                                     }
+                                                     disabled={saving}
+                                                 >
+                                                     Edit
+                                                 </button>
+
+                                                 <button
+                                                     type="button"
+                                                     className="daily-actual-delete-button"
+                                                     onClick={() =>
+                                                         handleDelete(actual.id)
+                                                     }
+                                                     disabled={saving}
+                                                 >
+                                                     Delete
+                                                 </button>
+
+                                             </div>
+                                           </>
+                                       )}
 
                                     </div>
                                 )

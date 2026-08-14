@@ -19,3 +19,15 @@ export const getDailyActuals = (date) => {
         }
     });
 };
+export const updateDailyActual = (
+    id,
+    actualMinutes
+) => {
+    return api.put(`/daily-actuals/${id}`, {
+        actualMinutes
+    });
+};
+
+export const deleteDailyActual = (id) => {
+    return api.delete(`/daily-actuals/${id}`);
+};

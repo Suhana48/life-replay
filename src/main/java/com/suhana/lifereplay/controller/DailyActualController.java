@@ -72,6 +72,20 @@ public class DailyActualController {
 
         return ResponseEntity.ok(response);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteActual(
+            @PathVariable Long id,
+            Authentication authentication) {
+
+        User user = getAuthenticatedUser(authentication);
+
+        dailyActualService.deleteActual(
+                id,
+                user
+        );
+
+        return ResponseEntity.noContent().build();
+    }
 
     private User getAuthenticatedUser(
             Authentication authentication) {
