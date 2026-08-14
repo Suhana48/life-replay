@@ -36,6 +36,7 @@ const AppLayout = () => {
                         Dashboard
                     </NavLink>
 
+
                     <NavLink
                         to="/activities"
                         className={({ isActive }) =>
@@ -47,6 +48,7 @@ const AppLayout = () => {
                         Activities
                     </NavLink>
 
+
                     <NavLink
                         to="/plan"
                         className={({ isActive }) =>
@@ -56,6 +58,16 @@ const AppLayout = () => {
                         }
                     >
                         Daily Plan
+                    </NavLink>
+                    <NavLink
+                        to="/actual"
+                        className={({ isActive }) =>
+                            isActive
+                                ? "nav-link active"
+                                : "nav-link"
+                        }
+                    >
+                        Actual Time
                     </NavLink>
 
                     <NavLink
