@@ -116,11 +116,11 @@ const DailyPlan = () => {
             setSaving(true);
             setFormError("");
 
-            await createDailyPlan({
-                activityId: Number(selectedActivityId),
-                date,
-                plannedMinutes: Number(plannedMinutes),
-            });
+           await createDailyPlan(
+               Number(selectedActivityId),
+               date,
+               Number(plannedMinutes)
+           );
 
             handleCloseForm();
 
@@ -174,9 +174,10 @@ const DailyPlan = () => {
         }
 
         try {
-            await updateDailyPlan(id, {
-                plannedMinutes: Number(editingMinutes),
-            });
+            await updateDailyPlan(
+                id,
+                Number(editingMinutes)
+            );
 
             setEditingPlanId(null);
             setEditingMinutes("");

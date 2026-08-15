@@ -10,10 +10,13 @@ import "./Activities.css";
 function Activities() {
     const [showForm, setShowForm] = useState(false);
     const [editingActivity, setEditingActivity] = useState(null);
+
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
+
     const [activities, setActivities] = useState([]);
+
     useEffect(() => {
         const loadActivities = async () => {
             try {
@@ -26,9 +29,19 @@ function Activities() {
 
         loadActivities();
     }, []);
+
     const handleCreateActivity = async () => {
         try {
-            await createActivity(name, description, category);
+            const response = await createActivity(
+                name,
+                description,
+                category
+            );
+
+            setActivities((currentActivities) => [
+                ...currentActivities,
+                response.data
+            ]);
 
             setName("");
             setDescription("");
@@ -38,102 +51,140 @@ function Activities() {
             alert("Activity created successfully.");
         } catch (error) {
             console.error("Failed to create activity:", error);
-
             alert("Unable to create activity.");
         }
     };
 
-const handleUpdateActivity = async () => {
-    try {
-        await updateActivity(
-            editingActivity.id,
-            name,
-            description,
-            category
-        );
+    const handleUpdateActivity = async () => {
+        try {
+            await updateActivity(
+                editingActivity.id,
+                name,
+                description,
+                category
+            );
 
-        setActivities((currentActivities) =>
-            currentActivities.map((activity) =>
-                activity.id === editingActivity.id
-                    ? {
-                          ...activity,
-                          name,
-                          description,
-                          category,
-                      }
-                    : activity
-            )
-        );
+            setActivities((currentActivities) =>
+                currentActivities.map((activity) =>
+                    activity.id === editingActivity.id
+                        ? {
+                              ...activity,
+                              name,
+                              description,
+                              category,
+                          }
+                        : activity
+                )
+            );
 
+            setName("");
+            setDescription("");
+            setCategory("");
+            setEditingActivity(null);
+            setShowForm(false);
+
+            alert("Activity updated successfully.");
+        } catch (error) {
+            console.error("Failed to update activity:", error);
+            alert("Unable to update activity.");
+        }
+    };
+
+    const handleDeleteActivity = async (activityId) => {
+        try {
+            await deleteActivity(activityId);
+
+            setActivities((currentActivities) =>
+                currentActivities.filter(
+                    (activity) => activity.id !== activityId
+                )
+            );
+
+            alert("Activity deleted successfully.");
+        } catch (error) {
+            console.error("Failed to delete activity:", error);
+            alert("Unable to delete activity.");
+        }
+    };
+
+    const openCreateForm = () => {
+        setEditingActivity(null);
         setName("");
         setDescription("");
         setCategory("");
-        setEditingActivity(null);
-        setShowForm(false);
+        setShowForm(true);
+    };
 
-        alert("Activity updated successfully.");
-    } catch (error) {
-        console.error("Failed to update activity:", error);
+    const openEditForm = (activity) => {
+        setEditingActivity(activity);
+        setName(activity.name);
+        setDescription(activity.description || "");
+        setCategory(activity.category || "");
+        setShowForm(true);
+    };
 
-        alert("Unable to update activity.");
-    }
-};
-const handleDeleteActivity = async (activityId) => {
-    try {
-        await deleteActivity(activityId);
+    const categoryCount = new Set(
+        activities
+            .map((activity) => activity.category?.trim())
+            .filter(Boolean)
+    ).size;
 
-        setActivities((currentActivities) =>
-            currentActivities.filter(
-                (activity) => activity.id !== activityId
-            )
-        );
-
-        alert("Activity deleted successfully.");
-    } catch (error) {
-        console.error("Failed to delete activity:", error);
-
-        alert("Unable to delete activity.");
-    }
-};
     return (
         <section className="activities-page">
 
-            {/* Page heading */}
+            {/* =========================================
+                PAGE HEADER
+            ========================================= */}
+
             <div className="activities-heading">
+
                 <div>
                     <p className="activities-eyebrow">
-                        YOUR LIFE
+                        LIFE REPLAY / ACTIVITIES
                     </p>
 
                     <h1>
-                        Activities
+                        Make time for{" "}
+                        <span>what matters.</span>
                     </h1>
 
                     <p className="activities-description">
-                        Create the activities that make up your everyday life.
+                        Build the activities that make up your everyday life.
                     </p>
                 </div>
 
                 <button
                     type="button"
                     className="activities-primary-button"
-                    onClick={() => setShowForm(true)}
+                    onClick={openCreateForm}
                 >
                     + Add activity
                 </button>
+
             </div>
+
+
+            {/* =========================================
+                ADD / EDIT FORM
+            ========================================= */}
+
             {showForm && (
                 <div className="activity-form">
-                    <h2> {editingActivity ? "Edit activity" : "Add a new activity"}</h2>
+
+                    <h2>
+                        {editingActivity
+                            ? "Edit activity"
+                            : "Add a new activity"}
+                    </h2>
 
                     <p>
                         {editingActivity
-                               ? "Update the details of this activity."
-                               : "Create an activity you want Life Replay to track."
-                           }
+                            ? "Update the details of this activity."
+                            : "Create something you want Life Replay to track."}
                     </p>
 
                     <div className="activity-form-field">
+
                         <label htmlFor="activity-name">
                             Activity name
                         </label>
@@ -143,23 +194,33 @@ const handleDeleteActivity = async (activityId) => {
                             type="text"
                             placeholder="e.g. Studying"
                             value={name}
-                            onChange={(event) => setName(event.target.value)}
+                            onChange={(event) =>
+                                setName(event.target.value)
+                            }
                         />
+
                     </div>
+
                     <div className="activity-form-field">
+
                         <label htmlFor="activity-description">
                             Description
                         </label>
 
-                       <textarea
-                           id="activity-description"
-                           placeholder="e.g. DSA, Java, interview preparation..."
-                           rows="3"
-                           value={description}
-                           onChange={(event) => setDescription(event.target.value)}
-                       />
+                        <textarea
+                            id="activity-description"
+                            placeholder="e.g. DSA, Java, interview preparation..."
+                            rows="3"
+                            value={description}
+                            onChange={(event) =>
+                                setDescription(event.target.value)
+                            }
+                        />
+
                     </div>
+
                     <div className="activity-form-field">
+
                         <label htmlFor="activity-category">
                             Category
                         </label>
@@ -169,14 +230,21 @@ const handleDeleteActivity = async (activityId) => {
                             type="text"
                             placeholder="e.g. Study"
                             value={category}
-                            onChange={(event) => setCategory(event.target.value)}
+                            onChange={(event) =>
+                                setCategory(event.target.value)
+                            }
                         />
+
                     </div>
 
                     <div className="activity-form-actions">
+
                         <button
                             type="button"
-                            onClick={() => setShowForm(false)}
+                            onClick={() => {
+                                setShowForm(false);
+                                setEditingActivity(null);
+                            }}
                         >
                             Cancel
                         </button>
@@ -190,70 +258,93 @@ const handleDeleteActivity = async (activityId) => {
                                     : handleCreateActivity
                             }
                         >
-                            {editingActivity ? "Update activity" : "Create activity"}
+                            {editingActivity
+                                ? "Update activity"
+                                : "Create activity"}
                         </button>
+
                     </div>
+
                 </div>
             )}
 
-            {/* Activity statistics */}
-            <div className="activities-summary">
 
-                <div className="activities-stat-card">
-                    <span>
-                        Total activities
-                    </span>
+            {/* =========================================
+                SUMMARY CARD
+            ========================================= */}
 
-                    <strong>
-                        {activities.length}
-                    </strong>
+            <section className="activities-overview">
+
+                <div className="activities-overview-main">
+
+                    <p>
+                        YOUR ACTIVITIES
+                    </p>
+
+                    <h2>
+                        Your time,
+                        <br />
+                        your choices.
+                    </h2>
+
                 </div>
 
-                <div className="activities-stat-card">
-                    <span>
-                        Active
-                    </span>
+                <div className="activities-overview-stats">
 
-                    <strong>
-                        {activities.length}
-                    </strong>
+                    <div>
+                        <strong>
+                            {String(activities.length).padStart(2, "0")}
+                        </strong>
+
+                        <span>
+                            ACTIVITIES
+                        </span>
+                    </div>
+
+                    <div>
+                        <strong>
+                            {String(categoryCount).padStart(2, "0")}
+                        </strong>
+
+                        <span>
+                            CATEGORIES
+                        </span>
+                    </div>
+
                 </div>
 
-                <div className="activities-stat-card">
-                    <span>
-                        Categories
-                    </span>
-
-                    <strong>
-                        {new Set(
-                            activities
-                                .map((activity) => activity.category?.trim())
-                                .filter(Boolean)
-                        ).size}
-                    </strong>
-                </div>
-
-            </div>
+            </section>
 
 
-            {/* Activity list */}
-            <section className="activities-panel">
+            {/* =========================================
+                YOUR ACTIVITIES
+            ========================================= */}
 
-                <div className="activities-panel-header">
+            <section className="activities-content">
+
+                <div className="activities-content-header">
+
                     <div>
                         <p className="activities-panel-eyebrow">
-                            ACTIVITY LIBRARY
+                            YOUR LIBRARY
                         </p>
 
                         <h2>
                             Your activities
                         </h2>
                     </div>
+
+                    <span>
+                        {activities.length === 1
+                            ? "1 activity"
+                            : `${activities.length} activities`}
+                    </span>
+
                 </div>
 
 
-                {/* Empty state */}
                 {activities.length === 0 ? (
+
                     <div className="activities-empty-state">
 
                         <div className="activities-empty-icon">
@@ -261,83 +352,125 @@ const handleDeleteActivity = async (activityId) => {
                         </div>
 
                         <h3>
-                            No activities yet
+                            Nothing here yet.
                         </h3>
 
                         <p>
-                            Add things like studying, coding, exercise,
-                            reading, sleep, or anything else you want
-                            Life Replay to track.
+                            Add the things you want to make time for —
+                            studying, coding, running, reading, music,
+                            or anything else that matters to you.
                         </p>
 
                         <button
                             type="button"
                             className="activities-primary-button"
-                            onClick={() => setShowForm(true)}
+                            onClick={openCreateForm}
                         >
                             Create your first activity
                         </button>
 
                     </div>
-                ) : (
-                    <div className="activities-list">
 
-                        {activities.map((activity) => (
-                            <div
+                ) : (
+
+                    <div className="activities-grid">
+
+                        {activities.map((activity, index) => (
+
+                            <article
                                 className="activity-card"
                                 key={activity.id}
                             >
 
-                                <div>
+                                <div className="activity-card-top">
+
+                                    <span className="activity-number">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+
+                                    <div className="activity-card-actions">
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                openEditForm(activity)
+                                            }
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+
+                                                if (
+                                                    window.confirm(
+                                                        `Are you sure you want to delete "${activity.name}"?`
+                                                    )
+                                                ) {
+                                                    handleDeleteActivity(
+                                                        activity.id
+                                                    );
+                                                }
+
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div className="activity-card-content">
+
                                     <h3>
                                         {activity.name}
                                     </h3>
 
-                                    {activity.description && (
-                                        <p>
-                                            {activity.description}
-                                        </p>
-                                    )}
+                                    <p>
+                                        {activity.description ||
+                                            "Something worth making time for."}
+                                    </p>
 
                                     {activity.category && (
                                         <span className="activity-category">
                                             {activity.category}
                                         </span>
                                     )}
-                                </div>
-                                <div className="activity-card-actions">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setEditingActivity(activity);
-                                            setName(activity.name);
-                                            setDescription(activity.description || "");
-                                            setCategory(activity.category || "");
-                                            setShowForm(true);
-                                        }}
-                                    >
-                                        Edit
-                                    </button>
 
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            if (
-                                                window.confirm(
-                                                    `Are you sure you want to delete "${activity.name}"?`
-                                                )
-                                            ) {
-                                                handleDeleteActivity(activity.id);
-                                            }
-                                        }}
-                                    >
-                                        Delete
-                                    </button>
                                 </div>
-                            </div>
+
+                            </article>
+
                         ))}
 
+
+                        {/* ADD ACTIVITY CARD */}
+
+                        <button
+                            type="button"
+                            className="activity-add-card"
+                            onClick={openCreateForm}
+                        >
+
+                            <span className="activity-add-icon">
+                                +
+                            </span>
+
+                            <strong>
+                                Add activity
+                            </strong>
+
+                            <p>
+                                Make room for something that matters.
+                            </p>
+
+                        </button>
+
                     </div>
+
                 )}
 
             </section>
