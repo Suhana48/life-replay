@@ -1,45 +1,220 @@
 import { useEffect, useState } from "react";
+import "./DailyPlan.css";
+
 import {
     getDailyPlans,
     createDailyPlan,
     updateDailyPlan,
-    deleteDailyPlan
+    deleteDailyPlan,
 } from "../../services/dailyPlanService";
+
 import { getActivities } from "../../services/activityService";
-import "./DailyPlan.css";
 
-function DailyPlan() {
-    const today = new Date().toISOString().split("T")[0];
-
-    const [selectedDate, setSelectedDate] = useState(today);
+const DailyPlan = () => {
+    const [date, setDate] = useState(
+        new Date().toISOString().split("T")[0]
+    );
 
     const [plans, setPlans] = useState([]);
     const [activities, setActivities] = useState([]);
 
-    const [selectedActivityId, setSelectedActivityId] = useState("");
-    const [plannedMinutes, setPlannedMinutes] = useState("");
-
-    const [showPlanForm, setShowPlanForm] = useState(false);
-
-    const [editingPlanId, setEditingPlanId] = useState(null);
-    const [editPlannedMinutes, setEditPlannedMinutes] = useState("");
-
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const isPastDate = selectedDate < today;
+    const [showForm, setShowForm] = useState(false);
 
-    const totalPlannedMinutes = plans.reduce(
-        (total, plan) => total + plan.plannedMinutes,
-        0
-    );
+    const [selectedActivityId, setSelectedActivityId] =
+        useState("");
 
-    const formatMinutes = (minutes) => {
-        if (minutes < 60) {
-            return `${minutes} min`;
+    const [plannedMinutes, setPlannedMinutes] =
+        useState("");
+
+    const [formError, setFormError] = useState("");
+    const [saving, setSaving] = useState(false);
+
+    const [editingPlanId, setEditingPlanId] =
+        useState(null);
+
+    const [editingMinutes, setEditingMinutes] =
+        useState("");
+
+
+    useEffect(() => {
+        loadPlans();
+    }, [date]);
+
+
+    const loadPlans = async () => {
+        try {
+            setLoading(true);
+            setError("");
+
+            const response = await getDailyPlans(date);
+
+            setPlans(response.data);
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Unable to load daily plan."
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const loadActivities = async () => {
+        try {
+            const response = await getActivities();
+
+            setActivities(response.data);
+        } catch (err) {
+            setFormError(
+                err.response?.data?.message ||
+                "Unable to load activities."
+            );
+        }
+    };
+
+
+    const handleOpenForm = async () => {
+        setShowForm(true);
+
+        setFormError("");
+        setSelectedActivityId("");
+        setPlannedMinutes("");
+
+        await loadActivities();
+    };
+
+
+    const handleCloseForm = () => {
+        setShowForm(false);
+
+        setFormError("");
+        setSelectedActivityId("");
+        setPlannedMinutes("");
+    };
+
+
+    const handleCreatePlan = async (event) => {
+        event.preventDefault();
+
+        if (!selectedActivityId) {
+            setFormError("Please select an activity.");
+            return;
         }
 
+        if (!plannedMinutes || Number(plannedMinutes) <= 0) {
+            setFormError(
+                "Planned minutes must be greater than 0."
+            );
+            return;
+        }
+
+        try {
+            setSaving(true);
+            setFormError("");
+
+            await createDailyPlan({
+                activityId: Number(selectedActivityId),
+                date,
+                plannedMinutes: Number(plannedMinutes),
+            });
+
+            handleCloseForm();
+
+            await loadPlans();
+        } catch (err) {
+            setFormError(
+                err.response?.data?.message ||
+                "Unable to save daily plan."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to remove this activity from your plan?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+            await deleteDailyPlan(id);
+
+            await loadPlans();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Unable to delete daily plan."
+            );
+        }
+    };
+
+
+    const handleStartEdit = (plan) => {
+        setEditingPlanId(plan.id);
+        setEditingMinutes(plan.plannedMinutes);
+    };
+
+
+    const handleCancelEdit = () => {
+        setEditingPlanId(null);
+        setEditingMinutes("");
+    };
+
+
+    const handleSaveEdit = async (id) => {
+        if (!editingMinutes || Number(editingMinutes) <= 0) {
+            return;
+        }
+
+        try {
+            await updateDailyPlan(id, {
+                plannedMinutes: Number(editingMinutes),
+            });
+
+            setEditingPlanId(null);
+            setEditingMinutes("");
+
+            await loadPlans();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Unable to update daily plan."
+            );
+        }
+    };
+
+
+    const formatDate = (value) => {
+        const selectedDate = new Date(
+            `${value}T00:00:00`
+        );
+
+        return selectedDate.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+            }
+        );
+    };
+
+
+    const formatMinutes = (minutes) => {
         const hours = Math.floor(minutes / 60);
         const remainingMinutes = minutes % 60;
+
+        if (hours === 0) {
+            return `${remainingMinutes}m`;
+        }
 
         if (remainingMinutes === 0) {
             return `${hours}h`;
@@ -48,589 +223,619 @@ function DailyPlan() {
         return `${hours}h ${remainingMinutes}m`;
     };
 
-    const formatDate = (date) => {
-        return new Date(`${date}T00:00:00`).toLocaleDateString(
-            "en-US",
-            {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            }
-        );
-    };
 
-    const loadPlans = async () => {
-        try {
-            setLoading(true);
+    const totalPlannedMinutes = plans.reduce(
+        (total, plan) =>
+            total + plan.plannedMinutes,
+        0
+    );
 
-            const response = await getDailyPlans(selectedDate);
-
-            setPlans(response.data);
-        } catch (error) {
-            console.error(
-                "Failed to load daily plans:",
-                error
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const loadActivities = async () => {
-        try {
-            const response = await getActivities();
-
-            setActivities(response.data);
-        } catch (error) {
-            console.error(
-                "Failed to load activities:",
-                error
-            );
-        }
-    };
-
-    useEffect(() => {
-        loadPlans();
-    }, [selectedDate]);
-
-    useEffect(() => {
-        loadActivities();
-    }, []);
-
-    const handleDateChange = (event) => {
-        const date = event.target.value;
-
-        setSelectedDate(date);
-
-        setShowPlanForm(false);
-        setEditingPlanId(null);
-        setEditPlannedMinutes("");
-    };
-
-    const handleCreatePlan = async () => {
-        if (!selectedActivityId) {
-            alert("Please select an activity.");
-            return;
-        }
-
-        if (
-            !plannedMinutes ||
-            Number(plannedMinutes) < 1 ||
-            Number(plannedMinutes) > 1440
-        ) {
-            alert(
-                "Planned time must be between 1 and 1440 minutes."
-            );
-            return;
-        }
-
-        try {
-            await createDailyPlan(
-                Number(selectedActivityId),
-                selectedDate,
-                Number(plannedMinutes)
-            );
-
-            await loadPlans();
-
-            setSelectedActivityId("");
-            setPlannedMinutes("");
-            setShowPlanForm(false);
-
-            alert("Activity added to your plan.");
-        } catch (error) {
-            console.error(
-                "Failed to create daily plan:",
-                error
-            );
-
-            alert(
-                error.response?.data?.message ||
-                "Unable to add activity to your plan."
-            );
-        }
-    };
-
-    const handleUpdatePlan = async (planId) => {
-        if (
-            !editPlannedMinutes ||
-            Number(editPlannedMinutes) < 1 ||
-            Number(editPlannedMinutes) > 1440
-        ) {
-            alert(
-                "Planned time must be between 1 and 1440 minutes."
-            );
-            return;
-        }
-
-        try {
-            await updateDailyPlan(
-                planId,
-                Number(editPlannedMinutes)
-            );
-
-            await loadPlans();
-
-            setEditingPlanId(null);
-            setEditPlannedMinutes("");
-
-            alert("Plan updated successfully.");
-        } catch (error) {
-            console.error(
-                "Failed to update daily plan:",
-                error
-            );
-
-            alert(
-                error.response?.data?.message ||
-                "Unable to update plan."
-            );
-        }
-    };
-
-    const handleDeletePlan = async (id) => {
-        const confirmed = window.confirm(
-            "Are you sure you want to delete this planned activity?"
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
-        try {
-            await deleteDailyPlan(id);
-
-            await loadPlans();
-
-            alert("Planned activity deleted.");
-        } catch (error) {
-            console.error(
-                "Failed to delete daily plan:",
-                error
-            );
-
-            alert(
-                error.response?.data?.message ||
-                "Unable to delete planned activity."
-            );
-        }
-    };
 
     return (
-        <section className="daily-plan-page">
+        <div className="daily-plan-page">
 
-            {/* Header */}
+            {/* =================================================
+                HERO
+            ================================================= */}
 
-            <div className="daily-plan-header">
+            <section className="daily-plan-hero">
 
-                <div>
-                    <p className="daily-plan-eyebrow">
-                        DAILY PLANNING
-                    </p>
+                <div className="daily-plan-hero-content">
+
+                    <span className="daily-plan-kicker">
+                        LIFE REPLAY / PLAN
+                    </span>
 
                     <h1>
-                        Plan your day.
+                        Make today
+                        <span> count.</span>
                     </h1>
 
-                    <p className="daily-plan-description">
-                        Decide where your time should go before
-                        the day begins.
+                    <p>
+                        Decide where your time goes
+                        before the day gets away from you.
                     </p>
+
                 </div>
 
-                <div className="daily-plan-date-control">
+
+                <div className="daily-plan-date">
+
                     <span>
-                        Planning for
+                        PLANNING FOR
                     </span>
 
                     <input
-                        id="plan-date"
                         type="date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
+                        value={date}
+                        onChange={(event) =>
+                            setDate(event.target.value)
+                        }
                     />
-                </div>
-
-            </div>
-
-            {/* Date + Summary */}
-
-            <div className="daily-plan-overview">
-
-                <div>
-                    <p className="daily-plan-date-label">
-                        {formatDate(selectedDate)}
-                    </p>
-
-                    <p className="daily-plan-status">
-                        {isPastDate
-                            ? "Viewing a completed day"
-                            : selectedDate === today
-                                ? "Planning for today"
-                                : "Planning ahead"}
-                    </p>
-                </div>
-
-                <div className="daily-plan-summary">
-
-                    <div>
-                        <span>
-                            Activities
-                        </span>
-
-                        <strong>
-                            {plans.length}
-                        </strong>
-                    </div>
-
-                    <div className="daily-plan-summary-divider" />
-
-                    <div>
-                        <span>
-                            Planned time
-                        </span>
-
-                        <strong>
-                            {formatMinutes(
-                                totalPlannedMinutes
-                            )}
-                        </strong>
-                    </div>
 
                 </div>
 
-            </div>
+            </section>
 
-            {/* Add Activity */}
 
-            {!isPastDate && (
-                <div className="daily-plan-add-section">
+            {/* =================================================
+                ERROR
+            ================================================= */}
 
-                    {!showPlanForm ? (
-                        <button
-                            type="button"
-                            className="daily-plan-add-button"
-                            onClick={() =>
-                                setShowPlanForm(true)
-                            }
-                        >
-                            <span>+</span>
-                            Add activity to your day
-                        </button>
-                    ) : (
-                        <div className="daily-plan-form">
-
-                            <div className="daily-plan-form-header">
-                                <div>
-                                    <p>
-                                        BUILD YOUR DAY
-                                    </p>
-
-                                    <h2>
-                                        Add planned activity
-                                    </h2>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowPlanForm(false);
-                                        setSelectedActivityId("");
-                                        setPlannedMinutes("");
-                                    }}
-                                    className="daily-plan-close-button"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="daily-plan-form-grid">
-
-                                <div className="daily-plan-field">
-                                    <label htmlFor="plan-activity">
-                                        Activity
-                                    </label>
-
-                                    <select
-                                        id="plan-activity"
-                                        value={selectedActivityId}
-                                        onChange={(event) =>
-                                            setSelectedActivityId(
-                                                event.target.value
-                                            )
-                                        }
-                                    >
-                                        <option value="">
-                                            Select an activity
-                                        </option>
-
-                                        {activities.map(
-                                            (activity) => (
-                                                <option
-                                                    key={
-                                                        activity.id
-                                                    }
-                                                    value={
-                                                        activity.id
-                                                    }
-                                                >
-                                                    {activity.name}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
-                                </div>
-
-                                <div className="daily-plan-field">
-                                    <label htmlFor="planned-minutes">
-                                        Planned time
-                                    </label>
-
-                                    <div className="daily-plan-minute-input">
-                                        <input
-                                            id="planned-minutes"
-                                            type="number"
-                                            min="1"
-                                            max="1440"
-                                            placeholder="60"
-                                            value={
-                                                plannedMinutes
-                                            }
-                                            onChange={(event) =>
-                                                setPlannedMinutes(
-                                                    event.target.value
-                                                )
-                                            }
-                                        />
-
-                                        <span>
-                                            minutes
-                                        </span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div className="daily-plan-form-actions">
-
-                                <button
-                                    type="button"
-                                    className="daily-plan-secondary-button"
-                                    onClick={() => {
-                                        setShowPlanForm(false);
-                                        setSelectedActivityId("");
-                                        setPlannedMinutes("");
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="daily-plan-save-button"
-                                    onClick={handleCreatePlan}
-                                >
-                                    Add to plan
-                                </button>
-
-                            </div>
-
-                        </div>
-                    )}
-
+            {error && (
+                <div className="daily-plan-error">
+                    {error}
                 </div>
             )}
 
-            {/* Plan List */}
 
-            <div className="daily-plan-list">
+            {!error && (
+                <>
 
-                <div className="daily-plan-list-header">
+                    {/* =========================================
+                        DAY OVERVIEW
+                    ========================================= */}
 
-                    <div>
-                        <p>
-                            YOUR DAY
-                        </p>
+                    <section className="daily-plan-overview">
 
-                        <h2>
-                            {isPastDate
-                                ? "What you planned"
-                                : "Your planned activities"}
-                        </h2>
-                    </div>
+                        <div className="daily-plan-overview-date">
 
-                    {plans.length > 0 && (
-                        <span className="daily-plan-count">
-                            {plans.length}{" "}
-                            {plans.length === 1
-                                ? "activity"
-                                : "activities"}
-                        </span>
-                    )}
+                            <span>
+                                {formatDate(date)}
+                            </span>
 
-                </div>
+                            <h2>
+                                Your day,
+                                <br />
+                                your rules.
+                            </h2>
 
-                {loading ? (
-                    <div className="daily-plan-empty">
-                        <p>
-                            Loading your plan...
-                        </p>
-                    </div>
-                ) : plans.length === 0 ? (
-                    <div className="daily-plan-empty">
-
-                        <div className="daily-plan-empty-icon">
-                            +
                         </div>
 
-                        <h3>
-                            Nothing planned yet
-                        </h3>
 
-                        <p>
-                            {isPastDate
-                                ? "You didn't have any planned activities for this day."
-                                : "Add an activity to start building your day."}
-                        </p>
+                        <div className="daily-plan-overview-numbers">
 
-                    </div>
-                ) : (
-                    <div className="daily-plan-items">
+                            <div>
+                                <strong>
+                                    {String(
+                                        plans.length
+                                    ).padStart(2, "0")}
+                                </strong>
 
-                        {plans.map((plan, index) => (
-                            <div
-                                className="daily-plan-item"
-                                key={plan.id}
+                                <span>
+                                    ACTIVITIES
+                                </span>
+                            </div>
+
+
+                            <div>
+                                <strong>
+                                    {formatMinutes(
+                                        totalPlannedMinutes
+                                    )}
+                                </strong>
+
+                                <span>
+                                    PLANNED
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =========================================
+                        SECTION HEADER
+                    ========================================= */}
+
+                    <section className="daily-plan-section">
+
+                        <div className="daily-plan-section-heading">
+
+                            <div>
+
+                                <span>
+                                    TODAY
+                                </span>
+
+                                <h2>
+                                    Your plan
+                                </h2>
+
+                            </div>
+
+                            <p>
+                                {plans.length}{" "}
+                                {plans.length === 1
+                                    ? "thing"
+                                    : "things"}{" "}
+                                on the list
+                            </p>
+
+                        </div>
+
+
+                        {/* =====================================
+                            LOADING
+                        ===================================== */}
+
+                        {loading && (
+                            <div className="daily-plan-loading">
+                                Loading your day...
+                            </div>
+                        )}
+
+
+                        {/* =====================================
+                            EMPTY
+                        ===================================== */}
+
+                        {!loading &&
+                            plans.length === 0 && (
+
+                                <div className="daily-plan-empty">
+
+                                    <div className="daily-plan-empty-symbol">
+                                        +
+                                    </div>
+
+                                    <div>
+
+                                        <h3>
+                                            Your day is wide open.
+                                        </h3>
+
+                                        <p>
+                                            Add your first activity
+                                            and start shaping it.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            )}
+
+
+                        {/* =====================================
+                            ACTIVITY GRID
+                        ===================================== */}
+
+                        {!loading &&
+                            plans.length > 0 && (
+
+                                <div className="daily-plan-grid">
+
+                                    {plans.map(
+                                        (plan, index) => (
+
+                                            <article
+                                                className={`daily-plan-card daily-plan-card-${(index % 4) + 1}`}
+                                                key={plan.id}
+                                            >
+
+                                                <div className="daily-plan-card-top">
+
+                                                    <span className="daily-plan-card-number">
+                                                        {String(
+                                                            index + 1
+                                                        ).padStart(
+                                                            2,
+                                                            "0"
+                                                        )}
+                                                    </span>
+
+
+                                                    {editingPlanId !==
+                                                        plan.id && (
+
+                                                        <div className="daily-plan-card-actions">
+
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleStartEdit(
+                                                                        plan
+                                                                    )
+                                                                }
+                                                            >
+                                                                Edit
+                                                            </button>
+
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleDelete(
+                                                                        plan.id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Delete
+                                                            </button>
+
+                                                        </div>
+
+                                                    )}
+
+                                                </div>
+
+
+                                                {editingPlanId ===
+                                                plan.id ? (
+
+                                                    <div className="daily-plan-card-edit">
+
+                                                        <h3>
+                                                            {plan.activityName}
+                                                        </h3>
+
+                                                        <div className="daily-plan-edit-controls">
+
+                                                            <input
+                                                                type="number"
+                                                                min="1"
+                                                                value={
+                                                                    editingMinutes
+                                                                }
+                                                                onChange={(
+                                                                    event
+                                                                ) =>
+                                                                    setEditingMinutes(
+                                                                        event.target.value
+                                                                    )
+                                                                }
+                                                            />
+
+                                                            <span>
+                                                                min
+                                                            </span>
+
+                                                        </div>
+
+                                                        <div className="daily-plan-edit-buttons">
+
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleSaveEdit(
+                                                                        plan.id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Save
+                                                            </button>
+
+                                                            <button
+                                                                type="button"
+                                                                onClick={
+                                                                    handleCancelEdit
+                                                                }
+                                                            >
+                                                                Cancel
+                                                            </button>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                ) : (
+
+                                                    <>
+
+                                                        <div className="daily-plan-card-content">
+
+                                                            <h3>
+                                                                {
+                                                                    plan.activityName
+                                                                }
+                                                            </h3>
+
+                                                            <span>
+                                                                Planned
+                                                                time
+                                                            </span>
+
+                                                        </div>
+
+
+                                                        <div className="daily-plan-card-bottom">
+
+                                                            <strong>
+                                                                {formatMinutes(
+                                                                    plan.plannedMinutes
+                                                                )}
+                                                            </strong>
+
+                                                            <span>
+                                                                of your day
+                                                            </span>
+
+                                                        </div>
+
+                                                    </>
+
+                                                )}
+
+                                            </article>
+
+                                        )
+                                    )}
+
+
+                                    {/* ADD CARD */}
+
+                                    {!showForm && (
+
+                                        <button
+                                            type="button"
+                                            className="daily-plan-add-card"
+                                            onClick={
+                                                handleOpenForm
+                                            }
+                                        >
+
+                                            <span>
+                                                +
+                                            </span>
+
+                                            <strong>
+                                                Add activity
+                                            </strong>
+
+                                            <small>
+                                                Make room for
+                                                something that matters.
+                                            </small>
+
+                                        </button>
+
+                                    )}
+
+                                </div>
+
+                            )}
+
+
+                        {/* =====================================
+                            ADD CARD WHEN EMPTY
+                        ===================================== */}
+
+                        {!loading &&
+                            plans.length === 0 &&
+                            !showForm && (
+
+                                <button
+                                    type="button"
+                                    className="daily-plan-add-card daily-plan-add-card-empty"
+                                    onClick={
+                                        handleOpenForm
+                                    }
+                                >
+
+                                    <span>
+                                        +
+                                    </span>
+
+                                    <strong>
+                                        Add your first activity
+                                    </strong>
+
+                                    <small>
+                                        Start building your day.
+                                    </small>
+
+                                </button>
+
+                            )}
+
+
+                        {/* =====================================
+                            FORM
+                        ===================================== */}
+
+                        {showForm && (
+
+                            <form
+                                className="daily-plan-create"
+                                onSubmit={
+                                    handleCreatePlan
+                                }
                             >
 
-                                <div className="daily-plan-item-number">
-                                    {String(index + 1).padStart(
-                                        2,
-                                        "0"
-                                    )}
+                                <div className="daily-plan-create-heading">
+
+                                    <div>
+
+                                        <span>
+                                            NEW BLOCK
+                                        </span>
+
+                                        <h2>
+                                            What are you making
+                                            time for?
+                                        </h2>
+
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={
+                                            handleCloseForm
+                                        }
+                                    >
+                                        ×
+                                    </button>
+
                                 </div>
 
-                                <div className="daily-plan-item-content">
 
-                                    <h3>
-                                        {plan.activityName}
-                                    </h3>
+                                {formError && (
+                                    <div className="daily-plan-form-error">
+                                        {formError}
+                                    </div>
+                                )}
 
-                                    <p>
-                                        Planned activity
-                                    </p>
 
-                                </div>
+                                <div className="daily-plan-create-fields">
 
-                                {editingPlanId === plan.id ? (
-                                    <div className="daily-plan-edit-area">
+                                    <div>
 
-                                        <div className="daily-plan-minute-input">
+                                        <label>
+                                            Activity
+                                        </label>
+
+                                        <select
+                                            value={
+                                                selectedActivityId
+                                            }
+                                            onChange={(event) =>
+                                                setSelectedActivityId(
+                                                    event.target.value
+                                                )
+                                            }
+                                        >
+
+                                            <option value="">
+                                                Choose one
+                                            </option>
+
+                                            {activities.map(
+                                                (activity) => (
+
+                                                    <option
+                                                        key={
+                                                            activity.id
+                                                        }
+                                                        value={
+                                                            activity.id
+                                                        }
+                                                    >
+                                                        {
+                                                            activity.name
+                                                        }
+                                                    </option>
+
+                                                )
+                                            )}
+
+                                        </select>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <label>
+                                            Time
+                                        </label>
+
+                                        <div className="daily-plan-minutes">
+
                                             <input
                                                 type="number"
                                                 min="1"
-                                                max="1440"
+                                                placeholder="60"
                                                 value={
-                                                    editPlannedMinutes
+                                                    plannedMinutes
                                                 }
                                                 onChange={(
                                                     event
                                                 ) =>
-                                                    setEditPlannedMinutes(
-                                                        event.target
-                                                            .value
+                                                    setPlannedMinutes(
+                                                        event.target.value
                                                     )
                                                 }
                                             />
 
                                             <span>
-                                                min
+                                                minutes
                                             </span>
+
                                         </div>
-
-                                        <button
-                                            type="button"
-                                            className="daily-plan-save-small"
-                                            onClick={() =>
-                                                handleUpdatePlan(
-                                                    plan.id
-                                                )
-                                            }
-                                        >
-                                            Save
-                                        </button>
-
-                                        <button
-                                            type="button"
-                                            className="daily-plan-cancel-small"
-                                            onClick={() => {
-                                                setEditingPlanId(
-                                                    null
-                                                );
-                                                setEditPlannedMinutes(
-                                                    ""
-                                                );
-                                            }}
-                                        >
-                                            Cancel
-                                        </button>
 
                                     </div>
-                                ) : (
-                                    <>
 
-                                        <div className="daily-plan-item-time">
-                                            {formatMinutes(
-                                                plan.plannedMinutes
-                                            )}
-                                        </div>
+                                </div>
 
-                                        <div className="daily-plan-item-actions">
 
-                                            {!isPastDate && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setEditingPlanId(
-                                                            plan.id
-                                                        );
-                                                        setEditPlannedMinutes(
-                                                            plan.plannedMinutes
-                                                        );
-                                                    }}
-                                                >
-                                                    Edit
-                                                </button>
-                                            )}
+                                <div className="daily-plan-create-actions">
 
-                                            <button
-                                                type="button"
-                                                className="delete"
-                                                onClick={() =>
-                                                    handleDeletePlan(
-                                                        plan.id
-                                                    )
-                                                }
-                                            >
-                                                Delete
-                                            </button>
+                                    <button
+                                        type="button"
+                                        onClick={
+                                            handleCloseForm
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
 
-                                        </div>
+                                    <button
+                                        type="submit"
+                                        disabled={saving}
+                                    >
+                                        {saving
+                                            ? "Adding..."
+                                            : "Add to my day →"}
+                                    </button>
 
-                                    </>
-                                )}
+                                </div>
 
-                            </div>
-                        ))}
+                            </form>
 
-                    </div>
-                )}
+                        )}
 
-            </div>
 
-        </section>
+                        {/* =====================================
+                            TOTAL
+                        ===================================== */}
+
+                        {!loading &&
+                            plans.length > 0 && (
+
+                                <div className="daily-plan-total">
+
+                                    <span>
+                                        Total planned
+                                    </span>
+
+                                    <strong>
+                                        {formatMinutes(
+                                            totalPlannedMinutes
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                            )}
+
+                    </section>
+
+                </>
+            )}
+
+        </div>
     );
-}
+};
 
 export default DailyPlan;

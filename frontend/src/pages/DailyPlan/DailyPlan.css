@@ -1,6 +1,5 @@
 /* =========================================================
-   DAILY PLAN — NEO NOIR
-   Gen-Z / Futuristic / Clean / Slightly Hacker
+   DAILY PLAN — NEO-NOIR CARD UI
 ========================================================= */
 
 .daily-plan-page {
@@ -9,50 +8,17 @@
     display: flex;
     flex-direction: column;
 
-    gap: 32px;
+    gap: 42px;
 
     color: #f4f5f8;
-
-    isolation: isolate;
 }
 
 
 /* =========================================================
-   AMBIENT BACKGROUND
+   HERO
 ========================================================= */
 
-.daily-plan-page::before {
-    content: "";
-
-    position: absolute;
-
-    top: -180px;
-    right: -120px;
-
-    width: 500px;
-    height: 500px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(167, 139, 250, 0.16) 0%,
-            rgba(125, 211, 252, 0.06) 35%,
-            transparent 70%
-        );
-
-    filter: blur(10px);
-
-    pointer-events: none;
-
-    z-index: -1;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.daily-plan-header {
+.daily-plan-hero {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -60,68 +26,51 @@
     gap: 40px;
 }
 
-.daily-plan-header-copy {
+.daily-plan-hero-content {
     max-width: 760px;
 }
 
-.daily-plan-eyebrow,
-.daily-plan-section-eyebrow {
-    display: inline-flex;
-    align-items: center;
+.daily-plan-kicker {
+    display: inline-block;
 
-    gap: 7px;
-
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 
     color: #a78bfa;
 
     font-size: 11px;
     font-weight: 700;
 
-    letter-spacing: 0.18em;
-
-    text-transform: uppercase;
+    letter-spacing: 0.14em;
 }
 
-.daily-plan-eyebrow::before,
-.daily-plan-section-eyebrow::before {
-    content: "";
-
-    width: 6px;
-    height: 6px;
-
-    background: #67e8f9;
-
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 10px rgba(103, 232, 249, 0.65);
-}
-
-.daily-plan-header h1 {
+.daily-plan-hero h1 {
     margin: 0;
 
-    color: #f7f7fa;
+    color: #f5f6f9;
 
     font-size: clamp(
-        2.4rem,
-        5vw,
-        4rem
+        3rem,
+        6vw,
+        5.2rem
     );
 
-    font-weight: 750;
+    font-weight: 800;
 
-    line-height: 0.98;
+    line-height: 0.92;
 
-    letter-spacing: -0.065em;
+    letter-spacing: -0.07em;
 }
 
-.daily-plan-description {
-    max-width: 620px;
+.daily-plan-hero h1 span {
+    color: #a78bfa;
+}
 
-    margin-top: 18px;
+.daily-plan-hero p {
+    max-width: 550px;
 
-    color: #979cab;
+    margin: 22px 0 0;
+
+    color: #9298a8;
 
     font-size: 15px;
 
@@ -130,554 +79,529 @@
 
 
 /* =========================================================
-   DATE PICKER
+   DATE
 ========================================================= */
 
-.daily-plan-date-control {
-    min-width: 230px;
+.daily-plan-date {
+    min-width: 215px;
 
-    padding: 14px;
+    padding: 16px;
 
-    background:
-        rgba(24, 27, 36, 0.82);
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #181b24;
 
     border-radius: 18px;
 
-    backdrop-filter: blur(18px);
-
     box-shadow:
-        0 18px 50px rgba(0, 0, 0, 0.22);
+        0 18px 45px rgba(0, 0, 0, 0.18);
 }
 
-.daily-plan-date-control label {
+.daily-plan-date span {
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 
-    color: #777d8d;
+    color: #777e8e;
 
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 800;
 
     letter-spacing: 0.14em;
-
-    text-transform: uppercase;
 }
 
-.daily-plan-date-control input {
+.daily-plan-date input {
     width: 100%;
 
     min-height: 44px;
 
-    padding: 0 12px;
+    padding: 0 11px;
 
-    color: #f1f3f7;
+    color: #f2f3f6;
 
-    background: #11141b;
+    background: #101319;
 
-    border: 1px solid #303541;
+    border: 1px solid #2e3340;
 
-    border-radius: 12px;
+    border-radius: 11px;
 
     font-size: 13px;
 
     outline: none;
 
     color-scheme: dark;
-
-    transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease;
 }
 
-.daily-plan-date-control input:hover {
-    border-color: #454b5b;
-}
-
-.daily-plan-date-control input:focus {
-    border-color: #8b7cf6;
+.daily-plan-date input:focus {
+    border-color: #a78bfa;
 
     box-shadow:
-        0 0 0 3px rgba(139, 124, 246, 0.1);
+        0 0 0 3px rgba(167, 139, 250, 0.09);
 }
 
 
 /* =========================================================
-   DAY SUMMARY
+   OVERVIEW
 ========================================================= */
 
-.daily-plan-day-summary {
-    position: relative;
+.daily-plan-overview {
+    display: grid;
 
-    display: flex;
+    grid-template-columns: 1fr auto;
+
     align-items: center;
-    justify-content: space-between;
 
-    gap: 30px;
+    gap: 40px;
 
-    padding: 28px;
-
-    overflow: hidden;
+    padding: 34px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(31, 35, 47, 0.95),
-            rgba(24, 27, 36, 0.92)
+            #202430,
+            #191c25
         );
 
-    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 28px;
 
-    border-radius: 24px;
+    overflow: hidden;
 
     box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.2);
+        0 25px 70px rgba(0, 0, 0, 0.2);
 }
 
-.daily-plan-day-summary::after {
-    content: "";
+.daily-plan-overview-date > span {
+    color: #7f8798;
 
-    position: absolute;
-
-    top: -80px;
-    right: 20%;
-
-    width: 180px;
-    height: 180px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(103, 232, 249, 0.07),
-            transparent 70%
-        );
-
-    pointer-events: none;
+    font-size: 12px;
 }
 
-.daily-plan-day-date {
-    margin: 0;
+.daily-plan-overview-date h2 {
+    margin: 12px 0 0;
 
-    color: #f2f3f6;
+    color: #f2f3f7;
 
-    font-size: 21px;
-    font-weight: 650;
+    font-size: 27px;
+    font-weight: 750;
 
-    letter-spacing: -0.025em;
+    line-height: 1.08;
+
+    letter-spacing: -0.04em;
 }
 
-.daily-plan-day-status {
-    margin-top: 7px;
-
-    color: #838999;
-
-    font-size: 13px;
-}
-
-.daily-plan-day-stats {
+.daily-plan-overview-numbers {
     display: flex;
     align-items: center;
 
-    gap: 28px;
+    gap: 42px;
 }
 
-.daily-plan-stat {
+.daily-plan-overview-numbers > div {
     display: flex;
     flex-direction: column;
 
     gap: 5px;
 }
 
-.daily-plan-stat span {
-    color: #777e8f;
+.daily-plan-overview-numbers strong {
+    color: #f5f6f9;
 
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 25px;
+    font-weight: 750;
+
+    letter-spacing: -0.04em;
+}
+
+.daily-plan-overview-numbers span {
+    color: #777f90;
+
+    font-size: 9px;
+    font-weight: 800;
 
     letter-spacing: 0.12em;
-
-    text-transform: uppercase;
-}
-
-.daily-plan-stat strong {
-    color: #f1f3f7;
-
-    font-size: 20px;
-    font-weight: 650;
-
-    letter-spacing: -0.025em;
-}
-
-.daily-plan-stat-divider {
-    width: 1px;
-    height: 42px;
-
-    background: rgba(255, 255, 255, 0.1);
 }
 
 
 /* =========================================================
-   MAIN CARD
+   SECTION
 ========================================================= */
 
-.daily-plan-day {
-    position: relative;
-
-    padding: 28px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(28, 31, 42, 0.97),
-            rgba(20, 23, 31, 0.98)
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.075);
-
-    border-radius: 24px;
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.22);
-
-    overflow: hidden;
-}
-
-.daily-plan-day::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 15%;
-    right: 15%;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(167, 139, 250, 0.7),
-            rgba(103, 232, 249, 0.5),
-            transparent
-        );
-}
-
-.daily-plan-day-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 20px;
-
-    padding-bottom: 20px;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.daily-plan-day-header h2 {
-    margin: 0;
-
-    color: #f1f2f5;
-
-    font-size: 21px;
-    font-weight: 650;
-
-    letter-spacing: -0.025em;
-}
-
-.daily-plan-count {
-    padding: 7px 12px;
-
-    color: #c4b5fd;
-
-    background:
-        rgba(167, 139, 250, 0.09);
-
-    border: 1px solid rgba(167, 139, 250, 0.18);
-
-    border-radius: 999px;
-
-    font-size: 11px;
-    font-weight: 700;
-
-    letter-spacing: 0.06em;
-
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   ACTIVITY ROWS
-========================================================= */
-
-.daily-plan-items {
+.daily-plan-section {
     display: flex;
     flex-direction: column;
 }
 
-.daily-plan-item {
-    display: grid;
-
-    grid-template-columns: 52px minmax(0, 1fr) auto;
-
-    align-items: center;
+.daily-plan-section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
 
     gap: 20px;
 
-    min-height: 108px;
-
-    padding: 18px 8px;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.055);
-
-    transition:
-        background 180ms ease,
-        transform 180ms ease;
+    margin-bottom: 20px;
 }
 
-.daily-plan-item:hover {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(167, 139, 250, 0.055),
-            rgba(103, 232, 249, 0.02),
-            transparent
-        );
+.daily-plan-section-heading > div > span {
+    display: block;
 
-    transform: translateX(3px);
+    margin-bottom: 7px;
+
+    color: #a78bfa;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
 }
 
-.daily-plan-item-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 40px;
-    height: 40px;
-
-    color: #b8a9ff;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(167, 139, 250, 0.15),
-            rgba(103, 232, 249, 0.055)
-        );
-
-    border: 1px solid rgba(167, 139, 250, 0.22);
-
-    border-radius: 13px;
-
-    font-size: 12px;
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 22px rgba(0, 0, 0, 0.15);
-}
-
-.daily-plan-item-main {
-    min-width: 0;
-}
-
-.daily-plan-item-main h3 {
+.daily-plan-section-heading h2 {
     margin: 0;
 
-    color: #f1f2f5;
+    color: #f3f4f7;
 
-    font-size: 17px;
-    font-weight: 650;
+    font-size: 29px;
+    font-weight: 750;
 
-    letter-spacing: -0.02em;
+    letter-spacing: -0.045em;
 }
 
-.daily-plan-item-main p {
-    margin-top: 6px;
+.daily-plan-section-heading > p {
+    margin: 0;
 
-    color: #7f8798;
+    color: #777f90;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
 /* =========================================================
-   TIME
+   GRID
 ========================================================= */
 
-.daily-plan-item-right {
-    display: flex;
-    align-items: center;
+.daily-plan-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 18px;
 }
 
-.daily-plan-item-time {
-    min-width: 88px;
-
-    color: #e1e5ed;
-
-    font-size: 15px;
-    font-weight: 650;
-
-    text-align: right;
-
-    font-variant-numeric: tabular-nums;
-}
-
 
 /* =========================================================
-   ACTION BUTTONS
+   ACTIVITY CARD
 ========================================================= */
 
-.daily-plan-item-actions {
+.daily-plan-card {
+    position: relative;
+
+    min-height: 245px;
+
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
 
-    gap: 7px;
+    padding: 25px;
 
-    min-width: 145px;
-}
+    overflow: hidden;
 
-.daily-plan-item-actions button {
-    min-height: 36px;
+    background: #181b24;
 
-    padding: 0 13px;
+    border-radius: 24px;
 
-    background: rgba(255, 255, 255, 0.035);
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    border-radius: 10px;
-
-    font-size: 12px;
-    font-weight: 650;
-
-    cursor: pointer;
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.16);
 
     transition:
-        background 160ms ease,
-        border-color 160ms ease,
-        transform 160ms ease;
+        transform 180ms ease,
+        box-shadow 180ms ease;
 }
 
-.daily-plan-item-actions button:hover {
-    transform: translateY(-1px);
-}
+.daily-plan-card:hover {
+    transform: translateY(-5px);
 
-.daily-plan-edit-action {
-    color: #b9aaff;
-}
-
-.daily-plan-edit-action:hover {
-    background: rgba(167, 139, 250, 0.09);
-
-    border-color: rgba(167, 139, 250, 0.24);
-}
-
-.daily-plan-delete-action {
-    color: #858c9c;
-}
-
-.daily-plan-delete-action:hover {
-    color: #ff8d9d;
-
-    background: rgba(255, 107, 130, 0.07);
-
-    border-color: rgba(255, 107, 130, 0.2);
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.23);
 }
 
 
-/* =========================================================
-   ADD BUTTON
-========================================================= */
+/* subtle decorative glow */
 
-.daily-plan-add-area {
-    margin-top: 22px;
-}
+.daily-plan-card::after {
+    content: "";
 
-.daily-plan-add-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
 
-    width: 100%;
+    width: 180px;
+    height: 180px;
 
-    min-height: 58px;
-
-    gap: 10px;
-
-    color: #c1b5ff;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(167, 139, 250, 0.07),
-            rgba(103, 232, 249, 0.025)
-        );
-
-    border: 1px dashed rgba(167, 139, 250, 0.25);
-
-    border-radius: 15px;
-
-    font-size: 13px;
-    font-weight: 650;
-
-    cursor: pointer;
-
-    transition:
-        background 180ms ease,
-        border-color 180ms ease,
-        transform 180ms ease;
-}
-
-.daily-plan-add-button:hover {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(167, 139, 250, 0.12),
-            rgba(103, 232, 249, 0.05)
-        );
-
-    border-color: rgba(167, 139, 250, 0.42);
-
-    transform: translateY(-1px);
-}
-
-.daily-plan-add-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 25px;
-    height: 25px;
-
-    color: #e7e3ff;
-
-    background: rgba(167, 139, 250, 0.13);
-
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    right: -75px;
+    bottom: -90px;
 
     border-radius: 50%;
 
-    font-size: 15px;
+    opacity: 0.5;
+
+    pointer-events: none;
+
+    filter: blur(2px);
+}
+
+
+/* CARD VARIATIONS */
+
+.daily-plan-card-1::after {
+    background: rgba(167, 139, 250, 0.14);
+}
+
+.daily-plan-card-2::after {
+    background: rgba(125, 211, 252, 0.12);
+}
+
+.daily-plan-card-3::after {
+    background: rgba(103, 232, 249, 0.10);
+}
+
+.daily-plan-card-4::after {
+    background: rgba(244, 114, 182, 0.10);
 }
 
 
 /* =========================================================
-   EMPTY STATE
+   CARD TOP
 ========================================================= */
 
-.daily-plan-state {
-    padding: 70px 0;
+.daily-plan-card-top {
+    position: relative;
 
-    color: #858c9c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    font-size: 13px;
-
-    text-align: center;
+    z-index: 1;
 }
+
+.daily-plan-card-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 39px;
+    height: 39px;
+
+    color: #c4b5fd;
+
+    background: rgba(167, 139, 250, 0.1);
+
+    border-radius: 12px;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   CARD ACTIONS
+========================================================= */
+
+.daily-plan-card-actions {
+    display: flex;
+
+    gap: 5px;
+}
+
+.daily-plan-card-actions button {
+    padding: 7px 10px;
+
+    color: #7f8797;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 9px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        color 150ms ease,
+        background 150ms ease;
+}
+
+.daily-plan-card-actions button:hover {
+    color: #f2f3f6;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.daily-plan-card-content {
+    position: relative;
+
+    margin-top: 30px;
+
+    z-index: 1;
+}
+
+.daily-plan-card-content h3 {
+    max-width: 85%;
+
+    margin: 0;
+
+    color: #f3f4f7;
+
+    font-size: 25px;
+    font-weight: 750;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.045em;
+}
+
+.daily-plan-card-content span {
+    display: block;
+
+    margin-top: 10px;
+
+    color: #777f90;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CARD BOTTOM
+========================================================= */
+
+.daily-plan-card-bottom {
+    position: relative;
+
+    display: flex;
+    align-items: baseline;
+
+    gap: 8px;
+
+    margin-top: 25px;
+
+    z-index: 1;
+}
+
+.daily-plan-card-bottom strong {
+    color: #f5f6f9;
+
+    font-size: 24px;
+    font-weight: 750;
+
+    letter-spacing: -0.04em;
+}
+
+.daily-plan-card-bottom span {
+    color: #777f90;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ADD CARD
+========================================================= */
+
+.daily-plan-add-card {
+    min-height: 245px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    padding: 25px;
+
+    text-align: left;
+
+    color: #c4b5fd;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(167, 139, 250, 0.07),
+            rgba(125, 211, 252, 0.025)
+        );
+
+    border: 1px dashed rgba(167, 139, 250, 0.27);
+
+    border-radius: 24px;
+
+    cursor: pointer;
+
+    transition:
+        transform 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
+}
+
+.daily-plan-add-card:hover {
+    transform: translateY(-5px);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(167, 139, 250, 0.12),
+            rgba(125, 211, 252, 0.045)
+        );
+
+    border-color: rgba(167, 139, 250, 0.48);
+}
+
+.daily-plan-add-card > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+
+    margin-bottom: 25px;
+
+    color: #11131a;
+
+    background: #a78bfa;
+
+    border-radius: 14px;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 10px 25px rgba(167, 139, 250, 0.2);
+}
+
+.daily-plan-add-card strong {
+    color: #eeeef3;
+
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.daily-plan-add-card small {
+    max-width: 230px;
+
+    margin-top: 8px;
+
+    color: #777f90;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
 
 .daily-plan-empty {
     display: flex;
@@ -685,48 +609,55 @@
 
     gap: 18px;
 
-    padding: 36px 8px;
+    padding: 35px 0;
 }
 
-.daily-plan-empty-mark {
+.daily-plan-empty-symbol {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 52px;
-    height: 52px;
+    width: 55px;
+    height: 55px;
 
-    color: #b8a9ff;
+    color: #c4b5fd;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(167, 139, 250, 0.14),
-            rgba(103, 232, 249, 0.04)
-        );
+    background: rgba(167, 139, 250, 0.1);
 
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 16px;
 
-    border-radius: 15px;
-
-    font-size: 20px;
+    font-size: 25px;
 }
 
 .daily-plan-empty h3 {
     margin: 0;
 
-    color: #eef0f5;
+    color: #f0f1f5;
 
-    font-size: 15px;
-    font-weight: 650;
+    font-size: 17px;
 }
 
 .daily-plan-empty p {
-    margin-top: 5px;
+    margin: 6px 0 0;
 
-    color: #858c9c;
+    color: #777f90;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.daily-plan-loading {
+    padding: 60px 0;
+
+    color: #777f90;
 
     font-size: 13px;
+
+    text-align: center;
 }
 
 
@@ -734,248 +665,214 @@
    EDIT MODE
 ========================================================= */
 
-.daily-plan-edit-area {
-    display: flex;
-    align-items: center;
+.daily-plan-card-edit {
+    position: relative;
 
-    gap: 7px;
+    margin-top: 35px;
+
+    z-index: 2;
 }
 
-.daily-plan-edit-input {
+.daily-plan-card-edit h3 {
+    margin: 0 0 18px;
+
+    color: #f3f4f7;
+
+    font-size: 22px;
+}
+
+.daily-plan-edit-controls {
     display: flex;
     align-items: center;
 
-    height: 38px;
+    width: max-content;
+
+    background: #101319;
+
+    border: 1px solid #343946;
+
+    border-radius: 11px;
 
     overflow: hidden;
-
-    background: #11141b;
-
-    border: 1px solid #3b4250;
-
-    border-radius: 10px;
 }
 
-.daily-plan-edit-input:focus-within {
-    border-color: #8b7cf6;
+.daily-plan-edit-controls input {
+    width: 80px;
 
-    box-shadow:
-        0 0 0 3px rgba(139, 124, 246, 0.08);
-}
+    padding: 11px;
 
-.daily-plan-edit-input input {
-    width: 72px;
-    height: 100%;
-
-    padding: 0 9px;
-
-    color: #f0f2f6;
+    color: #f3f4f7;
 
     background: transparent;
 
     border: none;
 
-    font-size: 12px;
-
     outline: none;
 }
 
-.daily-plan-edit-input span {
-    padding-right: 9px;
+.daily-plan-edit-controls span {
+    padding-right: 11px;
 
-    color: #858c9c;
+    color: #777f90;
 
     font-size: 10px;
 }
 
-.daily-plan-action-save,
-.daily-plan-action-cancel {
-    min-height: 38px;
+.daily-plan-edit-buttons {
+    display: flex;
 
-    padding: 0 13px;
+    gap: 7px;
 
-    border-radius: 10px;
+    margin-top: 15px;
+}
 
-    font-size: 12px;
-    font-weight: 650;
+.daily-plan-edit-buttons button {
+    padding: 9px 14px;
+
+    border-radius: 9px;
+
+    font-size: 11px;
+    font-weight: 700;
 
     cursor: pointer;
 }
 
-.daily-plan-action-save {
-    color: #100d18;
+.daily-plan-edit-buttons button:first-child {
+    color: #11131a;
 
-    background:
-        linear-gradient(
-            135deg,
-            #a78bfa,
-            #8b7cf6
-        );
+    background: #a78bfa;
 
     border: none;
-
-    box-shadow:
-        0 7px 20px rgba(139, 124, 246, 0.18);
 }
 
-.daily-plan-action-save:hover {
-    filter: brightness(1.08);
-}
+.daily-plan-edit-buttons button:last-child {
+    color: #8e95a4;
 
-.daily-plan-action-cancel {
-    color: #969dac;
+    background: transparent;
 
-    background: rgba(255, 255, 255, 0.035);
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.daily-plan-action-cancel:hover {
-    color: #f1f2f5;
-
-    background: rgba(255, 255, 255, 0.065);
+    border: 1px solid #343946;
 }
 
 
 /* =========================================================
-   FORM
+   CREATE FORM
 ========================================================= */
 
-.daily-plan-form {
+.daily-plan-create {
+    margin-top: 22px;
+
     padding: 28px;
 
     background:
         linear-gradient(
             145deg,
             #202430,
-            #191c25
+            #181b24
         );
-
-    border: 1px solid rgba(255, 255, 255, 0.085);
 
     border-radius: 24px;
 
     box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.22);
+        0 20px 55px rgba(0, 0, 0, 0.18);
 }
 
-.daily-plan-form-header {
+.daily-plan-create-heading {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
 
     gap: 20px;
-
-    padding-bottom: 20px;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.daily-plan-form-header p {
-    margin-bottom: 6px;
-
+.daily-plan-create-heading span {
     color: #a78bfa;
 
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 9px;
+    font-weight: 800;
 
     letter-spacing: 0.15em;
-
-    text-transform: uppercase;
 }
 
-.daily-plan-form-header h2 {
-    margin: 0;
+.daily-plan-create-heading h2 {
+    margin: 8px 0 0;
 
-    color: #f0f1f5;
+    color: #f3f4f7;
 
-    font-size: 19px;
-    font-weight: 650;
+    font-size: 21px;
+
+    letter-spacing: -0.03em;
 }
 
-.daily-plan-close-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+.daily-plan-create-heading button {
     width: 36px;
     height: 36px;
 
-    color: #858c9c;
+    color: #858c9b;
 
     background: rgba(255, 255, 255, 0.04);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.07);
 
     border-radius: 10px;
 
-    font-size: 18px;
+    font-size: 19px;
 
     cursor: pointer;
 }
 
-.daily-plan-close-button:hover {
-    color: #f1f2f5;
-
-    background: rgba(255, 255, 255, 0.075);
-}
-
-.daily-plan-form-grid {
+.daily-plan-create-fields {
     display: grid;
 
     grid-template-columns: 1fr 1fr;
 
     gap: 18px;
 
-    margin-top: 22px;
+    margin-top: 25px;
 }
 
-.daily-plan-field {
+.daily-plan-create-fields > div {
     display: flex;
     flex-direction: column;
 
     gap: 7px;
 }
 
-.daily-plan-field label {
-    color: #a0a7b5;
+.daily-plan-create-fields label {
+    color: #9299a8;
 
-    font-size: 12px;
-    font-weight: 650;
+    font-size: 11px;
+    font-weight: 700;
 }
 
-.daily-plan-field select,
-.daily-plan-field input {
+.daily-plan-create-fields select,
+.daily-plan-create-fields input {
     width: 100%;
 
     min-height: 45px;
 
     padding: 0 12px;
 
-    color: #eef0f5;
+    color: #f1f2f5;
 
-    background: #11141b;
+    background: #101319;
 
-    border: 1px solid #363c49;
+    border: 1px solid #303542;
 
     border-radius: 11px;
-
-    font-size: 13px;
 
     outline: none;
 
     color-scheme: dark;
 }
 
-.daily-plan-field select:focus,
-.daily-plan-field input:focus {
-    border-color: #8b7cf6;
+.daily-plan-create-fields select:focus,
+.daily-plan-create-fields input:focus {
+    border-color: #a78bfa;
 
     box-shadow:
-        0 0 0 3px rgba(139, 124, 246, 0.08);
+        0 0 0 3px rgba(167, 139, 250, 0.08);
 }
 
-.daily-plan-minute-input {
+.daily-plan-minutes {
     display: flex;
     align-items: center;
 
@@ -983,83 +880,61 @@
 
     overflow: hidden;
 
-    background: #11141b;
+    background: #101319;
 
-    border: 1px solid #363c49;
+    border: 1px solid #303542;
 
     border-radius: 11px;
 }
 
-.daily-plan-minute-input:focus-within {
-    border-color: #8b7cf6;
-
-    box-shadow:
-        0 0 0 3px rgba(139, 124, 246, 0.08);
-}
-
-.daily-plan-minute-input input {
+.daily-plan-minutes input {
     min-height: 43px;
 
     background: transparent;
 
     border: none;
-
-    box-shadow: none;
 }
 
-.daily-plan-minute-input input:focus {
-    border: none;
-
-    box-shadow: none;
-}
-
-.daily-plan-minute-input span {
+.daily-plan-minutes span {
     padding-right: 12px;
 
-    color: #858c9c;
+    color: #777f90;
 
     font-size: 10px;
 }
 
-.daily-plan-form-actions {
+.daily-plan-create-actions {
     display: flex;
     justify-content: flex-end;
 
-    gap: 10px;
+    gap: 9px;
 
     margin-top: 24px;
 }
 
-.daily-plan-secondary-button,
-.daily-plan-save-button {
-    min-height: 43px;
+.daily-plan-create-actions button {
+    min-height: 42px;
 
-    padding: 0 20px;
+    padding: 0 18px;
 
-    border-radius: 11px;
+    border-radius: 10px;
 
-    font-size: 12px;
-    font-weight: 650;
+    font-size: 11px;
+    font-weight: 700;
 
     cursor: pointer;
 }
 
-.daily-plan-secondary-button {
-    color: #9da4b2;
+.daily-plan-create-actions button:first-child {
+    color: #9299a8;
 
-    background: rgba(255, 255, 255, 0.04);
+    background: transparent;
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid #343946;
 }
 
-.daily-plan-secondary-button:hover {
-    color: #f0f1f5;
-
-    background: rgba(255, 255, 255, 0.075);
-}
-
-.daily-plan-save-button {
-    color: #100d18;
+.daily-plan-create-actions button:last-child {
+    color: #11131a;
 
     background:
         linear-gradient(
@@ -1069,13 +944,6 @@
         );
 
     border: none;
-
-    box-shadow:
-        0 8px 24px rgba(139, 124, 246, 0.18);
-}
-
-.daily-plan-save-button:hover {
-    filter: brightness(1.08);
 }
 
 
@@ -1085,25 +953,45 @@
 
 .daily-plan-total {
     display: flex;
-    align-items: center;
     justify-content: flex-end;
+    align-items: baseline;
 
-    gap: 9px;
+    gap: 10px;
 
+    margin-top: 25px;
     padding-top: 18px;
 
-    color: #858c9c;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 
-    font-size: 13px;
+    color: #777f90;
 
-    border-top: 1px solid rgba(255, 255, 255, 0.065);
+    font-size: 11px;
 }
 
 .daily-plan-total strong {
-    color: #e5e8ef;
+    color: #f0f1f5;
 
-    font-size: 15px;
-    font-weight: 650;
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.daily-plan-error,
+.daily-plan-form-error {
+    padding: 13px 16px;
+
+    color: #ff9baa;
+
+    background: rgba(255, 107, 130, 0.07);
+
+    border: 1px solid rgba(255, 107, 130, 0.15);
+
+    border-radius: 12px;
+
+    font-size: 12px;
 }
 
 
@@ -1111,131 +999,83 @@
    RESPONSIVE
 ========================================================= */
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
 
-    .daily-plan-header {
+    .daily-plan-hero {
         align-items: flex-start;
+
         flex-direction: column;
     }
 
-    .daily-plan-date-control {
+    .daily-plan-date {
         width: 100%;
     }
 
-    .daily-plan-day-summary {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .daily-plan-day-stats {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .daily-plan-item {
-        grid-template-columns: 44px minmax(0, 1fr);
-    }
-
-    .daily-plan-item-right {
-        grid-column: 2;
-
-        justify-content: space-between;
-
-        width: 100%;
-    }
-
-    .daily-plan-item-actions {
-        min-width: auto;
-    }
-
-    .daily-plan-form-grid {
+    .daily-plan-grid {
         grid-template-columns: 1fr;
     }
 
-    .daily-plan-edit-area {
-        grid-column: 2;
-        flex-wrap: wrap;
+    .daily-plan-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .daily-plan-overview-numbers {
+        justify-content: flex-start;
     }
 }
 
 
-@media (max-width: 520px) {
+@media (max-width: 550px) {
 
     .daily-plan-page {
-        gap: 24px;
+        gap: 28px;
     }
 
-    .daily-plan-day,
-    .daily-plan-day-summary,
-    .daily-plan-form {
-        padding: 20px;
+    .daily-plan-hero h1 {
+        font-size: 3rem;
     }
 
-    .daily-plan-header h1 {
-        font-size: 2.5rem;
+    .daily-plan-overview {
+        padding: 24px;
     }
 
-    .daily-plan-day-stats {
-        gap: 18px;
+    .daily-plan-overview-date h2 {
+        font-size: 23px;
     }
 
-    .daily-plan-stat strong {
-        font-size: 17px;
+    .daily-plan-overview-numbers {
+        gap: 25px;
     }
 
-    .daily-plan-item {
-        grid-template-columns: 38px minmax(0, 1fr);
-
-        min-height: 96px;
-
-        padding: 16px 0;
-    }
-
-    .daily-plan-item-main h3 {
-        font-size: 15px;
-    }
-
-    .daily-plan-item-right {
+    .daily-plan-section-heading {
         align-items: flex-start;
 
         flex-direction: column;
-
-        gap: 12px;
     }
 
-    .daily-plan-item-actions {
-        width: 100%;
+    .daily-plan-card {
+        min-height: 220px;
+
+        padding: 22px;
     }
 
-    .daily-plan-item-actions button {
-        flex: 1;
+    .daily-plan-card-content h3 {
+        font-size: 22px;
     }
 
-    .daily-plan-form-actions {
+    .daily-plan-add-card {
+        min-height: 210px;
+    }
+
+    .daily-plan-create-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .daily-plan-create-actions {
         flex-direction: column;
     }
 
-    .daily-plan-secondary-button,
-    .daily-plan-save-button {
-        width: 100%;
-    }
-
-    .daily-plan-edit-area {
-        align-items: stretch;
-
-        flex-direction: column;
-    }
-
-    .daily-plan-edit-input {
-        width: 100%;
-    }
-
-    .daily-plan-edit-input input {
-        flex: 1;
-    }
-
-    .daily-plan-action-save,
-    .daily-plan-action-cancel {
+    .daily-plan-create-actions button {
         width: 100%;
     }
 }
