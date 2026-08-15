@@ -1,106 +1,298 @@
+/* =========================================================
+   LIFE REPLAY — REGISTER
+   Neo-Noir / Gen-Z
+========================================================= */
+
 .register-page {
+    position: relative;
+
     min-height: 100vh;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: var(--space-6);
+    padding: 40px;
+
+    overflow: hidden;
 
     background:
         radial-gradient(
-            circle at 50% 35%,
-            rgba(139, 124, 255, 0.08),
-            transparent 45%
+            circle at 18% 20%,
+            rgba(167, 139, 250, 0.14),
+            transparent 32%
         ),
-        var(--color-background);
+        radial-gradient(
+            circle at 85% 78%,
+            rgba(125, 211, 252, 0.08),
+            transparent 30%
+        ),
+        #0f1117;
+
+    box-sizing: border-box;
 }
-.register-card {
-    width: 100%;
-    max-width: 440px;
 
-    padding: var(--space-8);
 
-    background: var(--color-surface);
+/* =========================================================
+   AMBIENT BACKGROUND
+========================================================= */
 
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+.register-page::before {
+    content: "LIFE REPLAY";
 
-    box-shadow: var(--shadow-lg);
-}
-.register-card h1 {
-    color: var(--color-accent);
+    position: absolute;
 
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
+    left: -15px;
+    bottom: -58px;
+
+    color: rgba(255, 255, 255, 0.018);
+
+    font-size: clamp(7rem, 18vw, 16rem);
+    font-weight: 800;
 
     letter-spacing: -0.03em;
 
-    text-align: center;
+    white-space: nowrap;
+
+    pointer-events: none;
+
+    z-index: 0;
 }
+
+.register-page::after {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    top: -170px;
+    right: -100px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(167, 139, 250, 0.13),
+            transparent 68%
+        );
+
+    filter: blur(10px);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   REGISTER CARD
+========================================================= */
+
+.register-card {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 470px;
+
+    padding: 42px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32, 36, 48, 0.96),
+            rgba(24, 27, 36, 0.98)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.075);
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+
+    backdrop-filter: blur(20px);
+
+    box-sizing: border-box;
+}
+
+.register-card *,
+.register-card *::before,
+.register-card *::after {
+    box-sizing: border-box;
+}
+
+
+/* top glow */
+
+.register-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 18%;
+    right: 18%;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(167, 139, 250, 0.75),
+            rgba(125, 211, 252, 0.4),
+            transparent
+        );
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.register-card h1 {
+    margin: 0;
+
+    color: #a78bfa;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    text-transform: uppercase;
+
+    text-align: left;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
 
 .register-card h2 {
-    margin-top: var(--space-3);
+    margin: 22px 0 0;
 
-    color: var(--color-text-primary);
+    color: #f5f6f9;
 
-    font-size: var(--font-size-2xl);
-    font-weight: var(--font-weight-bold);
+    font-size: clamp(2.15rem, 5vw, 3rem);
+    font-weight: 800;
 
-    letter-spacing: -0.04em;
+    line-height: 0.98;
 
-    text-align: center;
+    letter-spacing: -0.065em;
+
+    text-align: left;
 }
-.register-card form {
-    margin-top: var(--space-6);
 
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.register-subtitle {
+    max-width: 350px;
+
+    margin: 16px 0 0;
+
+    color: #9298a8;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    text-align: left;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.register-card form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+
+    gap: 18px;
+
+    margin-top: 30px;
 }
 
 .register-card form > div {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-}
-.register-card form label {
-    color: var(--color-text-secondary);
 
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+    gap: 8px;
 }
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.register-card form label {
+    color: #a1a7b5;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 0.02em;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
 .register-card form input {
     width: 100%;
-    min-height: 46px;
 
-    padding: 0 var(--space-4);
+    min-height: 49px;
 
-    color: var(--color-text-primary);
-    background: var(--color-background);
+    padding: 0 15px;
 
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    color: #f1f2f5;
 
-    font-size: var(--font-size-sm);
+    background: #101319;
+
+    border: 1px solid #303542;
+
+    border-radius: 13px;
+
+    font-size: 13px;
 
     outline: none;
 
     transition:
-        border-color var(--transition-fast),
-        box-shadow var(--transition-fast);
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease;
 }
 
-.register-card form input::placeholder {
-    color: var(--color-text-muted);
+.register-card form input:hover {
+    border-color: #3c4250;
 }
 
 .register-card form input:focus {
-    border-color: var(--color-accent);
+    background: #12151d;
+
+    border-color: #a78bfa;
 
     box-shadow:
-        0 0 0 3px rgba(139, 124, 255, 0.12);
+        0 0 0 4px rgba(167, 139, 250, 0.09);
 }
+
+.register-card form input::placeholder {
+    color: #626a7a;
+}
+
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
 .register-password-field {
     position: relative;
 
@@ -109,179 +301,225 @@
 }
 
 .register-password-field input {
-    padding-right: 70px;
+    padding-right: 65px;
 }
 
 .register-password-toggle {
     position: absolute;
-    right: var(--space-3);
 
-    padding: 0;
+    right: 13px;
 
-    color: var(--color-text-muted);
+    padding: 5px;
+
+    color: #777f90;
+
     background: transparent;
 
     border: none;
 
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
+    font-size: 10px;
+    font-weight: 700;
 
     cursor: pointer;
 
-    transition: color var(--transition-fast);
+    transition: color 160ms ease;
 }
 
 .register-password-toggle:hover {
-    color: var(--color-accent);
+    color: #c4b5fd;
 }
+
+.register-password-hint {
+    margin: 7px 0 0;
+
+    color: #626a7a;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.register-card form p[role="alert"] {
+    margin: -1px 0 0;
+
+    padding: 12px 14px;
+
+    color: #ff9baa;
+
+    background:
+        rgba(255, 107, 130, 0.07);
+
+    border: 1px solid rgba(255, 107, 130, 0.15);
+
+    border-radius: 11px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.register-card form p[role="status"] {
+    margin: -1px 0 0;
+
+    padding: 12px 14px;
+
+    color: #6ee7b7;
+
+    background:
+        rgba(110, 231, 183, 0.07);
+
+    border: 1px solid rgba(110, 231, 183, 0.15);
+
+    border-radius: 11px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CREATE ACCOUNT BUTTON
+========================================================= */
+
 .register-card form button[type="submit"] {
-    min-height: 46px;
+    min-height: 51px;
 
-    margin-top: var(--space-2);
+    margin-top: 5px;
 
-    color: var(--color-text-primary);
-    background: var(--color-accent);
+    color: #11131a;
 
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    background:
+        linear-gradient(
+            135deg,
+            #a78bfa,
+            #8b7cf6
+        );
 
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+    border: none;
+
+    border-radius: 13px;
+
+    font-size: 13px;
+    font-weight: 800;
 
     cursor: pointer;
 
+    box-shadow:
+        0 10px 28px rgba(139, 124, 246, 0.2);
+
     transition:
-        background var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
+        transform 160ms ease,
+        filter 160ms ease,
+        box-shadow 160ms ease;
 }
 
 .register-card form button[type="submit"]:hover:not(:disabled) {
-    background: var(--color-accent-hover);
+    transform: translateY(-2px);
+
+    filter: brightness(1.07);
 
     box-shadow:
-        0 8px 24px rgba(139, 124, 255, 0.22);
+        0 15px 34px rgba(139, 124, 246, 0.27);
 }
 
 .register-card form button[type="submit"]:active:not(:disabled) {
-    transform: scale(0.98);
+    transform: translateY(0);
 }
 
 .register-card form button[type="submit"]:disabled {
-    opacity: 0.7;
+    opacity: 0.65;
+
     cursor: wait;
+
     box-shadow: none;
 }
-.register-card form p[role="alert"] {
-    margin: 0;
 
-    padding: var(--space-3);
 
-    color: #ff6b6b;
-    background: rgba(255, 107, 107, 0.08);
+/* =========================================================
+   LOGIN LINK
+========================================================= */
 
-    border: 1px solid rgba(255, 107, 107, 0.2);
-    border-radius: var(--radius-md);
+.register-card > p:last-child {
+    margin: 25px 0 0;
 
-    font-size: var(--font-size-sm);
-    line-height: 1.5;
-}
-.register-card form p[role="status"] {
-    margin: 0;
+    color: #71798a;
 
-    padding: var(--space-3);
-
-    color: #6ee7b7;
-    background: rgba(110, 231, 183, 0.08);
-
-    border: 1px solid rgba(110, 231, 183, 0.2);
-    border-radius: var(--radius-md);
-
-    font-size: var(--font-size-sm);
-
-    line-height: 1.5;
-}
-.register-card > p {
-    margin-top: var(--space-6);
-
-    color: var(--color-text-muted);
-
-    font-size: var(--font-size-sm);
+    font-size: 12px;
 
     text-align: center;
 }
 
-.register-card > p button {
+.register-card > p:last-child button {
     padding: 0;
 
-    color: var(--color-accent);
+    color: #b9a9ff;
+
     background: transparent;
 
     border: none;
 
     font-size: inherit;
-    font-weight: var(--font-weight-semibold);
+    font-weight: 750;
 
     cursor: pointer;
+
+    transition: color 160ms ease;
 }
 
-.register-card > p button:hover {
-    color: var(--color-accent-hover);
-
-    text-decoration: underline;
+.register-card > p:last-child button:hover {
+    color: #d0c5ff;
 }
-.register-subtitle {
-    max-width: 340px;
 
-    margin: var(--space-3) auto 0;
 
-    color: var(--color-text-muted);
+/* =========================================================
+   AUTOFILL
+========================================================= */
 
-    font-size: var(--font-size-sm);
-    line-height: 1.6;
-
-    text-align: center;
-}
-@media (max-width: 600px) {
-    .register-page {
-        padding: var(--space-4);
-    }
-
-    .register-card {
-        padding: var(--space-6);
-    }
-
-    .register-card h2 {
-        font-size: var(--font-size-xl);
-    }
-
-    .register-subtitle {
-        max-width: 280px;
-    }
-}
 .register-card form input:-webkit-autofill,
 .register-card form input:-webkit-autofill:hover,
 .register-card form input:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--color-text-primary);
+    -webkit-text-fill-color: #f1f2f5;
 
     box-shadow:
-        0 0 0 1000px var(--color-background) inset;
+        0 0 0 1000px #101319 inset;
 
-    transition: background-color 9999s ease-out 0s;
+    transition:
+        background-color 9999s ease-out 0s;
 }
-.register-password-hint {
-    margin-top: var(--space-2);
 
-    color: var(--color-text-muted);
 
-    font-size: var(--font-size-xs);
-}
-.register-page {
-    box-sizing: border-box;
-}
-.register-card,
-.register-card *,
-.register-card *::before,
-.register-card *::after {
-    box-sizing: border-box;
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .register-page {
+        padding: 20px;
+    }
+
+    .register-card {
+        padding: 30px 24px;
+
+        border-radius: 23px;
+    }
+
+    .register-card h2 {
+        font-size: 2.4rem;
+    }
+
+    .register-page::before {
+        font-size: 6rem;
+    }
 }
