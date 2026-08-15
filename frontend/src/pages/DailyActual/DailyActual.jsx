@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./DailyActual.css";
+
 import {
     createDailyActual,
     getDailyActuals,
@@ -7,19 +8,23 @@ import {
     deleteDailyActual,
 } from "../../services/dailyActualService";
 
-
 import { getActivities } from "../../services/activityService";
-    const DailyActual = () => {
+
+const DailyActual = () => {
     const [date, setDate] = useState(
         new Date().toISOString().split("T")[0]
     );
 
     const [actuals, setActuals] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [showForm, setShowForm] = useState(false);
-
     const [activities, setActivities] = useState([]);
+
+    const [loading, setLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+    const [error, setError] = useState("");
+    const [formError, setFormError] = useState("");
+
+    const [showForm, setShowForm] = useState(false);
 
     const [selectedActivityId, setSelectedActivityId] =
         useState("");
@@ -27,12 +32,12 @@ import { getActivities } from "../../services/activityService";
     const [actualMinutes, setActualMinutes] =
         useState("");
 
-    const [formError, setFormError] = useState("");
-
-    const [saving, setSaving] = useState(false);
     const [editingId, setEditingId] = useState(null);
-
     const [editMinutes, setEditMinutes] = useState("");
+
+    /* =====================================================
+       LOAD ACTUAL TIME
+    ===================================================== */
 
     useEffect(() => {
         loadActuals();
@@ -55,142 +60,170 @@ import { getActivities } from "../../services/activityService";
             setLoading(false);
         }
     };
-const loadActivities = async () => {
-    try {
-        const response = await getActivities();
 
-        setActivities(response.data);
-    } catch (err) {
-        setFormError(
-            err.response?.data?.message ||
-            "Unable to load activities."
-        );
-    }
-};
-const handleOpenForm = async () => {
-    setFormError("");
+    /* =====================================================
+       LOAD ACTIVITIES
+    ===================================================== */
 
-    await loadActivities();
+    const loadActivities = async () => {
+        try {
+            const response = await getActivities();
 
-    setShowForm(true);
-};
-const handleSubmit = async (event) => {
-    event.preventDefault();
+            setActivities(response.data);
+        } catch (err) {
+            setFormError(
+                err.response?.data?.message ||
+                "Unable to load activities."
+            );
+        }
+    };
 
-    setFormError("");
+    /* =====================================================
+       OPEN ADD FORM
+    ===================================================== */
 
-    if (!selectedActivityId) {
-        setFormError("Please select an activity.");
-        return;
-    }
+    const handleOpenForm = async () => {
+        setFormError("");
 
-    const minutes = Number(actualMinutes);
+        await loadActivities();
 
-    if (
-        !Number.isInteger(minutes) ||
-        minutes < 1 ||
-        minutes > 1440
-    ) {
-        setFormError(
-            "Actual time must be between 1 and 1440 minutes."
-        );
-        return;
-    }
+        setShowForm(true);
+    };
 
-    try {
-        setSaving(true);
+    /* =====================================================
+       CREATE ACTUAL
+    ===================================================== */
 
-        await createDailyActual(
-            Number(selectedActivityId),
-            date,
-            minutes
-        );
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-        setSelectedActivityId("");
-        setActualMinutes("");
-        setShowForm(false);
+        setFormError("");
 
-        await loadActuals();
-    } catch (err) {
-        setFormError(
-            err.response?.data?.message ||
-            "Unable to record actual time."
-        );
-    } finally {
-        setSaving(false);
-    }
-};
-const handleEdit = (actual) => {
-    setEditingId(actual.id);
-    setEditMinutes(String(actual.actualMinutes));
-};
-const handleSaveEdit = async (id) => {
-    const minutes = Number(editMinutes);
+        if (!selectedActivityId) {
+            setFormError("Please select an activity.");
+            return;
+        }
 
-    if (
-        !Number.isInteger(minutes) ||
-        minutes < 1 ||
-        minutes > 1440
-    ) {
-        setError(
-            "Actual time must be between 1 and 1440 minutes."
-        );
-        return;
-    }
+        const minutes = Number(actualMinutes);
 
-    try {
-        setSaving(true);
+        if (
+            !Number.isInteger(minutes) ||
+            minutes < 1 ||
+            minutes > 1440
+        ) {
+            setFormError(
+                "Actual time must be between 1 and 1440 minutes."
+            );
+            return;
+        }
+
+        try {
+            setSaving(true);
+
+            await createDailyActual(
+                Number(selectedActivityId),
+                date,
+                minutes
+            );
+
+            setSelectedActivityId("");
+            setActualMinutes("");
+            setShowForm(false);
+
+            await loadActuals();
+        } catch (err) {
+            setFormError(
+                err.response?.data?.message ||
+                "Unable to record actual time."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    /* =====================================================
+       EDIT
+    ===================================================== */
+
+    const handleEdit = (actual) => {
+        setEditingId(actual.id);
+        setEditMinutes(String(actual.actualMinutes));
         setError("");
+    };
 
-        await updateDailyActual(
-            id,
-            minutes
-        );
+    const handleSaveEdit = async (id) => {
+        const minutes = Number(editMinutes);
 
+        if (
+            !Number.isInteger(minutes) ||
+            minutes < 1 ||
+            minutes > 1440
+        ) {
+            setError(
+                "Actual time must be between 1 and 1440 minutes."
+            );
+            return;
+        }
+
+        try {
+            setSaving(true);
+            setError("");
+
+            await updateDailyActual(id, minutes);
+
+            setEditingId(null);
+            setEditMinutes("");
+
+            await loadActuals();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Unable to update actual time."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleCancelEdit = () => {
         setEditingId(null);
         setEditMinutes("");
-
-        await loadActuals();
-    } catch (err) {
-        setError(
-            err.response?.data?.message ||
-            "Unable to update actual time."
-        );
-    } finally {
-        setSaving(false);
-    }
-};
-const handleCancelEdit = () => {
-    setEditingId(null);
-    setEditMinutes("");
-    setError("");
-};
-const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-        "Are you sure you want to delete this actual time record?"
-    );
-
-    if (!confirmed) {
-        return;
-    }
-
-    try {
-        setSaving(true);
         setError("");
+    };
 
-        await deleteDailyActual(id);
+    /* =====================================================
+       DELETE
+    ===================================================== */
 
-        await loadActuals();
-    } catch (err) {
-        setError(
-            err.response?.data?.message ||
-            "Unable to delete actual time."
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this actual time record?"
         );
-    } finally {
-        setSaving(false);
-    }
-};
 
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            setSaving(true);
+            setError("");
+
+            await deleteDailyActual(id);
+
+            await loadActuals();
+        } catch (err) {
+            setError(
+                err.response?.data?.message ||
+                "Unable to delete actual time."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
 
     const totalActualMinutes = actuals.reduce(
         (total, actual) =>
@@ -229,31 +262,41 @@ const handleDelete = async (id) => {
         );
     };
 
+    /* =====================================================
+       UI
+    ===================================================== */
+
     return (
         <div className="daily-actual-page">
 
-            {/* PAGE HEADER */}
+            {/* =================================================
+                HERO
+            ================================================= */}
 
-            <div className="daily-actual-heading">
+            <section className="daily-actual-hero">
 
-                <div>
+                <div className="daily-actual-hero-content">
+
                     <p className="daily-actual-eyebrow">
-                        ACTUAL TIME
+                        LIFE REPLAY / ACTUAL TIME
                     </p>
 
                     <h1>
-                        What did your day look like?
+                        See where your time{" "}
+                        <span>really went.</span>
                     </h1>
 
                     <p className="daily-actual-description">
-                        Record how you actually spent your time.
+                        Record the time you actually spent on
+                        the things that matter.
                     </p>
+
                 </div>
 
                 <div className="daily-actual-date-picker">
 
                     <label htmlFor="actual-date">
-                        Reviewing
+                        REVIEWING
                     </label>
 
                     <input
@@ -267,219 +310,94 @@ const handleDelete = async (id) => {
 
                 </div>
 
-            </div>
+            </section>
 
-            {/* ERROR */}
+            {/* =================================================
+                ERROR
+            ================================================= */}
 
             {error && (
-                <p role="alert">
+                <p
+                    className="daily-actual-page-error"
+                    role="alert"
+                >
                     {error}
                 </p>
             )}
 
-            {/* SUMMARY */}
+            {/* =================================================
+                SUMMARY
+            ================================================= */}
 
-            {!error && (
-                <div className="daily-actual-summary">
+            {!error && !loading && (
+                <section className="daily-actual-summary">
 
-                    <div className="daily-actual-summary-text">
-
-                        <h2>
-                            {formatDate(date)}
-                        </h2>
+                    <div className="daily-actual-summary-content">
 
                         <p>
-                            Your recorded time for this day
+                            {formatDate(date)}
                         </p>
+
+                        <h2>
+                            Your day,
+                            <br />
+                            your reality.
+                        </h2>
 
                     </div>
 
                     <div className="daily-actual-summary-stats">
 
-                        <div className="daily-actual-stat">
-
-                            <span>
-                                Activities
-                            </span>
-
+                        <div>
                             <strong>
-                                {actuals.length}
+                                {String(actuals.length).padStart(
+                                    2,
+                                    "0"
+                                )}
                             </strong>
 
+                            <span>
+                                ACTIVITIES
+                            </span>
                         </div>
 
-                        <div className="daily-actual-stat">
-
-                            <span>
-                                Actual time
-                            </span>
-
+                        <div>
                             <strong>
                                 {formatMinutes(
                                     totalActualMinutes
                                 )}
                             </strong>
 
+                            <span>
+                                ACTUAL
+                            </span>
                         </div>
 
                     </div>
 
-                </div>
+                </section>
             )}
 
-            {/* ADD BUTTON */}
+            {/* =================================================
+                YOUR TIME
+            ================================================= */}
 
             {!loading && !error && (
-                <button
-                    type="button"
-                    className="daily-actual-add-button"
-                    onClick={handleOpenForm}
-                >
-                    + Record actual time
-                </button>
-            )}
-        {showForm && (
-            <div className="daily-actual-form">
+                <section className="daily-actual-library">
 
-                <div className="daily-actual-form-header">
-
-                    <div>
-                        <p className="daily-actual-eyebrow">
-                            RECORD TIME
-                        </p>
-
-                        <h2>
-                            What did you actually do?
-                        </h2>
-                    </div>
-
-                    <button
-                        type="button"
-                        className="daily-actual-form-close"
-                        onClick={() => {
-                            setShowForm(false);
-                            setFormError("");
-                        }}
-                    >
-                        Cancel
-                    </button>
-
-                </div>
-
-                <form onSubmit={handleSubmit}>
-
-                    <div className="daily-actual-form-field">
-
-                        <label htmlFor="actual-activity">
-                            Activity
-                        </label>
-
-                        <select
-                            id="actual-activity"
-                            value={selectedActivityId}
-                            onChange={(event) =>
-                                setSelectedActivityId(
-                                    event.target.value
-                                )
-                            }
-                        >
-                            <option value="">
-                                Select an activity
-                            </option>
-
-                            {activities.map((activity) => (
-                                <option
-                                    key={activity.id}
-                                    value={activity.id}
-                                >
-                                    {activity.name}
-                                </option>
-                            ))}
-                        </select>
-
-                    </div>
-
-                    <div className="daily-actual-form-field">
-
-                        <label htmlFor="actual-minutes">
-                            Actual time
-                        </label>
-
-                        <input
-                            id="actual-minutes"
-                            type="number"
-                            min="1"
-                            max="1440"
-                            value={actualMinutes}
-                            onChange={(event) =>
-                                setActualMinutes(
-                                    event.target.value
-                                )
-                            }
-                            placeholder="e.g. 90"
-                        />
-
-                        <span>
-                            Enter time in minutes, from 1 to 1440.
-                        </span>
-
-                    </div>
-
-                    {formError && (
-                        <p
-                            className="daily-actual-form-error"
-                            role="alert"
-                        >
-                            {formError}
-                        </p>
-                    )}
-                <div className="daily-actual-form-actions">
-
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setShowForm(false);
-                            setFormError("");
-                        }}
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="submit"
-                        className="daily-actual-save-button"
-                        disabled={saving}
-                    >
-                        {saving
-                            ? "Recording..."
-                            : "Record time"}
-                    </button>
-
-                </div>
-
-                </form>
-
-            </div>
-        )}
-
-            {/* ACTUAL LIST */}
-
-            {!loading && !error && (
-                <div className="daily-actual-list">
-
-                    <div className="daily-actual-list-header">
+                    <div className="daily-actual-section-header">
 
                         <div>
                             <p className="daily-actual-eyebrow">
-                                YOUR DAY
+                                YOUR TIME
                             </p>
 
                             <h2>
-                                Your actual time
+                                Your actual day.
                             </h2>
                         </div>
 
-                        <span className="daily-actual-count">
+                        <span>
                             {actuals.length}{" "}
                             {actuals.length === 1
                                 ? "activity"
@@ -488,126 +406,370 @@ const handleDelete = async (id) => {
 
                     </div>
 
-                    {actuals.length === 0 ? (
+                    {/* =================================================
+                        EMPTY STATE
+                    ================================================= */}
 
-                        <div className="daily-actual-empty">
-                            No actual time recorded for this day yet.
-                        </div>
+                    {actuals.length === 0 && !showForm && (
+                        <button
+                            type="button"
+                            className="daily-actual-add-card"
+                            onClick={handleOpenForm}
+                        >
+                            <div className="daily-actual-add-icon">
+                                +
+                            </div>
 
-                    ) : (
+                            <h3>
+                                Record actual time
+                            </h3>
 
-                        <div className="daily-actual-items">
+                            <p>
+                                Tell Life Replay where your
+                                time actually went.
+                            </p>
+                        </button>
+                    )}
+
+                    {/* =================================================
+                        ACTUAL CARDS
+                    ================================================= */}
+
+                    {actuals.length > 0 && (
+                        <div className="daily-actual-grid">
 
                             {actuals.map(
                                 (actual, index) => (
-                                    <div
-                                        className="daily-actual-item"
+
+                                    <article
+                                        className="daily-actual-card"
                                         key={actual.id}
                                     >
 
-                                        <span className="daily-actual-number">
-                                            {String(index + 1).padStart(
-                                                2,
-                                                "0"
-                                            )}
-                                        </span>
+                                        <div className="daily-actual-card-top">
 
-                                       {editingId === actual.id ? (
-                                           <div className="daily-actual-edit">
+                                            <div className="daily-actual-number">
+                                                {String(
+                                                    index + 1
+                                                ).padStart(2, "0")}
+                                            </div>
 
-                                               <input
-                                                   type="number"
-                                                   min="1"
-                                                   max="1440"
-                                                   value={editMinutes}
-                                                   onChange={(event) =>
-                                                       setEditMinutes(event.target.value)
-                                                   }
-                                               />
+                                            <div className="daily-actual-card-actions">
 
-                                               <button
-                                                   type="button"
-                                                   onClick={() =>
-                                                       handleSaveEdit(actual.id)
-                                                   }
-                                                   disabled={saving}
-                                               >
-                                                   {saving ? "Saving..." : "Save"}
-                                               </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleEdit(
+                                                            actual
+                                                        )
+                                                    }
+                                                    disabled={saving}
+                                                >
+                                                    Edit
+                                                </button>
 
-                                               <button
-                                                   type="button"
-                                                   onClick={handleCancelEdit}
-                                                   disabled={saving}
-                                               >
-                                                   Cancel
-                                               </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            actual.id
+                                                        )
+                                                    }
+                                                    disabled={saving}
+                                                >
+                                                    Delete
+                                                </button>
 
-                                           </div>
-                                       ) : (
-                                           <>
-                                               <div>
-                                                   <h3>
-                                                       {actual.activityName}
-                                                   </h3>
+                                            </div>
 
-                                                   <p>
-                                                       Actual time recorded
-                                                   </p>
-                                               </div>
+                                        </div>
 
-                                             <div className="daily-actual-row-actions">
+                                        {editingId === actual.id ? (
 
-                                                 <span className="daily-actual-time">
-                                                     {formatMinutes(
-                                                         actual.actualMinutes
-                                                     )}
-                                                 </span>
+                                            <div className="daily-actual-edit">
 
-                                                 <button
-                                                     type="button"
-                                                     className="daily-actual-edit-button"
-                                                     onClick={() =>
-                                                         handleEdit(actual)
-                                                     }
-                                                     disabled={saving}
-                                                 >
-                                                     Edit
-                                                 </button>
+                                                <h3>
+                                                    {actual.activityName}
+                                                </h3>
 
-                                                 <button
-                                                     type="button"
-                                                     className="daily-actual-delete-button"
-                                                     onClick={() =>
-                                                         handleDelete(actual.id)
-                                                     }
-                                                     disabled={saving}
-                                                 >
-                                                     Delete
-                                                 </button>
+                                                <label>
+                                                    Actual minutes
+                                                </label>
 
-                                             </div>
-                                           </>
-                                       )}
+                                                <input
+                                                    type="number"
+                                                    min="1"
+                                                    max="1440"
+                                                    value={
+                                                        editMinutes
+                                                    }
+                                                    onChange={(
+                                                        event
+                                                    ) =>
+                                                        setEditMinutes(
+                                                            event.target.value
+                                                        )
+                                                    }
+                                                />
 
-                                    </div>
+                                                <div>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            handleSaveEdit(
+                                                                actual.id
+                                                            )
+                                                        }
+                                                        disabled={
+                                                            saving
+                                                        }
+                                                    >
+                                                        {saving
+                                                            ? "Saving..."
+                                                            : "Save"}
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            handleCancelEdit
+                                                        }
+                                                        disabled={
+                                                            saving
+                                                        }
+                                                    >
+                                                        Cancel
+                                                    </button>
+
+                                                </div>
+
+                                            </div>
+
+                                        ) : (
+
+                                            <>
+
+                                                <div className="daily-actual-card-content">
+
+                                                    <h3>
+                                                        {
+                                                            actual.activityName
+                                                        }
+                                                    </h3>
+
+                                                    <p>
+                                                        Actual time
+                                                        recorded
+                                                    </p>
+
+                                                </div>
+
+                                                <div className="daily-actual-card-time">
+
+                                                    <strong>
+                                                        {formatMinutes(
+                                                            actual.actualMinutes
+                                                        )}
+                                                    </strong>
+
+                                                    <span>
+                                                        ACTUAL TIME
+                                                    </span>
+
+                                                </div>
+
+                                            </>
+
+                                        )}
+
+                                    </article>
+
                                 )
                             )}
+
+                            {/* =================================================
+                                ADD CARD
+                            ================================================= */}
+
+                            <button
+                                type="button"
+                                className="daily-actual-add-card"
+                                onClick={handleOpenForm}
+                            >
+
+                                <div className="daily-actual-add-icon">
+                                    +
+                                </div>
+
+                                <h3>
+                                    Record actual time
+                                </h3>
+
+                                <p>
+                                    Make room for another part
+                                    of your day.
+                                </p>
+
+                            </button>
+
+                        </div>
+                    )}
+
+                    {/* =================================================
+                        ADD FORM
+                    ================================================= */}
+
+                    {showForm && (
+
+                        <div className="daily-actual-form">
+
+                            <div className="daily-actual-form-header">
+
+                                <div>
+
+                                    <p className="daily-actual-eyebrow">
+                                        NEW RECORD
+                                    </p>
+
+                                    <h2>
+                                        Where did your time go?
+                                    </h2>
+
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowForm(false);
+                                        setFormError("");
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+
+                            </div>
+
+                            <form
+                                onSubmit={handleSubmit}
+                                className="daily-actual-form-grid"
+                            >
+
+                                <div>
+
+                                    <label htmlFor="actual-activity">
+                                        Activity
+                                    </label>
+
+                                    <select
+                                        id="actual-activity"
+                                        value={
+                                            selectedActivityId
+                                        }
+                                        onChange={(event) =>
+                                            setSelectedActivityId(
+                                                event.target.value
+                                            )
+                                        }
+                                    >
+
+                                        <option value="">
+                                            Select an activity
+                                        </option>
+
+                                        {activities.map(
+                                            (activity) => (
+                                                <option
+                                                    key={
+                                                        activity.id
+                                                    }
+                                                    value={
+                                                        activity.id
+                                                    }
+                                                >
+                                                    {
+                                                        activity.name
+                                                    }
+                                                </option>
+                                            )
+                                        )}
+
+                                    </select>
+
+                                </div>
+
+                                <div>
+
+                                    <label htmlFor="actual-minutes">
+                                        Actual time
+                                    </label>
+
+                                    <input
+                                        id="actual-minutes"
+                                        type="number"
+                                        min="1"
+                                        max="1440"
+                                        value={
+                                            actualMinutes
+                                        }
+                                        onChange={(event) =>
+                                            setActualMinutes(
+                                                event.target.value
+                                            )
+                                        }
+                                        placeholder="e.g. 90"
+                                    />
+
+                                </div>
+
+                                {formError && (
+                                    <p
+                                        className="daily-actual-form-error"
+                                        role="alert"
+                                    >
+                                        {formError}
+                                    </p>
+                                )}
+
+                                <div className="daily-actual-form-actions">
+
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowForm(false);
+                                            setFormError("");
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        disabled={saving}
+                                    >
+                                        {saving
+                                            ? "Recording..."
+                                            : "Record time"}
+                                    </button>
+
+                                </div>
+
+                            </form>
 
                         </div>
 
                     )}
 
-                </div>
+                </section>
             )}
 
-            {/* LOADING */}
+            {/* =================================================
+                LOADING
+            ================================================= */}
 
             {loading && (
-                <div className="daily-actual-list">
-                    <div className="daily-actual-empty">
-                        Loading actual time...
-                    </div>
+                <div className="daily-actual-loading">
+                    Loading your actual time...
                 </div>
             )}
 

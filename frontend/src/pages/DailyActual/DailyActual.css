@@ -1,18 +1,32 @@
+/* =========================================================
+   LIFE REPLAY — ACTUAL TIME
+========================================================= */
+
 .daily-actual-page {
     display: flex;
     flex-direction: column;
     gap: var(--space-8);
 }
 
-.daily-actual-heading {
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.daily-actual-hero {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: var(--space-6);
+
+    gap: var(--space-8);
+}
+
+.daily-actual-hero-content {
+    max-width: 850px;
 }
 
 .daily-actual-eyebrow {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-3);
 
     color: var(--color-accent);
 
@@ -22,81 +36,403 @@
     letter-spacing: 0.12em;
 }
 
-.daily-actual-page h1 {
+.daily-actual-hero h1 {
     color: var(--color-text-primary);
 
     font-size: clamp(
-        var(--font-size-2xl),
-        4vw,
-        var(--font-size-3xl)
+        3.5rem,
+        7vw,
+        6rem
     );
 
     font-weight: var(--font-weight-bold);
-    letter-spacing: -0.04em;
+
+    line-height: 0.95;
+
+    letter-spacing: -0.065em;
+}
+
+.daily-actual-hero h1 span {
+    color: var(--color-accent);
 }
 
 .daily-actual-description {
     max-width: 600px;
 
-    margin-top: var(--space-3);
+    margin-top: var(--space-5);
 
     color: var(--color-text-secondary);
 
     font-size: var(--font-size-sm);
+
     line-height: 1.7;
 }
 
-.daily-actual-date-picker {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
 
-    min-width: 190px;
+/* =========================================================
+   DATE PICKER
+========================================================= */
+
+.daily-actual-date-picker {
+    min-width: 240px;
+
+    padding: var(--space-5);
+
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-lg);
 }
 
 .daily-actual-date-picker label {
+    display: block;
+
+    margin-bottom: var(--space-2);
+
     color: var(--color-text-muted);
 
     font-size: var(--font-size-xs);
+
     font-weight: var(--font-weight-semibold);
+
+    letter-spacing: 0.1em;
 }
 
 .daily-actual-date-picker input {
-    min-height: 44px;
+    width: 100%;
+
+    min-height: 42px;
 
     padding: 0 var(--space-3);
 
     color: var(--color-text-primary);
-    background: var(--color-surface);
+
+    background: var(--color-background);
 
     border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    outline: none;
+}
+
+.daily-actual-date-picker input:focus {
+    border-color: var(--color-accent);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 124, 255, 0.12);
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.daily-actual-page-error {
+    padding: var(--space-4);
+
+    color: #ff9b9b;
+
+    background: rgba(255, 107, 107, 0.08);
+
+    border: 1px solid rgba(255, 107, 107, 0.2);
+
     border-radius: var(--radius-md);
 
     font-size: var(--font-size-sm);
 }
+
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
 .daily-actual-summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: var(--space-6);
+    padding: var(--space-8);
 
-    background: var(--color-surface);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(32, 36, 48, 0.96),
+            rgba(24, 27, 36, 0.98)
+        );
 
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
+
+    border-radius: 28px;
 
     box-shadow: var(--shadow-sm);
 }
 
-.daily-actual-summary-text h2 {
-    color: var(--color-text-primary);
+.daily-actual-summary-content p {
+    color: var(--color-text-muted);
 
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
 }
 
-.daily-actual-summary-text p {
+.daily-actual-summary-content h2 {
+    margin-top: var(--space-3);
+
+    color: var(--color-text-primary);
+
+    font-size: clamp(
+        var(--font-size-xl),
+        4vw,
+        var(--font-size-2xl)
+    );
+
+    font-weight: var(--font-weight-bold);
+
+    line-height: 1.05;
+
+    letter-spacing: -0.04em;
+}
+
+.daily-actual-summary-stats {
+    display: flex;
+
+    gap: var(--space-8);
+}
+
+.daily-actual-summary-stats div {
+    min-width: 80px;
+}
+
+.daily-actual-summary-stats strong {
+    display: block;
+
+    color: var(--color-text-primary);
+
+    font-size: 2rem;
+
+    font-weight: var(--font-weight-bold);
+
+    letter-spacing: -0.04em;
+}
+
+.daily-actual-summary-stats span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--color-text-muted);
+
+    font-size: 10px;
+
+    font-weight: var(--font-weight-semibold);
+
+    letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   LIBRARY HEADER
+========================================================= */
+
+.daily-actual-section-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    margin-bottom: var(--space-5);
+}
+
+.daily-actual-section-header h2 {
+    color: var(--color-text-primary);
+
+    font-size: var(--font-size-2xl);
+
+    font-weight: var(--font-weight-bold);
+
+    letter-spacing: -0.04em;
+}
+
+.daily-actual-section-header > span {
+    color: var(--color-text-muted);
+
+    font-size: var(--font-size-sm);
+}
+
+
+/* =========================================================
+   CARD GRID
+========================================================= */
+
+.daily-actual-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: var(--space-5);
+}
+
+
+/* =========================================================
+   ACTUAL CARD
+========================================================= */
+
+.daily-actual-card {
+    position: relative;
+
+    min-height: 330px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: var(--space-6);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(27, 31, 42, 0.98),
+            rgba(22, 25, 34, 0.98)
+        );
+
+    border: 1px solid var(--color-border);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    transition:
+        border-color var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.daily-actual-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -70px;
+    bottom: -90px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(139, 124, 255, 0.14),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+.daily-actual-card:hover {
+    transform: translateY(-2px);
+
+    border-color: rgba(139, 124, 255, 0.35);
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.daily-actual-card-top {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+}
+
+.daily-actual-number {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #b9a9ff;
+
+    background:
+        rgba(139, 124, 255, 0.09);
+
+    border: 1px solid rgba(139, 124, 255, 0.18);
+
+    border-radius: 16px;
+
+    font-size: var(--font-size-sm);
+
+    font-weight: var(--font-weight-bold);
+}
+
+.daily-actual-card-actions {
+    display: flex;
+
+    gap: var(--space-2);
+}
+
+.daily-actual-card-actions button {
+    min-height: 38px;
+
+    padding: 0 var(--space-4);
+
+    color: var(--color-text-secondary);
+
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-xs);
+
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+}
+
+.daily-actual-card-actions button:hover {
+    color: var(--color-text-primary);
+
+    border-color: var(--color-accent);
+
+    background: rgba(139, 124, 255, 0.06);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.daily-actual-card-content {
+    margin-top: auto;
+
+    padding-top: var(--space-8);
+}
+
+.daily-actual-card-content h3 {
+    color: var(--color-text-primary);
+
+    font-size: 1.6rem;
+
+    font-weight: var(--font-weight-bold);
+
+    letter-spacing: -0.035em;
+}
+
+.daily-actual-card-content p {
     margin-top: var(--space-2);
 
     color: var(--color-text-muted);
@@ -104,152 +440,399 @@
     font-size: var(--font-size-sm);
 }
 
-.daily-actual-summary-stats {
-    display: flex;
-    align-items: center;
-    gap: var(--space-6);
+
+/* =========================================================
+   ACTUAL TIME
+========================================================= */
+
+.daily-actual-card-time {
+    position: relative;
+
+    z-index: 1;
+
+    margin-top: var(--space-6);
 }
 
-.daily-actual-stat {
-    text-align: right;
+.daily-actual-card-time strong {
+    color: var(--color-text-primary);
+
+    font-size: 2rem;
+
+    font-weight: var(--font-weight-bold);
+
+    letter-spacing: -0.04em;
 }
 
-.daily-actual-stat span {
+.daily-actual-card-time span {
     display: block;
+
+    margin-top: 4px;
 
     color: var(--color-text-muted);
 
-    font-size: var(--font-size-xs);
+    font-size: 10px;
+
+    font-weight: var(--font-weight-semibold);
+
+    letter-spacing: 0.1em;
 }
 
-.daily-actual-stat strong {
-    display: block;
 
-    margin-top: var(--space-1);
+/* =========================================================
+   ADD CARD
+========================================================= */
+
+.daily-actual-add-card {
+    min-height: 330px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    padding: var(--space-6);
 
     color: var(--color-text-primary);
 
-    font-size: var(--font-size-lg);
-}
-.daily-actual-add-button {
-    width: 100%;
-    min-height: 64px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 18, 26, 0.9),
+            rgba(12, 15, 22, 0.95)
+        );
 
-    color: var(--color-accent);
-    background: transparent;
+    border: 1px dashed rgba(139, 124, 255, 0.4);
 
-    border: 1px dashed rgba(139, 124, 255, 0.45);
-    border-radius: var(--radius-lg);
+    border-radius: 24px;
 
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
+    text-align: left;
 
     cursor: pointer;
 
     transition:
         background var(--transition-fast),
-        border-color var(--transition-fast);
+        border-color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
-.daily-actual-add-button:hover {
-    background: rgba(139, 124, 255, 0.06);
+.daily-actual-add-card:hover {
+    background: rgba(139, 124, 255, 0.04);
 
     border-color: var(--color-accent);
+
+    transform: translateY(-2px);
 }
-.daily-actual-list {
+
+.daily-actual-add-icon {
+    width: 54px;
+    height: 54px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: var(--space-5);
+
+    color: #11131a;
+
+    background: var(--color-accent);
+
+    border-radius: 16px;
+
+    font-size: 1.7rem;
+
+    box-shadow:
+        0 10px 30px rgba(139, 124, 255, 0.2);
+}
+
+.daily-actual-add-card h3 {
+    font-size: 1.25rem;
+
+    font-weight: var(--font-weight-bold);
+}
+
+.daily-actual-add-card p {
+    margin-top: var(--space-2);
+
+    color: var(--color-text-muted);
+
+    font-size: var(--font-size-sm);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.daily-actual-form {
+    margin-top: var(--space-5);
+
     padding: var(--space-6);
 
     background: var(--color-surface);
 
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
 
-    box-shadow: var(--shadow-sm);
+    border-radius: 24px;
 }
 
-.daily-actual-list-header {
+.daily-actual-form-header {
     display: flex;
-    align-items: center;
+
+    align-items: flex-start;
+
     justify-content: space-between;
+
+    margin-bottom: var(--space-6);
 }
 
-.daily-actual-list-header h2 {
+.daily-actual-form-header h2 {
     color: var(--color-text-primary);
 
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
+
+    font-weight: var(--font-weight-bold);
+}
+
+.daily-actual-form-header > button {
+    min-height: 36px;
+
+    padding: 0 var(--space-3);
+
+    color: var(--color-text-secondary);
+
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    cursor: pointer;
+}
+
+.daily-actual-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: var(--space-5);
+}
+
+.daily-actual-form-grid > div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: var(--space-2);
+}
+
+.daily-actual-form-grid label {
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-xs);
+
     font-weight: var(--font-weight-semibold);
 }
 
-.daily-actual-count {
-    padding: var(--space-2) var(--space-3);
+.daily-actual-form-grid input,
+.daily-actual-form-grid select {
+    min-height: 46px;
 
-    color: var(--color-text-muted);
+    padding: 0 var(--space-4);
+
+    color: var(--color-text-primary);
+
     background: var(--color-background);
 
     border: 1px solid var(--color-border);
-    border-radius: 999px;
+
+    border-radius: var(--radius-md);
+
+    outline: none;
+}
+
+.daily-actual-form-grid input:focus,
+.daily-actual-form-grid select:focus {
+    border-color: var(--color-accent);
+
+    box-shadow:
+        0 0 0 3px rgba(139, 124, 255, 0.12);
+}
+
+.daily-actual-form-error {
+    grid-column: 1 / -1;
+
+    padding: var(--space-3);
+
+    color: #ff9b9b;
+
+    background: rgba(255, 107, 107, 0.08);
+
+    border: 1px solid rgba(255, 107, 107, 0.2);
+
+    border-radius: var(--radius-md);
+
+    font-size: var(--font-size-sm);
+}
+
+.daily-actual-form-actions {
+    grid-column: 1 / -1;
+
+    display: flex !important;
+
+    flex-direction: row !important;
+
+    justify-content: flex-end;
+
+    gap: var(--space-3);
+
+    margin-top: var(--space-2);
+}
+
+.daily-actual-form-actions button {
+    min-height: 42px;
+
+    padding: 0 var(--space-5);
+
+    color: var(--color-text-secondary);
+
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    font-weight: var(--font-weight-semibold);
+
+    cursor: pointer;
+}
+
+.daily-actual-form-actions button:last-child {
+    color: #11131a;
+
+    background: var(--color-accent);
+
+    border-color: transparent;
+}
+
+.daily-actual-form-actions button:last-child:hover {
+    background: var(--color-accent-hover);
+}
+
+
+/* =========================================================
+   EDIT MODE
+========================================================= */
+
+.daily-actual-edit {
+    margin-top: auto;
+}
+
+.daily-actual-edit h3 {
+    margin-bottom: var(--space-4);
+
+    color: var(--color-text-primary);
+
+    font-size: 1.4rem;
+}
+
+.daily-actual-edit label {
+    display: block;
+
+    margin-bottom: var(--space-2);
+
+    color: var(--color-text-muted);
 
     font-size: var(--font-size-xs);
 }
-.daily-actual-items {
-    display: flex;
-    flex-direction: column;
 
-    margin-top: var(--space-5);
+.daily-actual-edit input {
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 var(--space-3);
+
+    color: var(--color-text-primary);
+
+    background: var(--color-background);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    outline: none;
 }
 
-.daily-actual-item {
-    display: grid;
-    grid-template-columns: 48px 1fr auto;
+.daily-actual-edit input:focus {
+    border-color: var(--color-accent);
+}
+
+.daily-actual-edit > div {
+    display: flex;
+
+    gap: var(--space-2);
+
+    margin-top: var(--space-4);
+}
+
+.daily-actual-edit button {
+    min-height: 38px;
+
+    padding: 0 var(--space-4);
+
+    color: var(--color-text-secondary);
+
+    background: transparent;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    cursor: pointer;
+}
+
+.daily-actual-edit button:first-child {
+    color: #11131a;
+
+    background: var(--color-accent);
+
+    border-color: transparent;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.daily-actual-loading {
+    min-height: 300px;
+
+    display: flex;
 
     align-items: center;
-    gap: var(--space-4);
-
-    padding: var(--space-5) 0;
-
-    border-top: 1px solid var(--color-border);
-}
-
-.daily-actual-number {
-    color: var(--color-text-muted);
-
-    font-size: var(--font-size-xs);
-}
-
-.daily-actual-item h3 {
-    color: var(--color-text-primary);
-
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
-}
-
-.daily-actual-item p {
-    margin-top: var(--space-1);
+    justify-content: center;
 
     color: var(--color-text-muted);
 
     font-size: var(--font-size-sm);
 }
 
-.daily-actual-time {
-    color: var(--color-text-primary);
 
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-semibold);
-}
-.daily-actual-empty {
-    padding: var(--space-8) var(--space-4);
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-    color: var(--color-text-muted);
+@media (max-width: 900px) {
 
-    font-size: var(--font-size-sm);
-
-    text-align: center;
-}
-@media (max-width: 800px) {
-
-    .daily-actual-heading {
+    .daily-actual-hero {
         align-items: flex-start;
+
         flex-direction: column;
     }
 
@@ -257,180 +840,38 @@
         width: 100%;
     }
 
+    .daily-actual-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .daily-actual-hero h1 {
+        font-size: 3rem;
+    }
+
     .daily-actual-summary {
         align-items: flex-start;
+
         flex-direction: column;
-        gap: var(--space-5);
+
+        gap: var(--space-6);
     }
 
     .daily-actual-summary-stats {
         width: 100%;
+
         justify-content: space-between;
     }
 
-    .daily-actual-stat {
-        text-align: left;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .daily-actual-list {
-        padding: var(--space-5);
+    .daily-actual-form-grid {
+        grid-template-columns: 1fr;
     }
 
-    .daily-actual-item {
-        grid-template-columns: 32px 1fr auto;
-
-        gap: var(--space-3);
+    .daily-actual-form-error,
+    .daily-actual-form-actions {
+        grid-column: auto;
     }
-}
-.daily-actual-row-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.daily-actual-edit-button {
-    min-height: 36px;
-
-    padding: 0 var(--space-3);
-
-    color: var(--color-accent);
-    background: transparent;
-
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-
-    cursor: pointer;
-
-    transition:
-        color var(--transition-fast),
-        background var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.daily-actual-edit-button:hover {
-    color: var(--color-text-primary);
-
-    background: rgba(139, 124, 255, 0.1);
-
-    border-color: rgba(139, 124, 255, 0.3);
-}
-.daily-actual-edit {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-.daily-actual-edit input {
-    width: 90px;
-    min-height: 36px;
-
-    padding: 0 var(--space-3);
-
-    color: var(--color-text-primary);
-    background: var(--color-background);
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-
-    font-size: var(--font-size-sm);
-
-    outline: none;
-
-    transition:
-        border-color var(--transition-fast),
-        box-shadow var(--transition-fast);
-}
-
-.daily-actual-edit input:focus {
-    border-color: var(--color-accent);
-
-    box-shadow:
-        0 0 0 3px rgba(139, 124, 255, 0.12);
-}
-
-.daily-actual-edit button {
-    min-height: 36px;
-
-    padding: 0 var(--space-3);
-
-    color: var(--color-text-secondary);
-    background: transparent;
-
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-
-    cursor: pointer;
-
-    transition:
-        color var(--transition-fast),
-        background var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.daily-actual-edit button:hover:not(:disabled) {
-    color: var(--color-text-primary);
-
-    background: var(--color-background);
-
-    border-color: var(--color-text-muted);
-}
-
-.daily-actual-edit button:first-of-type {
-    color: var(--color-accent);
-
-    border-color: var(--color-accent);
-}
-
-.daily-actual-edit button:first-of-type:hover:not(:disabled) {
-    color: var(--color-text-primary);
-
-    background: rgba(139, 124, 255, 0.1);
-}
-
-.daily-actual-edit button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.daily-actual-delete-button {
-    min-height: 36px;
-
-    padding: 0 var(--space-3);
-
-    color: #ff6b6b;
-    background: transparent;
-
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-semibold);
-
-    cursor: pointer;
-
-    transition:
-        color var(--transition-fast),
-        background var(--transition-fast),
-        border-color var(--transition-fast);
-}
-
-.daily-actual-delete-button:hover:not(:disabled) {
-    color: #ff6b6b;
-
-    background: rgba(255, 107, 107, 0.08);
-
-    border-color: rgba(255, 107, 107, 0.4);
-}
-
-.daily-actual-delete-button:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
 }

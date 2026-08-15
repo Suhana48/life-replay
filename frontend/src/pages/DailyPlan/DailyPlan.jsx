@@ -11,9 +11,17 @@ import {
 import { getActivities } from "../../services/activityService";
 
 const DailyPlan = () => {
-    const [date, setDate] = useState(
-        new Date().toISOString().split("T")[0]
-    );
+    const getLocalDate = () => {
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    };
+
+    const [date, setDate] = useState(getLocalDate());
 
     const [plans, setPlans] = useState([]);
     const [activities, setActivities] = useState([]);
