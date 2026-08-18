@@ -28,6 +28,7 @@ const DailyPlan = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [actionError, setActionError] = useState("");
 
     const [showForm, setShowForm] = useState(false);
 
@@ -45,6 +46,21 @@ const DailyPlan = () => {
 
     const [editingMinutes, setEditingMinutes] =
         useState("");
+        const getTodayDate = () => {
+            const today = new Date(
+                new Date().toLocaleString("en-US", {
+                    timeZone: "Asia/Kolkata",
+                })
+            );
+
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        };
+
+        const isPastDate = date < getTodayDate();
 
 
     useEffect(() => {
@@ -86,6 +102,11 @@ const DailyPlan = () => {
 
 
     const handleOpenForm = async () => {
+
+        if (isPastDate) {
+            return;
+        }
+
         setShowForm(true);
 
         setFormError("");
@@ -144,44 +165,55 @@ const DailyPlan = () => {
     };
 
 
-    const handleDelete = async (id) => {
-        const confirmed = window.confirm(
-            "Are you sure you want to remove this activity from your plan?"
-        );
+   const handleDelete = async (id) => {
+       const confirmed = window.confirm(
+           "Are you sure you want to remove this activity from your plan?"
+       );
 
-        if (!confirmed) return;
+       if (!confirmed) return;
 
-        try {
-            await deleteDailyPlan(id);
+       try {
+           await deleteDailyPlan(id);
 
-            await loadPlans();
-        } catch (err) {
-            setError(
-                err.response?.data?.message ||
-                "Unable to delete daily plan."
-            );
-        }
-    };
-
-
-    const handleStartEdit = (plan) => {
-        setEditingPlanId(plan.id);
-        setEditingMinutes(plan.plannedMinutes);
-    };
+           await loadPlans();
+       } catch (err) {
+           setActionError(
+               err.response?.data?.message ||
+               "Unable to delete daily plan."
+           );
+       }
+   };
 
 
-    const handleCancelEdit = () => {
-        setEditingPlanId(null);
-        setEditingMinutes("");
-    };
+  const handleStartEdit = (plan) => {
+
+      if (isPastDate) {
+          return;
+      }
+
+      setActionError("");
+      setEditingPlanId(plan.id);
+      setEditingMinutes(plan.plannedMinutes);
+  };
+
+   const handleCancelEdit = () => {
+       setEditingPlanId(null);
+       setEditingMinutes("");
+       setActionError("");
+   };
 
 
-    const handleSaveEdit = async (id) => {
-        if (!editingMinutes || Number(editingMinutes) <= 0) {
-            return;
-        }
+   const handleSaveEdit = async (id) => {
 
-        try {
+       if (isPastDate) {
+           return;
+       }
+
+       if (!editingMinutes || Number(editingMinutes) <= 0) {
+           return;
+       }
+
+       try {
             await updateDailyPlan(
                 id,
                 Number(editingMinutes)
@@ -192,7 +224,7 @@ const DailyPlan = () => {
 
             await loadPlans();
         } catch (err) {
-            setError(
+            setActionError(
                 err.response?.data?.message ||
                 "Unable to update daily plan."
             );
@@ -296,6 +328,11 @@ const DailyPlan = () => {
                     {error}
                 </div>
             )}
+        {actionError && (
+            <div className="daily-plan-error">
+                {actionError}
+            </div>
+        )}
 
 
             {!error && (
@@ -456,34 +493,30 @@ const DailyPlan = () => {
                                                     </span>
 
 
-                                                    {editingPlanId !==
-                                                        plan.id && (
+                                                   {editingPlanId !== plan.id &&
+                                                       !isPastDate && (
+                                                           <div className="daily-plan-card-actions">
 
-                                                        <div className="daily-plan-card-actions">
+                                                               <button
+                                                                   type="button"
+                                                                   onClick={() =>
+                                                                       handleStartEdit(plan)
+                                                                   }
+                                                               >
+                                                                   Edit
+                                                               </button>
 
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    handleStartEdit(
-                                                                        plan
-                                                                    )
-                                                                }
-                                                            >
-                                                                Edit
-                                                            </button>
+                                                               <button
+                                                                   type="button"
+                                                                   onClick={() =>
+                                                                       handleDelete(plan.id)
+                                                                   }
+                                                               >
+                                                                   Delete
+                                                               </button>
 
-                                                            <button
-                                                                type="button"
-                                                                onClick={() =>
-                                                                    handleDelete(
-                                                                        plan.id
-                                                                    )
-                                                                }
-                                                            >
-                                                                Delete
-                                                            </button>
+                                                           </div>
 
-                                                        </div>
 
                                                     )}
 
@@ -594,7 +627,7 @@ const DailyPlan = () => {
 
                                     {/* ADD CARD */}
 
-                                    {!showForm && (
+                                    {!showForm && !isPastDate && (
 
                                         <button
                                             type="button"
@@ -632,7 +665,8 @@ const DailyPlan = () => {
 
                         {!loading &&
                             plans.length === 0 &&
-                            !showForm && (
+                            !showForm &&
+                            !isPastDate && (
 
                                 <button
                                     type="button"

@@ -13,12 +13,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 
 @Service
 @RequiredArgsConstructor
 public class DailyPlanService {
+    private static final ZoneId APP_ZONE =
+            ZoneId.of("Asia/Kolkata");
 
     private final DailyPlanRepository dailyPlanRepository;
     private final ActivityRepository activityRepository;
@@ -26,7 +29,7 @@ public class DailyPlanService {
     public DailyPlanResponse createPlan(
             DailyPlanRequest request,
             User user) {
-        if (request.getDate().isBefore(LocalDate.now())) {
+        if (request.getDate().isBefore(LocalDate.now(APP_ZONE))) {
             throw new IllegalArgumentException(
                     "You cannot create a plan for a past date"
             );
@@ -92,7 +95,7 @@ public class DailyPlanService {
             );
         }
 
-        if (dailyPlan.getDate().isBefore(LocalDate.now())) {
+        if (dailyPlan.getDate().isBefore(LocalDate.now(APP_ZONE))) {
             throw new IllegalArgumentException(
                     "You cannot update a plan for a past date"
             );
@@ -119,6 +122,12 @@ public class DailyPlanService {
         if (!dailyPlan.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException(
                     "You are not allowed to delete this plan"
+            );
+        }
+
+        if (dailyPlan.getDate().isBefore(LocalDate.now(APP_ZONE))) {
+            throw new IllegalArgumentException(
+                    "You cannot delete a plan from a past date"
             );
         }
 

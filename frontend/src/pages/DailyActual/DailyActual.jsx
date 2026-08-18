@@ -11,9 +11,13 @@ import {
 import { getActivities } from "../../services/activityService";
 
 const DailyActual = () => {
-    const [date, setDate] = useState(
-        new Date().toISOString().split("T")[0]
-    );
+   const getTodayDate = () => {
+       return new Intl.DateTimeFormat("en-CA", {
+           timeZone: "Asia/Kolkata",
+       }).format(new Date());
+   };
+
+   const [date, setDate] = useState(getTodayDate());
 
     const [actuals, setActuals] = useState([]);
     const [activities, setActivities] = useState([]);
@@ -261,6 +265,47 @@ const DailyActual = () => {
             }
         );
     };
+const getDateStatus = () => {
+    const today = getTodayDate();
+
+    // Future date
+    if (date > today) {
+        return "future";
+    }
+
+    // Today
+    if (date === today) {
+        return "today";
+    }
+
+    // Selected date is in the past.
+    // Actual time can still be recorded until 5:00 AM
+    // of the following day (Indian time).
+
+    const selectedDate = new Date(`${date}T00:00:00`);
+
+    const closingTime = new Date(selectedDate);
+
+    closingTime.setDate(
+        closingTime.getDate() + 1
+    );
+
+    closingTime.setHours(5, 0, 0, 0);
+
+    const now = new Date(
+        new Date().toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+        })
+    );
+
+    if (now < closingTime) {
+        return "grace";
+    }
+
+    return "closed";
+};
+
+const dateStatus = getDateStatus();
 
     /* =====================================================
        UI
@@ -329,7 +374,7 @@ const DailyActual = () => {
                 SUMMARY
             ================================================= */}
 
-            {!error && !loading && (
+            {!loading && (
                 <section className="daily-actual-summary">
 
                     <div className="daily-actual-summary-content">
@@ -382,7 +427,7 @@ const DailyActual = () => {
                 YOUR TIME
             ================================================= */}
 
-            {!loading && !error && (
+            {!loading && (
                 <section className="daily-actual-library">
 
                     <div className="daily-actual-section-header">
@@ -410,7 +455,10 @@ const DailyActual = () => {
                         EMPTY STATE
                     ================================================= */}
 
-                    {actuals.length === 0 && !showForm && (
+                    {(dateStatus === "today" ||
+                        dateStatus === "grace") &&
+                        actuals.length === 0 &&
+                        !showForm && (
                         <button
                             type="button"
                             className="daily-actual-add-card"
@@ -454,33 +502,34 @@ const DailyActual = () => {
                                                 ).padStart(2, "0")}
                                             </div>
 
-                                            <div className="daily-actual-card-actions">
 
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleEdit(
-                                                            actual
-                                                        )
-                                                    }
-                                                    disabled={saving}
-                                                >
-                                                    Edit
-                                                </button>
+                                               {(dateStatus === "today" ||
+                                                   dateStatus === "grace") && (
+                                                   <div className="daily-actual-card-actions">
 
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            actual.id
-                                                        )
-                                                    }
-                                                    disabled={saving}
-                                                >
-                                                    Delete
-                                                </button>
+                                                       <button
+                                                           type="button"
+                                                           onClick={() =>
+                                                               handleEdit(actual)
+                                                           }
+                                                           disabled={saving}
+                                                       >
+                                                           Edit
+                                                       </button>
 
-                                            </div>
+                                                       <button
+                                                           type="button"
+                                                           onClick={() =>
+                                                               handleDelete(actual.id)
+                                                           }
+                                                           disabled={saving}
+                                                       >
+                                                           Delete
+                                                       </button>
+
+                                                   </div>
+
+                                            )}
 
                                         </div>
 
@@ -592,27 +641,29 @@ const DailyActual = () => {
                                 ADD CARD
                             ================================================= */}
 
-                            <button
-                                type="button"
-                                className="daily-actual-add-card"
-                                onClick={handleOpenForm}
-                            >
+                           {(dateStatus === "today" ||
+                               dateStatus === "grace") && (
+                               <button
+                                   type="button"
+                                   className="daily-actual-add-card"
+                                   onClick={handleOpenForm}
+                               >
 
-                                <div className="daily-actual-add-icon">
-                                    +
-                                </div>
+                                   <div className="daily-actual-add-icon">
+                                       +
+                                   </div>
 
-                                <h3>
-                                    Record actual time
-                                </h3>
+                                   <h3>
+                                       Record actual time
+                                   </h3>
 
-                                <p>
-                                    Make room for another part
-                                    of your day.
-                                </p>
+                                   <p>
+                                       Make room for another part
+                                       of your day.
+                                   </p>
 
-                            </button>
-
+                               </button>
+                           )}
                         </div>
                     )}
 

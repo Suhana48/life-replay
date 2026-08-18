@@ -12,11 +12,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
 public class DailyActualService {
+
+    private static final ZoneId APP_ZONE =
+            ZoneId.of("Asia/Kolkata");
 
     private final DailyActualRepository dailyActualRepository;
     private final ActivityRepository activityRepository;
@@ -24,6 +30,11 @@ public class DailyActualService {
     public DailyActualResponse createActual(
             DailyActualRequest request,
             User user) {
+        if (!isActualDateOpen(request.getDate())) {
+            throw new IllegalArgumentException(
+                    "Actual time cannot be recorded for this date"
+            );
+        }
 
         Activity activity = activityRepository
                 .findByIdAndUser(
@@ -93,6 +104,12 @@ public class DailyActualService {
             );
         }
 
+        if (!isActualDateOpen(actual.getDate())) {
+            throw new IllegalArgumentException(
+                    "Actual time cannot be updated for this date"
+            );
+        }
+
         actual.setActualMinutes(
                 request.getActualMinutes()
         );
@@ -119,7 +136,40 @@ public class DailyActualService {
             );
         }
 
+        if (!isActualDateOpen(actual.getDate())) {
+            throw new IllegalArgumentException(
+                    "Actual time cannot be deleted for this date"
+            );
+        }
+
         dailyActualRepository.delete(actual);
+    }
+    private boolean isActualDateOpen(LocalDate date) {
+
+        ZonedDateTime now =
+                ZonedDateTime.now(APP_ZONE);
+
+        LocalDate today =
+                now.toLocalDate();
+
+        // Future dates are not open for actual time
+        if (date.isAfter(today)) {
+            return false;
+        }
+
+        // Today is always open
+        if (date.equals(today)) {
+            return true;
+        }
+
+        // Past dates remain open until 5:00 AM
+        // of the following day
+        ZonedDateTime closingTime =
+                date.plusDays(1)
+                        .atTime(5, 0)
+                        .atZone(APP_ZONE);
+
+        return now.isBefore(closingTime);
     }
 
     private DailyActualResponse toResponse(
