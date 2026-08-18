@@ -37,7 +37,7 @@ public class DailyActualService {
         }
 
         Activity activity = activityRepository
-                .findByIdAndUser(
+                .findByIdAndUserAndActiveTrue(
                         request.getActivityId(),
                         user
                 )
@@ -136,9 +136,9 @@ public class DailyActualService {
             );
         }
 
-        if (!isActualDateOpen(actual.getDate())) {
+        if (actual.getDate().isBefore(LocalDate.now(APP_ZONE))) {
             throw new IllegalArgumentException(
-                    "Actual time cannot be deleted for this date"
+                    "You cannot delete actual time from a past date"
             );
         }
 

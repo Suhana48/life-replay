@@ -35,7 +35,7 @@ public class ReplayController {
                         new IllegalArgumentException("User not found"));
 
         Activity activity = activityRepository
-                .findByIdAndUser(activityId, user)
+                .findByIdAndUserAndActiveTrue(activityId, user)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Activity not found"));
 
