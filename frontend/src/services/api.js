@@ -27,12 +27,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-       if (error.response?.status === 401) {
-           localStorage.removeItem("token");
+        if (error.response?.status === 401) {
 
-           // Let React/router handle the redirect later.
-           window.dispatchEvent(new Event("auth-expired"));
-       }
+            const token = localStorage.getItem("token");
+
+            if (token) {
+                localStorage.removeItem("token");
+
+                window.location.href = "/login";
+            }
+        }
 
         return Promise.reject(error);
     }
