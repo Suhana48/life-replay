@@ -534,7 +534,7 @@
     position: relative;
     z-index: 1;
 
-    margin-top: auto;
+    margin-top: 32px;
 }
 
 .activity-card-content h3 {

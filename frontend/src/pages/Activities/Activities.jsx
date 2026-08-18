@@ -56,8 +56,12 @@ function Activities() {
     };
 
     const handleUpdateActivity = async () => {
+        if (!editingActivity) {
+            return;
+        }
+
         try {
-            await updateActivity(
+            const response = await updateActivity(
                 editingActivity.id,
                 name,
                 description,
@@ -67,12 +71,7 @@ function Activities() {
             setActivities((currentActivities) =>
                 currentActivities.map((activity) =>
                     activity.id === editingActivity.id
-                        ? {
-                              ...activity,
-                              name,
-                              description,
-                              category,
-                          }
+                        ? response.data
                         : activity
                 )
             );
@@ -85,8 +84,15 @@ function Activities() {
 
             alert("Activity updated successfully.");
         } catch (error) {
-            console.error("Failed to update activity:", error);
-            alert("Unable to update activity.");
+            console.error(
+                "Failed to update activity:",
+                error.response?.data || error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Unable to update activity."
+            );
         }
     };
 
@@ -168,7 +174,7 @@ function Activities() {
                 ADD / EDIT FORM
             ========================================= */}
 
-            {showForm && (
+            {showForm && !editingActivity && (
                 <div className="activity-form">
 
                     <h2>
@@ -442,7 +448,85 @@ function Activities() {
 
                                 </div>
 
-                            </article>
+                                {editingActivity?.id === activity.id && (
+                                    <div className="activity-inline-edit-form">
+
+                                        <div className="activity-form-field">
+
+                                            <label>
+                                                Activity name
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={name}
+                                                onChange={(event) =>
+                                                    setName(event.target.value)
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="activity-form-field">
+
+                                            <label>
+                                                Description
+                                            </label>
+
+                                            <textarea
+                                                rows="3"
+                                                value={description}
+                                                onChange={(event) =>
+                                                    setDescription(event.target.value)
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="activity-form-field">
+
+                                            <label>
+                                                Category
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={category}
+                                                onChange={(event) =>
+                                                    setCategory(event.target.value)
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="activity-form-actions">
+
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setEditingActivity(null);
+                                                    setName("");
+                                                    setDescription("");
+                                                    setCategory("");
+                                                }}
+                                            >
+                                                Cancel
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className="activities-primary-button"
+                                                onClick={handleUpdateActivity}
+                                            >
+                                                Update activity
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+                                )}
+
+                                </article>
 
                         ))}
 
