@@ -37,7 +37,7 @@ public class ActivityService {
     }
 
     public List<Activity> getUserActivities(User user) {
-        return activityRepository.findByUser(user);
+        return activityRepository.findByUserAndActiveTrue(user);
     }
     public Activity updateActivity(
             Long activityId,
@@ -47,7 +47,7 @@ public class ActivityService {
             User user) {
 
         Activity activity = activityRepository
-                .findByIdAndUser(activityId, user)
+                .findByIdAndUserAndActiveTrue(activityId, user)
                 .orElseThrow(() ->
                         new IllegalArgumentException(
                                 "Activity not found"
@@ -72,12 +72,14 @@ public class ActivityService {
             User user) {
 
         Activity activity = activityRepository
-                .findByIdAndUser(activityId, user)
+                .findByIdAndUserAndActiveTrue(activityId, user)
                 .orElseThrow(() ->
                         new IllegalArgumentException(
                                 "Activity not found"
                         ));
 
-        activityRepository.delete(activity);
+        activity.setActive(false);
+
+        activityRepository.save(activity);
     }
 }

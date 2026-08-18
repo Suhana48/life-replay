@@ -36,7 +36,7 @@ public class DailyPlanService {
         }
 
         Activity activity = activityRepository
-                .findByIdAndUser(request.getActivityId(), user)
+                .findByIdAndUserAndActiveTrue(request.getActivityId(), user)
                 .orElseThrow(() ->
                         new IllegalArgumentException(
                                 "Activity not found"

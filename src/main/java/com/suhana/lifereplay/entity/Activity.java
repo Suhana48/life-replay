@@ -34,6 +34,9 @@ public class Activity {
     @Column(nullable = false, length = 100)
     private String category;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

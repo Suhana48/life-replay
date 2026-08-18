@@ -108,8 +108,15 @@ function Activities() {
 
             alert("Activity deleted successfully.");
         } catch (error) {
-            console.error("Failed to delete activity:", error);
-            alert("Unable to delete activity.");
+            console.error(
+                "Failed to delete activity:",
+                error.response?.data || error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Unable to delete activity."
+            );
         }
     };
 
@@ -128,6 +135,151 @@ function Activities() {
         setCategory(activity.category || "");
         setShowForm(true);
     };
+const renderActivityCard = (activity, index) => (
+    <article
+        className="activity-card"
+        key={activity.id}
+    >
+
+        <div className="activity-card-top">
+
+            <span className="activity-number">
+                {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div className="activity-card-actions">
+
+                <button
+                    type="button"
+                    onClick={() =>
+                        openEditForm(activity)
+                    }
+                >
+                    Edit
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => {
+
+                        if (
+                            window.confirm(
+                                `Are you sure you want to delete "${activity.name}"?`
+                            )
+                        ) {
+                            handleDeleteActivity(
+                                activity.id
+                            );
+                        }
+
+                    }}
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        <div className="activity-card-content">
+
+            <h3>
+                {activity.name}
+            </h3>
+
+            <p>
+                {activity.description ||
+                    "Something worth making time for."}
+            </p>
+
+            {activity.category && (
+                <span className="activity-category">
+                    {activity.category}
+                </span>
+            )}
+
+        </div>
+
+        {editingActivity?.id === activity.id && (
+            <div className="activity-inline-edit-form">
+
+                <div className="activity-form-field">
+
+                    <label>
+                        Activity name
+                    </label>
+
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(event) =>
+                            setName(event.target.value)
+                        }
+                    />
+
+                </div>
+
+                <div className="activity-form-field">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        rows="3"
+                        value={description}
+                        onChange={(event) =>
+                            setDescription(event.target.value)
+                        }
+                    />
+
+                </div>
+
+                <div className="activity-form-field">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <input
+                        type="text"
+                        value={category}
+                        onChange={(event) =>
+                            setCategory(event.target.value)
+                        }
+                    />
+
+                </div>
+
+                <div className="activity-form-actions">
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setEditingActivity(null);
+                            setName("");
+                            setDescription("");
+                            setCategory("");
+                        }}
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        className="activities-primary-button"
+                        onClick={handleUpdateActivity}
+                    >
+                        Update activity
+                    </button>
+
+                </div>
+
+            </div>
+        )}
+
+    </article>
+);
 
     const categoryCount = new Set(
         activities

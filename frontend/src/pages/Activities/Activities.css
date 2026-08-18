@@ -368,12 +368,8 @@
 ========================================================= */
 
 .activities-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 18px;
+    column-count: 2;
+    column-gap: 18px;
 }
 
 
@@ -383,6 +379,8 @@
 
 .activity-card {
     position: relative;
+        break-inside: avoid;
+        margin-bottom: 18px;
 
     min-height: 250px;
 
@@ -586,7 +584,9 @@
 ========================================================= */
 
 .activity-add-card {
+    width: 100%;
     min-height: 250px;
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
@@ -755,7 +755,7 @@
     }
 
     .activities-grid {
-        grid-template-columns: 1fr;
+        column-count: 1;
     }
 }
 
