@@ -1,7 +1,12 @@
 package com.suhana.lifereplay.service;
 
-import com.suhana.lifereplay.dto.ReplayResponse;
-import com.suhana.lifereplay.entity.Activity;
+import java.util.ArrayList;
+import java.util.List;
+import com.suhana.lifereplay.dto.DailyReplayItem;
+import com.suhana.lifereplay.dto.DailyReplayResponse;
+import com.suhana.lifereplay.entity.DailyActual;
+import com.suhana.lifereplay.entity.DailyPlan;
+import com.suhana.lifereplay.entity.User;
 import com.suhana.lifereplay.entity.DailyActual;
 import com.suhana.lifereplay.entity.DailyPlan;
 import com.suhana.lifereplay.repository.DailyActualRepository;
@@ -18,39 +23,92 @@ public class ReplayService {
     private final DailyPlanRepository dailyPlanRepository;
     private final DailyActualRepository dailyActualRepository;
 
-    public ReplayResponse getReplay(
-            Activity activity,
+    public DailyReplayResponse getDailyReplay(
+            User user,
             LocalDate date) {
 
-        DailyPlan plan = dailyPlanRepository
-                .findByActivityAndDate(activity, date)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Daily plan not found"));
+        List<DailyPlan> plans =
+                dailyPlanRepository
+                        .findByActivity_User_IdAndDate(
+                                user.getId(),
+                                date
+                        );
 
-        DailyActual actual = dailyActualRepository
-                .findByActivityAndDate(activity, date)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Actual time not recorded"));
+        List<DailyActual> actuals =
+                dailyActualRepository
+                        .findByActivity_User_IdAndDate(
+                                user.getId(),
+                                date
+                        );
 
-        Integer plannedMinutes = plan.getPlannedMinutes();
-        Integer actualMinutes = actual.getActualMinutes();
+        List<DailyReplayItem> items =
+                new ArrayList<>();
 
-        Integer differenceMinutes =
-                actualMinutes - plannedMinutes;
+        int totalPlannedMinutes = 0;
+        int totalActualMinutes = 0;
 
-        Double completionPercentage =
-                (actualMinutes * 100.0) / plannedMinutes;
+        for (DailyPlan plan : plans) {
 
-        return new ReplayResponse(
-                activity.getId(),
-                activity.getName(),
+            Integer plannedMinutes =
+                    plan.getPlannedMinutes();
+
+            DailyActual matchingActual =
+                    actuals.stream()
+                            .filter(actual ->
+                                    actual.getActivity()
+                                            .getId()
+                                            .equals(
+                                                    plan.getActivity().getId()
+                                            )
+                            )
+                            .findFirst()
+                            .orElse(null);
+
+            int actualMinutes =
+                    matchingActual != null
+                            ? matchingActual.getActualMinutes()
+                            : 0;
+
+            int differenceMinutes =
+                    actualMinutes - plannedMinutes;
+
+            double completionPercentage =
+                    plannedMinutes > 0
+                            ? (actualMinutes * 100.0)
+                            / plannedMinutes
+                            : 0.0;
+
+            items.add(
+                    new DailyReplayItem(
+                            plan.getActivity().getId(),
+                            plan.getActivity().getName(),
+                            plannedMinutes,
+                            actualMinutes,
+                            differenceMinutes,
+                            completionPercentage
+                    )
+            );
+
+            totalPlannedMinutes += plannedMinutes;
+            totalActualMinutes += actualMinutes;
+        }
+
+        int totalDifferenceMinutes =
+                totalActualMinutes - totalPlannedMinutes;
+
+        double overallCompletionPercentage =
+                totalPlannedMinutes > 0
+                        ? (totalActualMinutes * 100.0)
+                        / totalPlannedMinutes
+                        : 0.0;
+
+        return new DailyReplayResponse(
                 date,
-                plannedMinutes,
-                actualMinutes,
-                differenceMinutes,
-                completionPercentage
+                items,
+                totalPlannedMinutes,
+                totalActualMinutes,
+                totalDifferenceMinutes,
+                overallCompletionPercentage
         );
     }
 }
