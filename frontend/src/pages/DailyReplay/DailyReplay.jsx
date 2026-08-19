@@ -643,6 +643,96 @@ const unplannedActivities = activities.filter(
                         </div>
 
                     </section>
+                    {/* =========================
+                        COMPLETION BY ACTIVITY
+                    ========================= */}
+
+                    <section className="replay-section">
+
+                        <div className="section-heading">
+                            <div>
+                                <span className="section-eyebrow">
+                                    FOLLOW-THROUGH
+                                </span>
+
+                                <h2>
+                                    How closely you followed your plan.
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="replay-chart-card">
+
+                            <ResponsiveContainer
+                                width="100%"
+                                height={340}
+                            >
+                                <BarChart
+                                    data={activities.filter(
+                                        (activity) =>
+                                            activity.plannedMinutes > 0
+                                    )}
+                                    layout="vertical"
+                                    margin={{
+                                        top: 10,
+                                        right: 30,
+                                        left: 20,
+                                        bottom: 10
+                                    }}
+                                >
+
+                                    <CartesianGrid
+                                        horizontal={false}
+                                        strokeDasharray="3 6"
+                                    />
+
+                                    <XAxis
+                                        type="number"
+                                        domain={[0, 100]}
+                                        tickFormatter={(value) =>
+                                            `${value}%`
+                                        }
+                                    />
+
+                                    <YAxis
+                                        type="category"
+                                        dataKey="activityName"
+                                        width={80}
+                                    />
+
+                                    <Tooltip
+                                        formatter={(value) =>
+                                            `${Number(value).toFixed(1)}%`
+                                        }
+                                        contentStyle={{
+                                            backgroundColor: "#1C1E29",
+                                            border: "1px solid #383A4C",
+                                            borderRadius: "12px",
+                                            boxShadow:
+                                                "0 12px 35px rgba(0, 0, 0, 0.35)"
+                                        }}
+                                        labelStyle={{
+                                            color: "#F1F1F6",
+                                            marginBottom: "6px"
+                                        }}
+                                        itemStyle={{
+                                            color: "#B8B2FF"
+                                        }}
+                                    />
+
+                                    <Bar
+                                        dataKey="completionPercentage"
+                                        name="Completion"
+                                        fill="#8B7CF6"
+                                        radius={[0, 7, 7, 0]}
+                                    />
+
+                                </BarChart>
+                            </ResponsiveContainer>
+
+                        </div>
+
+                    </section>
 
 
                     {/* =========================

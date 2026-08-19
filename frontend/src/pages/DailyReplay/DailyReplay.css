@@ -1,171 +1,278 @@
+/* =========================================================
+   DAILY REPLAY
+========================================================= */
+
 .daily-replay-page {
     width: 100%;
-    max-width: 1300px;
+    max-width: 1340px;
     margin: 0 auto;
-    padding: 48px 42px 80px;
+
+    padding: 48px 44px 100px;
+
+    box-sizing: border-box;
 }
 
 
-/* =========================
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
 .daily-replay-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 40px;
-    margin-bottom: 38px;
+
+    gap: 50px;
+    margin-bottom: 42px;
 }
 
 .page-eyebrow {
     display: block;
-    margin-bottom: 10px;
 
-    color: #9b7cff;
-    font-size: 12px;
+    margin-bottom: 12px;
+
+    color: #9b8cff;
+
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 2.2px;
 }
 
 .daily-replay-header h1 {
     margin: 0;
 
     color: #f5f5fa;
-    font-size: 42px;
-    line-height: 1.1;
-    letter-spacing: -1.5px;
+
+    font-size: 44px;
+    line-height: 1.08;
+    font-weight: 700;
+
+    letter-spacing: -1.8px;
 }
 
 .daily-replay-header p {
-    margin: 12px 0 0;
+    margin: 13px 0 0;
 
-    color: #777d96;
+    color: #737991;
+
     font-size: 15px;
+    line-height: 1.6;
 }
+
+
+/* =========================================================
+   DATE SELECTOR
+========================================================= */
 
 .date-selector {
     display: flex;
     flex-direction: column;
+
     gap: 8px;
+
+    min-width: 180px;
 }
 
 .date-selector label {
-    color: #777d96;
-    font-size: 12px;
+    color: #737991;
+
+    font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.4px;
 }
 
 .date-selector input {
-    width: 175px;
-    padding: 12px 14px;
+    width: 180px;
+
+    padding: 13px 15px;
+
+    box-sizing: border-box;
 
     border: 1px solid #2c2e3d;
-    border-radius: 12px;
+    border-radius: 13px;
 
     background: #151720;
-    color: #f5f5fa;
+    color: #eeeeF5;
 
-    font-size: 14px;
+    font-family: inherit;
+    font-size: 13px;
+
     outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.date-selector input:hover {
+    border-color: #3a3b50;
 }
 
 .date-selector input:focus {
-    border-color: #8e78ff;
+    border-color: #7568d8;
+
+    box-shadow:
+        0 0 0 3px rgba(139, 124, 246, 0.08);
 }
 
 
-/* =========================
+/* =========================================================
    STATES
-========================= */
+========================================================= */
 
 .replay-state {
-    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border: 1px solid #252737;
+    min-height: 180px;
+
+    border: 1px solid #292b39;
     border-radius: 22px;
 
-    background: #151720;
+    background: #171923;
 
-    color: #888fa8;
-    text-align: center;
+    color: #777d96;
+
+    font-size: 14px;
 }
 
 .replay-error {
-    color: #d88999;
+    color: #c88497;
 }
 
 
-/* =========================
-   SUMMARY
-========================= */
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
 
 .replay-summary {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
 
-    margin-bottom: 55px;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 64px;
 }
 
 .summary-card {
-    min-height: 145px;
-    padding: 25px;
+    position: relative;
 
-    border: 1px solid #252737;
+    min-height: 145px;
+
+    padding: 24px 25px;
+
+    overflow: hidden;
+
+    border: 1px solid #292b39;
     border-radius: 20px;
 
     background:
         radial-gradient(
-            circle at 100% 100%,
-            rgba(126, 108, 255, 0.11),
+            circle at 100% 0%,
+            rgba(139, 124, 246, 0.08),
             transparent 45%
         ),
         #171923;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    box-sizing: border-box;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
 }
 
-.summary-card span {
-    color: #777d96;
-    font-size: 11px;
+.summary-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #383a4d;
+}
+
+.summary-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(139, 124, 246, 0.35),
+            transparent
+        );
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+
+.summary-card:hover::after {
+    opacity: 1;
+}
+
+.summary-card > span {
+    color: #737990;
+
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+
+    letter-spacing: 1.6px;
 }
 
 .summary-card strong {
-    margin-top: 9px;
+    display: block;
 
-    color: #f5f5fa;
-    font-size: 29px;
-    font-weight: 700;
+    margin-top: 11px;
+
+    color: #f3f3f8;
+
+    font-size: 30px;
+    line-height: 1;
+
+    letter-spacing: -0.8px;
 }
 
 .summary-card small {
-    margin-top: 5px;
+    display: block;
 
-    color: #666c83;
-    font-size: 12px;
+    margin-top: 10px;
+
+    color: #646a80;
+
+    font-size: 11px;
 }
 
 .summary-card.positive strong {
-    color: #9d8aff;
+    color: #a18cff;
 }
 
 .summary-card.negative strong {
-    color: #f08a9b;
+    color: #f0a0b0;
 }
+
+
+/* =========================================================
+   COMPLETION
+========================================================= */
 
 .completion-track {
     height: 5px;
-    margin-top: 15px;
+
+    margin-top: 17px;
 
     overflow: hidden;
-    border-radius: 10px;
 
-    background: #292b39;
+    border-radius: 20px;
+
+    background: #292b38;
 }
 
 .completion-fill {
@@ -173,16 +280,26 @@
 
     border-radius: inherit;
 
-    background: #8e78ff;
+    background:
+        linear-gradient(
+            90deg,
+            #7568d8,
+            #9a88ff
+        );
+
+    box-shadow:
+        0 0 12px rgba(139, 124, 246, 0.3);
+
+    transition: width 0.5s ease;
 }
 
 
-/* =========================
+/* =========================================================
    SECTIONS
-========================= */
+========================================================= */
 
 .replay-section {
-    margin-bottom: 55px;
+    margin-bottom: 64px;
 }
 
 .section-heading {
@@ -195,408 +312,178 @@
 
 .section-eyebrow {
     display: block;
+
     margin-bottom: 7px;
 
-    color: #8e78ff;
-    font-size: 10px;
+    color: #8c7ff0;
+
+    font-size: 9px;
     font-weight: 700;
+
     letter-spacing: 1.8px;
 }
 
 .section-heading h2 {
     margin: 0;
 
-    color: #f5f5fa;
-    font-size: 25px;
+    color: #eeeeF5;
+
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 600;
+
     letter-spacing: -0.5px;
 }
 
 .activity-count {
-    color: #777d96;
-    font-size: 13px;
+    color: #666c82;
+
+    font-size: 12px;
 }
 
 
-/* =========================
+/* =========================================================
    DAY OVERVIEW
-========================= */
+========================================================= */
 
 .overview-card {
     padding: 28px 30px;
 
-    border: 1px solid #282a39;
-    border-radius: 22px;
+    border: 1px solid #292b39;
+    border-radius: 21px;
 
-    background: #171923;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.015),
+            transparent
+        ),
+        #171923;
 }
 
 .overview-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
-    margin-bottom: 11px;
-}
-
-.overview-row strong {
-    color: #f5f5fa;
-    font-size: 15px;
+    margin-bottom: 10px;
 }
 
 .overview-label {
     display: flex;
     align-items: center;
+
     gap: 9px;
 
-    color: #a2a6ba;
-    font-size: 13px;
+    color: #9b9fb2;
+
+    font-size: 12px;
+}
+
+.overview-row strong {
+    color: #eeeeF5;
+
+    font-size: 14px;
 }
 
 .planned-dot,
 .actual-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 }
 
 .planned-dot {
-    background: #777d96;
+    background: #5b5f70;
 }
 
 .actual-dot {
-    background: #9a82ff;
+    background: #8b7cf6;
+
+    box-shadow:
+        0 0 9px rgba(139, 124, 246, 0.35);
 }
 
 .overview-track {
-    height: 10px;
+    height: 8px;
 
-    margin-bottom: 22px;
-
-    overflow: hidden;
-
-    border-radius: 10px;
-
-    background: #242633;
-}
-
-.overview-planned {
-    height: 100%;
-
-    border-radius: inherit;
-
-    background: #55596b;
-}
-
-.overview-actual {
-    height: 100%;
-
-    border-radius: inherit;
-
-    background: #8e78ff;
-}
-
-.actual-row {
-    margin-top: 10px;
-}
-
-
-/* =========================
-   ACTIVITY CARDS
-========================= */
-
-.replay-activities {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px;
-}
-
-.replay-activity-card {
-    min-height: 300px;
-    padding: 28px;
-
-    border: 1px solid #292b3a;
-    border-radius: 22px;
-
-    background:
-        radial-gradient(
-            circle at 100% 100%,
-            rgba(126, 108, 255, 0.09),
-            transparent 40%
-        ),
-        #171923;
-}
-
-.replay-activity-card:hover {
-    border-color: #45465b;
-}
-
-.unplanned-card {
-    border-style: dashed;
-    border-color: #51477b;
-}
-
-.activity-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    gap: 20px;
-}
-
-.activity-card-top h3 {
-    margin: 0 0 8px;
-
-    color: #f5f5fa;
-    font-size: 24px;
-}
-
-.completion-label {
-    color: #777d96;
-    font-size: 12px;
-}
-
-.unplanned-badge {
-    display: inline-block;
-
-    padding: 5px 9px;
-
-    border: 1px solid #5a4c91;
-    border-radius: 999px;
-
-    color: #a28cff;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.difference {
-    white-space: nowrap;
-
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.difference-positive {
-    color: #a28cff;
-}
-
-.difference-negative {
-    color: #e98999;
-}
-
-
-/* =========================
-   TIME VALUES
-========================= */
-
-.activity-times {
-    display: flex;
-    gap: 50px;
-
-    margin-top: 35px;
-    margin-bottom: 32px;
-}
-
-.time-value {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.time-value span {
-    color: #6e748c;
-    font-size: 11px;
-    font-weight: 600;
-}
-
-.time-value strong {
-    color: #f3f3f8;
-    font-size: 22px;
-}
-
-
-/* =========================
-   COMPARISON BARS
-========================= */
-
-.comparison {
-    display: flex;
-    flex-direction: column;
-    gap: 17px;
-}
-
-.comparison-line {
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-    gap: 14px;
-}
-
-.comparison-line > span {
-    color: #737990;
-    font-size: 11px;
-}
-
-.bar-track {
-    height: 9px;
+    margin-bottom: 23px;
 
     overflow: hidden;
 
     border-radius: 20px;
 
-    background: #252734;
+    background: #242632;
 }
 
-.planned-bar,
-.actual-bar {
+.overview-planned,
+.overview-actual {
     height: 100%;
 
     border-radius: inherit;
 
-    transition: width 0.4s ease;
+    transition: width 0.5s ease;
 }
 
-.planned-bar {
-    background: #55596b;
+.overview-planned {
+    background: #4d5162;
 }
 
-.actual-bar {
-    background: #907bff;
-}
-
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 1000px) {
-
-    .replay-summary {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .replay-activities {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-@media (max-width: 700px) {
-
-    .daily-replay-page {
-        padding: 32px 20px 60px;
-    }
-
-    .daily-replay-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .daily-replay-header h1 {
-        font-size: 34px;
-    }
-
-    .replay-summary {
-        grid-template-columns: 1fr;
-    }
-
-    .activity-times {
-        gap: 30px;
-    }
-}
-/* =========================
-   CHART
-========================= */
-
-.replay-chart-card {
-    width: 100%;
-    padding: 24px 26px;
-
-    border: 1px solid #282a38;
-    border-radius: 24px;
-
+.overview-actual {
     background:
-        radial-gradient(
-            circle at 90% 0%,
-            rgba(142, 120, 255, 0.06),
-            transparent 35%
-        ),
-        #171923;
-
-    box-sizing: border-box;
+        linear-gradient(
+            90deg,
+            #6f62d0,
+            #9180f6
+        );
 }
 
 
-/* Recharts */
-
-.replay-chart-card .recharts-cartesian-grid-horizontal line,
-.replay-chart-card .recharts-cartesian-grid-vertical line {
-    stroke: #292b38;
-    stroke-dasharray: 3 6;
-}
-
-.replay-chart-card .recharts-xAxis line,
-.replay-chart-card .recharts-yAxis line {
-    stroke: #303241;
-}
-
-.replay-chart-card .recharts-xAxis-tick text,
-.replay-chart-card .recharts-yAxis-tick text {
-    fill: #737990;
-    font-size: 12px;
-}
-
-.replay-chart-card .recharts-label {
-    fill: #737990;
-}
-
-.replay-chart-card .recharts-legend-item-text {
-    color: #8a8fa5 !important;
-    font-size: 12px;
-}
-
-.replay-chart-card .recharts-tooltip-wrapper {
-    outline: none;
-}
-
-.replay-chart-card .recharts-default-tooltip {
-    background: #1c1e29 !important;
-    border: 1px solid #383a4c !important;
-    border-radius: 12px !important;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-}
-
-.replay-chart-card .recharts-tooltip-label {
-    color: #f1f1f6 !important;
-    margin-bottom: 8px;
-}
-
-.replay-chart-card .recharts-tooltip-item {
-    color: #b8b2ff !important;
-}
-/* =========================
-   REPLAY HIGHLIGHT
-========================= */
+/* =========================================================
+   BIGGEST GAP
+========================================================= */
 
 .replay-highlight {
+    position: relative;
+
     display: flex;
     align-items: center;
+
     gap: 16px;
 
     margin-bottom: 16px;
-    padding: 18px 22px;
+    padding: 18px 21px;
 
-    border: 1px solid #35304d;
+    overflow: hidden;
+
+    border: 1px solid #373150;
     border-radius: 18px;
 
     background:
         radial-gradient(
             circle at 0% 50%,
-            rgba(142, 120, 255, 0.12),
-            transparent 45%
+            rgba(139, 124, 246, 0.13),
+            transparent 42%
         ),
         #171923;
+}
+
+.replay-highlight::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 2px;
+
+    background: #8b7cf6;
+
+    box-shadow:
+        0 0 14px rgba(139, 124, 246, 0.4);
 }
 
 .highlight-icon {
@@ -604,19 +491,22 @@
     align-items: center;
     justify-content: center;
 
-    width: 42px;
-    height: 42px;
+    width: 41px;
+    height: 41px;
 
-    border: 1px solid #4a426b;
-    border-radius: 13px;
+    flex-shrink: 0;
 
-    background: #252139;
+    border: 1px solid #464064;
+    border-radius: 12px;
+
+    background: #242038;
 
     color: #a18cff;
-    font-size: 20px;
+
+    font-size: 19px;
 
     box-shadow:
-        0 0 20px rgba(142, 120, 255, 0.12);
+        0 0 22px rgba(139, 124, 246, 0.09);
 }
 
 .highlight-content {
@@ -627,42 +517,144 @@
 .highlight-label {
     margin-bottom: 3px;
 
-    color: #8e78ff;
-    font-size: 9px;
+    color: #8f80ed;
+
+    font-size: 8px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+
+    letter-spacing: 1.6px;
 }
 
 .highlight-content strong {
-    color: #f4f4f8;
-    font-size: 16px;
+    color: #f1f1f6;
+
+    font-size: 15px;
+    font-weight: 600;
 }
 
 .highlight-content p {
     margin: 3px 0 0;
 
-    color: #777d96;
-    font-size: 12px;
+    color: #737991;
+
+    font-size: 11px;
 }
-/* =========================
-   ACTUAL TIME DISTRIBUTION
-========================= */
 
-.distribution-card {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    align-items: center;
 
-    padding: 24px 28px;
+/* =========================================================
+   CHART CARDS
+========================================================= */
 
-    border: 1px solid #282A38;
-    border-radius: 24px;
+.replay-chart-card {
+    width: 100%;
+
+    padding: 25px 27px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #292b39;
+    border-radius: 23px;
 
     background:
         radial-gradient(
-            circle at 15% 50%,
-            rgba(139, 124, 246, 0.07),
-            transparent 38%
+            circle at 95% 0%,
+            rgba(139, 124, 246, 0.055),
+            transparent 32%
+        ),
+        #171923;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.replay-chart-card:hover {
+    border-color: #35374a;
+
+    box-shadow:
+        0 15px 45px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   RECHARTS
+========================================================= */
+
+.replay-chart-card .recharts-cartesian-grid-horizontal line,
+.replay-chart-card .recharts-cartesian-grid-vertical line {
+    stroke: #282a36;
+
+    stroke-dasharray: 2 7;
+}
+
+.replay-chart-card .recharts-xAxis line,
+.replay-chart-card .recharts-yAxis line {
+    stroke: #303241;
+}
+
+.replay-chart-card .recharts-xAxis-tick text,
+.replay-chart-card .recharts-yAxis-tick text {
+    fill: #6f758b;
+
+    font-size: 11px;
+}
+
+.replay-chart-card .recharts-label {
+    fill: #70768c;
+}
+
+.replay-chart-card .recharts-legend-item-text {
+    color: #858ba0 !important;
+
+    font-size: 11px;
+}
+
+.replay-chart-card .recharts-tooltip-wrapper {
+    outline: none;
+}
+
+.replay-chart-card .recharts-default-tooltip {
+    background: #1b1d28 !important;
+
+    border: 1px solid #363849 !important;
+    border-radius: 12px !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.replay-chart-card .recharts-tooltip-label {
+    color: #f1f1f6 !important;
+}
+
+.replay-chart-card .recharts-tooltip-item {
+    color: #b8b2ff !important;
+}
+
+
+/* =========================================================
+   DONUT
+========================================================= */
+
+.distribution-card {
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 1.1fr)
+        minmax(280px, 1fr);
+
+    align-items: center;
+
+    padding: 22px 28px;
+
+    border: 1px solid #292b39;
+    border-radius: 23px;
+
+    background:
+        radial-gradient(
+            circle at 12% 50%,
+            rgba(139, 124, 246, 0.06),
+            transparent 36%
         ),
         #171923;
 }
@@ -687,24 +679,29 @@
 }
 
 .donut-center strong {
-    color: #F4F4F8;
+    color: #f2f2f7;
+
     font-size: 27px;
     font-weight: 700;
+
+    letter-spacing: -0.5px;
 }
 
 .donut-center span {
     margin-top: 4px;
 
-    color: #737990;
-    font-size: 11px;
+    color: #6f758b;
+
+    font-size: 10px;
 }
 
 .distribution-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
 
-    padding: 10px 20px;
+    gap: 14px;
+
+    padding: 10px 18px;
 }
 
 .distribution-item {
@@ -712,23 +709,29 @@
     align-items: center;
     justify-content: space-between;
 
-    padding-bottom: 14px;
+    padding: 10px 0 14px;
 
-    border-bottom: 1px solid #292B38;
+    border-bottom: 1px solid #292b38;
+}
+
+.distribution-item:last-child {
+    border-bottom: none;
 }
 
 .distribution-name {
     display: flex;
     align-items: center;
+
     gap: 10px;
 
-    color: #D7D8E2;
-    font-size: 14px;
+    color: #c9cad4;
+
+    font-size: 13px;
 }
 
 .distribution-dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
 
     border-radius: 50%;
 }
@@ -736,23 +739,286 @@
 .distribution-value {
     display: flex;
     align-items: center;
-    gap: 12px;
+
+    gap: 13px;
 }
 
 .distribution-value strong {
-    color: #F4F4F8;
-    font-size: 14px;
+    color: #eeeeF5;
+
+    font-size: 13px;
 }
 
 .distribution-value span {
-    min-width: 48px;
+    min-width: 44px;
 
-    color: #777D96;
-    font-size: 12px;
+    color: #70768b;
+
+    font-size: 11px;
     text-align: right;
 }
 
+
+/* =========================================================
+   ACTIVITY BREAKDOWN
+========================================================= */
+
+.replay-activities {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.replay-activity-card {
+    position: relative;
+
+    min-height: 280px;
+
+    padding: 26px;
+
+    overflow: hidden;
+
+    border: 1px solid #292b39;
+    border-radius: 21px;
+
+    background:
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(139, 124, 246, 0.045),
+            transparent 42%
+        ),
+        #171923;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.replay-activity-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #37394b;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.unplanned-card {
+    border-style: dashed;
+
+    border-color: #484062;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(161, 140, 255, 0.07),
+            transparent 40%
+        ),
+        #171923;
+}
+
+.activity-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.activity-card-top h3 {
+    margin: 0 0 8px;
+
+    color: #f0f0f5;
+
+    font-size: 21px;
+    font-weight: 600;
+
+    letter-spacing: -0.3px;
+}
+
+.completion-label {
+    color: #737990;
+
+    font-size: 11px;
+}
+
+.unplanned-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border: 1px solid #514773;
+    border-radius: 999px;
+
+    background: rgba(139, 124, 246, 0.06);
+
+    color: #a18cff;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1.1px;
+}
+
+.difference {
+    padding-top: 2px;
+
+    color: #858ba0;
+
+    white-space: nowrap;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.difference-positive {
+    color: #a18cff;
+}
+
+.difference-negative {
+    color: #858ba0;
+}
+
+
+/* =========================================================
+   ACTIVITY TIMES
+========================================================= */
+
+.activity-times {
+    display: flex;
+
+    gap: 55px;
+
+    margin-top: 32px;
+    margin-bottom: 31px;
+}
+
+.time-value {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.time-value span {
+    color: #666c81;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 0.4px;
+}
+
+.time-value strong {
+    color: #eeeeF5;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   ACTIVITY COMPARISON
+========================================================= */
+
+.comparison {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+.comparison-line {
+    display: grid;
+
+    grid-template-columns: 58px 1fr;
+
+    align-items: center;
+
+    gap: 13px;
+}
+
+.comparison-line > span {
+    color: #696f84;
+
+    font-size: 10px;
+}
+
+.bar-track {
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #242631;
+}
+
+.planned-bar,
+.actual-bar {
+    height: 100%;
+
+    border-radius: inherit;
+
+    transition: width 0.5s ease;
+}
+
+.planned-bar {
+    background: #4c5060;
+}
+
+.actual-bar {
+    background:
+        linear-gradient(
+            90deg,
+            #7568d8,
+            #9180f6
+        );
+
+    box-shadow:
+        0 0 10px rgba(139, 124, 246, 0.15);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .replay-summary {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .replay-activities {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 @media (max-width: 800px) {
+
+    .daily-replay-page {
+        padding: 35px 22px 70px;
+    }
+
+    .daily-replay-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 25px;
+    }
+
+    .daily-replay-header h1 {
+        font-size: 36px;
+    }
 
     .distribution-card {
         grid-template-columns: 1fr;
@@ -760,5 +1026,45 @@
 
     .distribution-list {
         padding: 10px 0;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .daily-replay-page {
+        padding: 28px 16px 60px;
+    }
+
+    .daily-replay-header h1 {
+        font-size: 31px;
+    }
+
+    .replay-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        min-height: 125px;
+    }
+
+    .section-heading h2 {
+        font-size: 21px;
+    }
+
+    .replay-chart-card {
+        padding: 18px 10px;
+    }
+
+    .overview-card {
+        padding: 22px;
+    }
+
+    .replay-activity-card {
+        padding: 22px;
+    }
+
+    .activity-times {
+        gap: 35px;
     }
 }
