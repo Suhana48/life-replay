@@ -1,7 +1,33 @@
 import { useEffect, useState } from "react";
 import { getDailyReplay } from "../../services/replayService";
+import "./DailyReplay.css";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Legend,
+    Cell,
+    PieChart,
+    Pie
+} from "recharts";
 
-function DailyReplay() {
+const formatMinutes = (minutes) => {
+    if (minutes === 0) return "0m";
+
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+
+    if (hours === 0) return `${mins}m`;
+    if (mins === 0) return `${hours}h`;
+
+    return `${hours}h ${mins}m`;
+};
+
+const DailyReplay = () => {
     const [date, setDate] = useState(
         new Date().toISOString().split("T")[0]
     );
@@ -24,8 +50,8 @@ function DailyReplay() {
                     error.response?.data || error
                 );
 
-                setError("Unable to load daily replay.");
                 setReplay(null);
+                setError("Unable to load daily replay.");
             } finally {
                 setLoading(false);
             }
@@ -34,78 +60,591 @@ function DailyReplay() {
         loadReplay();
     }, [date]);
 
+    const activities = replay?.activities || [];
+
+    const maxActivityMinutes = Math.max(
+        ...activities.flatMap((activity) => [
+            activity.plannedMinutes,
+            activity.actualMinutes,
+        ]),
+        1
+    );
+const biggestGapActivity = activities
+    .filter((activity) => activity.plannedMinutes > 0)
+    .reduce(
+        (largest, activity) =>
+            Math.abs(activity.differenceMinutes) >
+            Math.abs(largest?.differenceMinutes ?? 0)
+                ? activity
+                : largest,
+        null
+    );
+
+const unplannedActivities = activities.filter(
+    (activity) =>
+        activity.plannedMinutes === 0 &&
+        activity.actualMinutes > 0
+);
+
     return (
-        <section>
-            <h1>Daily Replay</h1>
+        <main className="daily-replay-page">
 
-            <input
-                type="date"
-                value={date}
-                onChange={(event) =>
-                    setDate(event.target.value)
-                }
-            />
+            {/* =========================
+                HEADER
+            ========================= */}
 
-            {loading && <p>Loading replay...</p>}
+            <section className="daily-replay-header">
 
-            {error && <p>{error}</p>}
-
-            {replay && !loading && (
                 <div>
-                    <h2>
-                        Replay for {replay.date}
-                    </h2>
+                    <span className="page-eyebrow">
+                        DAILY REPLAY
+                    </span>
+
+                    <h1>
+                        See what actually happened.
+                    </h1>
 
                     <p>
-                        Planned: {replay.totalPlannedMinutes} minutes
+                        Compare your plan with the time you really spent.
                     </p>
+                </div>
 
-                    <p>
-                        Actual: {replay.totalActualMinutes} minutes
-                    </p>
+                <div className="date-selector">
+                    <label htmlFor="replay-date">
+                        Replay date
+                    </label>
 
-                    <p>
-                        Difference: {replay.totalDifferenceMinutes} minutes
-                    </p>
+                    <input
+                        id="replay-date"
+                        type="date"
+                        value={date}
+                        onChange={(event) =>
+                            setDate(event.target.value)
+                        }
+                    />
+                </div>
 
-                    <p>
-                        Completion:{" "}
-                        {replay.overallCompletionPercentage.toFixed(1)}%
-                    </p>
+            </section>
 
-                    <hr />
 
-                    {replay.activities.map((activity) => (
-                        <div key={activity.activityId}>
-                            <h3>
-                                {activity.activityName}
-                            </h3>
+            {/* =========================
+                LOADING / ERROR
+            ========================= */}
 
-                            <p>
-                                Planned:{" "}
-                                {activity.plannedMinutes} min
-                            </p>
-
-                            <p>
-                                Actual:{" "}
-                                {activity.actualMinutes} min
-                            </p>
-
-                            <p>
-                                Difference:{" "}
-                                {activity.differenceMinutes} min
-                            </p>
-
-                            <p>
-                                Completion:{" "}
-                                {activity.completionPercentage.toFixed(1)}%
-                            </p>
-                        </div>
-                    ))}
+            {loading && (
+                <div className="replay-state">
+                    Loading your day...
                 </div>
             )}
-        </section>
+
+            {error && !loading && (
+                <div className="replay-state replay-error">
+                    {error}
+                </div>
+            )}
+
+
+            {/* =========================
+                REPLAY CONTENT
+            ========================= */}
+
+            {replay && !loading && !error && (
+                <>
+
+                    {/* =========================
+                        SUMMARY
+                    ========================= */}
+
+                    <section className="replay-summary">
+
+                        <div className="summary-card">
+                            <span>PLANNED</span>
+
+                            <strong>
+                                {formatMinutes(
+                                    replay.totalPlannedMinutes
+                                )}
+                            </strong>
+
+                            <small>
+                                what you planned
+                            </small>
+                        </div>
+
+
+                        <div className="summary-card">
+                            <span>ACTUAL</span>
+
+                            <strong>
+                                {formatMinutes(
+                                    replay.totalActualMinutes
+                                )}
+                            </strong>
+
+                            <small>
+                                what you actually did
+                            </small>
+                        </div>
+
+
+                        <div
+                            className={`summary-card ${
+                                replay.totalDifferenceMinutes > 0
+                                    ? "positive"
+                                    : replay.totalDifferenceMinutes < 0
+                                        ? "negative"
+                                        : ""
+                            }`}
+                        >
+                            <span>DIFFERENCE</span>
+
+                            <strong>
+                                {replay.totalDifferenceMinutes > 0
+                                    ? "+"
+                                    : ""}
+                                {formatMinutes(
+                                    Math.abs(
+                                        replay.totalDifferenceMinutes
+                                    )
+                                )}
+                            </strong>
+
+                            <small>
+                                compared with your plan
+                            </small>
+                        </div>
+
+
+                        <div className="summary-card completion-card">
+                            <span>COMPLETION</span>
+
+                            <strong>
+                                {replay.overallCompletionPercentage.toFixed(
+                                    1
+                                )}
+                                %
+                            </strong>
+
+                            <div className="completion-track">
+                                <div
+                                    className="completion-fill"
+                                    style={{
+                                        width: `${Math.min(
+                                            replay.overallCompletionPercentage,
+                                            100
+                                        )}%`,
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                    </section>
+
+
+                    {/* =========================
+                        DAY OVERVIEW
+                    ========================= */}
+
+                    <section className="replay-section">
+
+                        <div className="section-heading">
+                            <div>
+                                <span className="section-eyebrow">
+                                    YOUR DAY
+                                </span>
+
+                                <h2>
+                                    Planned vs actual
+                                </h2>
+                            </div>
+
+                            <span className="activity-count">
+                                {activities.length} activities
+                            </span>
+                        </div>
+
+
+                        <div className="overview-card">
+
+                            <div className="overview-row">
+                                <div className="overview-label">
+                                    <span className="planned-dot" />
+                                    Planned
+                                </div>
+
+                                <strong>
+                                    {formatMinutes(
+                                        replay.totalPlannedMinutes
+                                    )}
+                                </strong>
+                            </div>
+
+                            <div className="overview-track">
+                                <div
+                                    className="overview-planned"
+                                    style={{
+                                        width: "100%",
+                                    }}
+                                />
+                            </div>
+
+
+                            <div className="overview-row actual-row">
+                                <div className="overview-label">
+                                    <span className="actual-dot" />
+                                    Actual
+                                </div>
+
+                                <strong>
+                                    {formatMinutes(
+                                        replay.totalActualMinutes
+                                    )}
+                                </strong>
+                            </div>
+
+                            <div className="overview-track">
+                                <div
+                                    className="overview-actual"
+                                    style={{
+                                        width: `${
+                                            replay.totalPlannedMinutes > 0
+                                                ? Math.min(
+                                                      (replay.totalActualMinutes /
+                                                          replay.totalPlannedMinutes) *
+                                                          100,
+                                                      100
+                                                  )
+                                                : 0
+                                        }%`,
+                                    }}
+                                />
+                            </div>
+
+                        </div>
+
+                    </section>
+                    {/* =========================
+                        PLANNED VS ACTUAL CHART
+                    ========================= */}
+
+                    <section className="replay-section">
+
+                        <div className="section-heading">
+                            <div>
+                                <span className="section-eyebrow">
+                                    VISUAL REPLAY
+                                </span>
+
+                                <h2>
+                                    Planned vs actual time.
+                                </h2>
+                            </div>
+                        </div>
+                        {biggestGapActivity && (
+                            <div className="replay-highlight">
+
+                                <div className="highlight-icon">
+                                    ✦
+                                </div>
+
+                                <div className="highlight-content">
+                                    <span className="highlight-label">
+                                        BIGGEST GAP
+                                    </span>
+
+                                    <strong>
+                                        {biggestGapActivity.activityName}
+                                    </strong>
+
+                                    <p>
+                                        {Math.abs(
+                                            biggestGapActivity.differenceMinutes
+                                        ) >= 60
+                                            ? `${Math.floor(
+                                                  Math.abs(
+                                                      biggestGapActivity.differenceMinutes
+                                                  ) / 60
+                                              )}h ${
+                                                  Math.abs(
+                                                      biggestGapActivity.differenceMinutes
+                                                  ) % 60
+                                              }m`
+                                            : `${Math.abs(
+                                                  biggestGapActivity.differenceMinutes
+                                              )}m`}{" "}
+                                        {biggestGapActivity.differenceMinutes < 0
+                                            ? "less than planned"
+                                            : "more than planned"}
+                                    </p>
+                                </div>
+
+                            </div>
+                        )}
+
+                        <div className="replay-chart-card">
+
+                            <ResponsiveContainer
+                                width="100%"
+                                height={360}
+                            >
+                                <BarChart
+                                    data={activities}
+                                    margin={{
+                                        top: 20,
+                                        right: 20,
+                                        left: 0,
+                                        bottom: 10
+                                    }}
+                                >
+
+                                    <CartesianGrid
+                                        strokeDasharray="3 3"
+                                    />
+
+                                    <XAxis
+                                        dataKey="activityName"
+                                    />
+
+                                    <YAxis
+                                        label={{
+                                            value: "Minutes",
+                                            angle: -90,
+                                            position: "insideLeft"
+                                        }}
+                                    />
+
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: "#1c1e29",
+                                            border: "1px solid #383a4c",
+                                            borderRadius: "12px",
+                                            boxShadow: "0 12px 35px rgba(0, 0, 0, 0.35)"
+                                        }}
+                                        labelStyle={{
+                                            color: "#f1f1f6",
+                                            marginBottom: "6px"
+                                        }}
+                                        itemStyle={{
+                                            color: "#b8b2ff"
+                                        }}
+                                        cursor={{
+                                            fill: "rgba(142, 120, 255, 0.04)"
+                                        }}
+                                    />
+
+                                    <Legend />
+
+                                    <Bar
+                                        dataKey="plannedMinutes"
+                                        name="Planned"
+                                        fill="#454858"
+                                        radius={[6, 6, 0, 0]}
+                                    />
+
+                                    <Bar
+                                        dataKey="actualMinutes"
+                                        name="Actual"
+                                        fill="#8B7CF6"
+                                        radius={[6, 6, 0, 0]}
+                                    >
+                                        {activities.map((activity) => {
+
+                                            let fill = "#8b7cf6";
+
+                                          if (
+                                              activity.plannedMinutes === 0 &&
+                                              activity.actualMinutes > 0
+                                          ) {
+                                              fill = "#A18CFF";
+                                          }
+
+                                            return (
+                                                <Cell
+                                                    key={activity.activityId}
+                                                    fill={fill}
+                                                />
+                                            );
+                                        })}
+                                    </Bar>
+
+                                </BarChart>
+                            </ResponsiveContainer>
+
+                        </div>
+
+                    </section>
+
+
+                    {/* =========================
+                        ACTIVITY BREAKDOWN
+                    ========================= */}
+
+                    <section className="replay-section">
+
+                        <div className="section-heading">
+                            <div>
+                                <span className="section-eyebrow">
+                                    BREAKDOWN
+                                </span>
+
+                                <h2>
+                                    Where your time went.
+                                </h2>
+                            </div>
+                        </div>
+
+
+                        <div className="replay-activities">
+
+                            {activities.map((activity) => {
+
+                                const isUnplanned =
+                                    activity.plannedMinutes === 0;
+
+                                const difference =
+                                    activity.differenceMinutes;
+
+                                const plannedWidth =
+                                    (activity.plannedMinutes /
+                                        maxActivityMinutes) *
+                                    100;
+
+                                const actualWidth =
+                                    (activity.actualMinutes /
+                                        maxActivityMinutes) *
+                                    100;
+
+                                return (
+                                    <article
+                                        className={`replay-activity-card ${
+                                            isUnplanned
+                                                ? "unplanned-card"
+                                                : ""
+                                        }`}
+                                        key={activity.activityId}
+                                    >
+
+                                        <div className="activity-card-top">
+
+                                            <div>
+                                                <h3>
+                                                    {activity.activityName}
+                                                </h3>
+
+                                                {isUnplanned ? (
+                                                    <span className="unplanned-badge">
+                                                        UNPLANNED
+                                                    </span>
+                                                ) : (
+                                                    <span className="completion-label">
+                                                        {
+                                                            activity.completionPercentage
+                                                        .toFixed(1)
+                                                        }
+                                                        % completed
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            <div
+                                                className={`difference ${
+                                                    difference > 0
+                                                        ? "difference-positive"
+                                                        : difference < 0
+                                                            ? "difference-negative"
+                                                            : ""
+                                                }`}
+                                            >
+                                                {difference > 0
+                                                    ? "+"
+                                                    : ""}
+                                                {formatMinutes(
+                                                    Math.abs(difference)
+                                                )}
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="activity-times">
+
+                                            <div className="time-value">
+                                                <span>
+                                                    Planned
+                                                </span>
+
+                                                <strong>
+                                                    {isUnplanned
+                                                        ? "—"
+                                                        : formatMinutes(
+                                                              activity.plannedMinutes
+                                                          )}
+                                                </strong>
+                                            </div>
+
+                                            <div className="time-value">
+                                                <span>
+                                                    Actual
+                                                </span>
+
+                                                <strong>
+                                                    {formatMinutes(
+                                                        activity.actualMinutes
+                                                    )}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="comparison">
+
+                                            <div className="comparison-line">
+                                                <span>
+                                                    Planned
+                                                </span>
+
+                                                <div className="bar-track">
+                                                    <div
+                                                        className="planned-bar"
+                                                        style={{
+                                                            width: `${plannedWidth}%`,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+
+                                            <div className="comparison-line">
+                                                <span>
+                                                    Actual
+                                                </span>
+
+                                                <div className="bar-track">
+                                                    <div
+                                                        className="actual-bar"
+                                                        style={{
+                                                            width: `${actualWidth}%`,
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </article>
+                                );
+                            })}
+
+                        </div>
+
+                    </section>
+
+                </>
+            )}
+
+        </main>
     );
-}
+};
 
 export default DailyReplay;

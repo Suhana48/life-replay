@@ -1,0 +1,646 @@
+.daily-replay-page {
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 48px 42px 80px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.daily-replay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 38px;
+}
+
+.page-eyebrow {
+    display: block;
+    margin-bottom: 10px;
+
+    color: #9b7cff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.daily-replay-header h1 {
+    margin: 0;
+
+    color: #f5f5fa;
+    font-size: 42px;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+}
+
+.daily-replay-header p {
+    margin: 12px 0 0;
+
+    color: #777d96;
+    font-size: 15px;
+}
+
+.date-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.date-selector label {
+    color: #777d96;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.date-selector input {
+    width: 175px;
+    padding: 12px 14px;
+
+    border: 1px solid #2c2e3d;
+    border-radius: 12px;
+
+    background: #151720;
+    color: #f5f5fa;
+
+    font-size: 14px;
+    outline: none;
+}
+
+.date-selector input:focus {
+    border-color: #8e78ff;
+}
+
+
+/* =========================
+   STATES
+========================= */
+
+.replay-state {
+    padding: 40px;
+
+    border: 1px solid #252737;
+    border-radius: 22px;
+
+    background: #151720;
+
+    color: #888fa8;
+    text-align: center;
+}
+
+.replay-error {
+    color: #d88999;
+}
+
+
+/* =========================
+   SUMMARY
+========================= */
+
+.replay-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+
+    margin-bottom: 55px;
+}
+
+.summary-card {
+    min-height: 145px;
+    padding: 25px;
+
+    border: 1px solid #252737;
+    border-radius: 20px;
+
+    background:
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(126, 108, 255, 0.11),
+            transparent 45%
+        ),
+        #171923;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.summary-card span {
+    color: #777d96;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.summary-card strong {
+    margin-top: 9px;
+
+    color: #f5f5fa;
+    font-size: 29px;
+    font-weight: 700;
+}
+
+.summary-card small {
+    margin-top: 5px;
+
+    color: #666c83;
+    font-size: 12px;
+}
+
+.summary-card.positive strong {
+    color: #9d8aff;
+}
+
+.summary-card.negative strong {
+    color: #f08a9b;
+}
+
+.completion-track {
+    height: 5px;
+    margin-top: 15px;
+
+    overflow: hidden;
+    border-radius: 10px;
+
+    background: #292b39;
+}
+
+.completion-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #8e78ff;
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.replay-section {
+    margin-bottom: 55px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin-bottom: 20px;
+}
+
+.section-eyebrow {
+    display: block;
+    margin-bottom: 7px;
+
+    color: #8e78ff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.section-heading h2 {
+    margin: 0;
+
+    color: #f5f5fa;
+    font-size: 25px;
+    letter-spacing: -0.5px;
+}
+
+.activity-count {
+    color: #777d96;
+    font-size: 13px;
+}
+
+
+/* =========================
+   DAY OVERVIEW
+========================= */
+
+.overview-card {
+    padding: 28px 30px;
+
+    border: 1px solid #282a39;
+    border-radius: 22px;
+
+    background: #171923;
+}
+
+.overview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 11px;
+}
+
+.overview-row strong {
+    color: #f5f5fa;
+    font-size: 15px;
+}
+
+.overview-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #a2a6ba;
+    font-size: 13px;
+}
+
+.planned-dot,
+.actual-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.planned-dot {
+    background: #777d96;
+}
+
+.actual-dot {
+    background: #9a82ff;
+}
+
+.overview-track {
+    height: 10px;
+
+    margin-bottom: 22px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #242633;
+}
+
+.overview-planned {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #55596b;
+}
+
+.overview-actual {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #8e78ff;
+}
+
+.actual-row {
+    margin-top: 10px;
+}
+
+
+/* =========================
+   ACTIVITY CARDS
+========================= */
+
+.replay-activities {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.replay-activity-card {
+    min-height: 300px;
+    padding: 28px;
+
+    border: 1px solid #292b3a;
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(126, 108, 255, 0.09),
+            transparent 40%
+        ),
+        #171923;
+}
+
+.replay-activity-card:hover {
+    border-color: #45465b;
+}
+
+.unplanned-card {
+    border-style: dashed;
+    border-color: #51477b;
+}
+
+.activity-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 20px;
+}
+
+.activity-card-top h3 {
+    margin: 0 0 8px;
+
+    color: #f5f5fa;
+    font-size: 24px;
+}
+
+.completion-label {
+    color: #777d96;
+    font-size: 12px;
+}
+
+.unplanned-badge {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border: 1px solid #5a4c91;
+    border-radius: 999px;
+
+    color: #a28cff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.difference {
+    white-space: nowrap;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.difference-positive {
+    color: #a28cff;
+}
+
+.difference-negative {
+    color: #e98999;
+}
+
+
+/* =========================
+   TIME VALUES
+========================= */
+
+.activity-times {
+    display: flex;
+    gap: 50px;
+
+    margin-top: 35px;
+    margin-bottom: 32px;
+}
+
+.time-value {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.time-value span {
+    color: #6e748c;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.time-value strong {
+    color: #f3f3f8;
+    font-size: 22px;
+}
+
+
+/* =========================
+   COMPARISON BARS
+========================= */
+
+.comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.comparison-line {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+    gap: 14px;
+}
+
+.comparison-line > span {
+    color: #737990;
+    font-size: 11px;
+}
+
+.bar-track {
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #252734;
+}
+
+.planned-bar,
+.actual-bar {
+    height: 100%;
+
+    border-radius: inherit;
+
+    transition: width 0.4s ease;
+}
+
+.planned-bar {
+    background: #55596b;
+}
+
+.actual-bar {
+    background: #907bff;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .replay-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .replay-activities {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .daily-replay-page {
+        padding: 32px 20px 60px;
+    }
+
+    .daily-replay-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .daily-replay-header h1 {
+        font-size: 34px;
+    }
+
+    .replay-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .activity-times {
+        gap: 30px;
+    }
+}
+/* =========================
+   CHART
+========================= */
+
+.replay-chart-card {
+    width: 100%;
+    padding: 24px 26px;
+
+    border: 1px solid #282a38;
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 90% 0%,
+            rgba(142, 120, 255, 0.06),
+            transparent 35%
+        ),
+        #171923;
+
+    box-sizing: border-box;
+}
+
+
+/* Recharts */
+
+.replay-chart-card .recharts-cartesian-grid-horizontal line,
+.replay-chart-card .recharts-cartesian-grid-vertical line {
+    stroke: #292b38;
+    stroke-dasharray: 3 6;
+}
+
+.replay-chart-card .recharts-xAxis line,
+.replay-chart-card .recharts-yAxis line {
+    stroke: #303241;
+}
+
+.replay-chart-card .recharts-xAxis-tick text,
+.replay-chart-card .recharts-yAxis-tick text {
+    fill: #737990;
+    font-size: 12px;
+}
+
+.replay-chart-card .recharts-label {
+    fill: #737990;
+}
+
+.replay-chart-card .recharts-legend-item-text {
+    color: #8a8fa5 !important;
+    font-size: 12px;
+}
+
+.replay-chart-card .recharts-tooltip-wrapper {
+    outline: none;
+}
+
+.replay-chart-card .recharts-default-tooltip {
+    background: #1c1e29 !important;
+    border: 1px solid #383a4c !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+}
+
+.replay-chart-card .recharts-tooltip-label {
+    color: #f1f1f6 !important;
+    margin-bottom: 8px;
+}
+
+.replay-chart-card .recharts-tooltip-item {
+    color: #b8b2ff !important;
+}
+/* =========================
+   REPLAY HIGHLIGHT
+========================= */
+
+.replay-highlight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin-bottom: 16px;
+    padding: 18px 22px;
+
+    border: 1px solid #35304d;
+    border-radius: 18px;
+
+    background:
+        radial-gradient(
+            circle at 0% 50%,
+            rgba(142, 120, 255, 0.12),
+            transparent 45%
+        ),
+        #171923;
+}
+
+.highlight-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid #4a426b;
+    border-radius: 13px;
+
+    background: #252139;
+
+    color: #a18cff;
+    font-size: 20px;
+
+    box-shadow:
+        0 0 20px rgba(142, 120, 255, 0.12);
+}
+
+.highlight-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.highlight-label {
+    margin-bottom: 3px;
+
+    color: #8e78ff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.highlight-content strong {
+    color: #f4f4f8;
+    font-size: 16px;
+}
+
+.highlight-content p {
+    margin: 3px 0 0;
+
+    color: #777d96;
+    font-size: 12px;
+}
