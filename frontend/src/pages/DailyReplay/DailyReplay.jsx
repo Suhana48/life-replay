@@ -93,6 +93,23 @@ const unplannedActivities = activities.filter(
         activity.plannedMinutes === 0 &&
         activity.actualMinutes > 0
 );
+const plannedActualMinutes = activities
+    .filter((activity) => activity.plannedMinutes > 0)
+    .reduce(
+        (total, activity) => total + activity.actualMinutes,
+        0
+    );
+
+const unplannedMinutes = unplannedActivities.reduce(
+    (total, activity) => total + activity.actualMinutes,
+    0
+);
+
+const overviewMaxMinutes = Math.max(
+    replay?.totalPlannedMinutes || 0,
+    plannedActualMinutes + unplannedMinutes,
+    1
+);
 
     return (
         <main className="daily-replay-page">
@@ -268,63 +285,90 @@ const unplannedActivities = activities.filter(
                         </div>
 
 
-                        <div className="overview-card">
+                       <div className="overview-card">
 
-                            <div className="overview-row">
-                                <div className="overview-label">
-                                    <span className="planned-dot" />
-                                    Planned
-                                </div>
+                           {/* PLANNED */}
+                           <div className="overview-row">
+                               <div className="overview-label">
+                                   <span className="planned-dot" />
+                                   Planned
+                               </div>
 
-                                <strong>
-                                    {formatMinutes(
-                                        replay.totalPlannedMinutes
-                                    )}
-                                </strong>
-                            </div>
+                               <strong>
+                                   {formatMinutes(replay.totalPlannedMinutes)}
+                               </strong>
+                           </div>
 
-                            <div className="overview-track">
-                                <div
-                                    className="overview-planned"
-                                    style={{
-                                        width: "100%",
-                                    }}
-                                />
-                            </div>
+                           <div className="overview-track">
+                               <div
+                                   className="overview-planned"
+                                   style={{
+                                       width: `${
+                                           (replay.totalPlannedMinutes /
+                                               overviewMaxMinutes) *
+                                           100
+                                       }%`,
+                                   }}
+                               />
+                           </div>
 
 
-                            <div className="overview-row actual-row">
-                                <div className="overview-label">
-                                    <span className="actual-dot" />
-                                    Actual
-                                </div>
+                           {/* ACTUAL ON PLANNED ACTIVITIES */}
+                           <div className="overview-row actual-row">
+                               <div className="overview-label">
+                                   <span className="actual-dot" />
+                                   Actual — planned activities
+                               </div>
 
-                                <strong>
-                                    {formatMinutes(
-                                        replay.totalActualMinutes
-                                    )}
-                                </strong>
-                            </div>
+                               <strong>
+                                   {formatMinutes(plannedActualMinutes)}
+                               </strong>
+                           </div>
 
-                            <div className="overview-track">
-                                <div
-                                    className="overview-actual"
-                                    style={{
-                                        width: `${
-                                            replay.totalPlannedMinutes > 0
-                                                ? Math.min(
-                                                      (replay.totalActualMinutes /
-                                                          replay.totalPlannedMinutes) *
-                                                          100,
-                                                      100
-                                                  )
-                                                : 0
-                                        }%`,
-                                    }}
-                                />
-                            </div>
+                           <div className="overview-track">
+                               <div
+                                   className="overview-actual"
+                                   style={{
+                                       width: `${
+                                           (plannedActualMinutes /
+                                               overviewMaxMinutes) *
+                                           100
+                                       }%`,
+                                   }}
+                               />
+                           </div>
 
-                        </div>
+
+                           {/* UNPLANNED */}
+                           {unplannedMinutes > 0 && (
+                               <>
+                                   <div className="overview-row unplanned-row">
+                                       <div className="overview-label">
+                                           <span className="unplanned-dot" />
+                                           Unplanned time
+                                       </div>
+
+                                       <strong>
+                                           {formatMinutes(unplannedMinutes)}
+                                       </strong>
+                                   </div>
+
+                                   <div className="overview-track">
+                                       <div
+                                           className="overview-unplanned"
+                                           style={{
+                                               width: `${
+                                                   (unplannedMinutes /
+                                                       overviewMaxMinutes) *
+                                                   100
+                                               }%`,
+                                           }}
+                                       />
+                                   </div>
+                               </>
+                           )}
+
+                       </div>
 
                     </section>
                     {/* =========================
