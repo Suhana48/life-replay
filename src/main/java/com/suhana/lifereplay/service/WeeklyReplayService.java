@@ -27,6 +27,7 @@ public class WeeklyReplayService {
 
         int totalPlannedMinutes = 0;
         int totalActualMinutes = 0;
+        int plannedActivityActualMinutes = 0;
 
         LocalDate currentDate = startDate;
 
@@ -54,17 +55,28 @@ public class WeeklyReplayService {
                     .mapToInt(DailyActual::getActualMinutes)
                     .sum();
 
+            plannedActivityActualMinutes += actuals.stream()
+                    .filter(actual ->
+                            plans.stream().anyMatch(plan ->
+                                    plan.getActivity()
+                                            .getId()
+                                            .equals(actual.getActivity().getId())
+                            )
+                    )
+                    .mapToInt(DailyActual::getActualMinutes)
+                    .sum();
+
             currentDate = currentDate.plusDays(1);
         }
 
         int totalDifferenceMinutes =
-                totalActualMinutes - totalPlannedMinutes;
+                plannedActivityActualMinutes - totalPlannedMinutes;
 
         double completionPercentage = 0;
 
         if (totalPlannedMinutes > 0) {
             completionPercentage =
-                    (totalActualMinutes * 100.0)
+                    (plannedActivityActualMinutes * 100.0)
                             / totalPlannedMinutes;
         }
 
