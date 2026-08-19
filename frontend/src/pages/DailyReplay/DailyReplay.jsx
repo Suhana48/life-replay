@@ -18,13 +18,21 @@ import {
 const formatMinutes = (minutes) => {
     if (minutes === 0) return "0m";
 
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
+    const sign = minutes < 0 ? "-" : "";
+    const absoluteMinutes = Math.abs(minutes);
 
-    if (hours === 0) return `${mins}m`;
-    if (mins === 0) return `${hours}h`;
+    const hours = Math.floor(absoluteMinutes / 60);
+    const mins = absoluteMinutes % 60;
 
-    return `${hours}h ${mins}m`;
+    if (hours === 0) {
+        return `${sign}${mins}m`;
+    }
+
+    if (mins === 0) {
+        return `${sign}${hours}h`;
+    }
+
+    return `${sign}${hours}h ${mins}m`;
 };
 
 const DailyReplay = () => {
@@ -198,16 +206,12 @@ const unplannedActivities = activities.filter(
                         >
                             <span>DIFFERENCE</span>
 
-                            <strong>
-                                {replay.totalDifferenceMinutes > 0
-                                    ? "+"
-                                    : ""}
-                                {formatMinutes(
-                                    Math.abs(
-                                        replay.totalDifferenceMinutes
-                                    )
-                                )}
-                            </strong>
+
+                                <strong>
+                                    {replay.totalDifferenceMinutes > 0 ? "+" : ""}
+                                    {formatMinutes(replay.totalDifferenceMinutes)}
+                                </strong>
+
 
                             <small>
                                 compared with your plan
@@ -815,12 +819,8 @@ const unplannedActivities = activities.filter(
                                                             : ""
                                                 }`}
                                             >
-                                                {difference > 0
-                                                    ? "+"
-                                                    : ""}
-                                                {formatMinutes(
-                                                    Math.abs(difference)
-                                                )}
+                                               {difference > 0 ? "+" : ""}
+                                               {formatMinutes(difference)}
                                             </div>
 
                                         </div>
