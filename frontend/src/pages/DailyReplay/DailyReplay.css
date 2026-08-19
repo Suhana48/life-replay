@@ -644,3 +644,121 @@
     color: #777d96;
     font-size: 12px;
 }
+/* =========================
+   ACTUAL TIME DISTRIBUTION
+========================= */
+
+.distribution-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+
+    padding: 24px 28px;
+
+    border: 1px solid #282A38;
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 15% 50%,
+            rgba(139, 124, 246, 0.07),
+            transparent 38%
+        ),
+        #171923;
+}
+
+.donut-chart {
+    position: relative;
+}
+
+.donut-center {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    pointer-events: none;
+}
+
+.donut-center strong {
+    color: #F4F4F8;
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.donut-center span {
+    margin-top: 4px;
+
+    color: #737990;
+    font-size: 11px;
+}
+
+.distribution-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    padding: 10px 20px;
+}
+
+.distribution-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid #292B38;
+}
+
+.distribution-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #D7D8E2;
+    font-size: 14px;
+}
+
+.distribution-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+}
+
+.distribution-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.distribution-value strong {
+    color: #F4F4F8;
+    font-size: 14px;
+}
+
+.distribution-value span {
+    min-width: 48px;
+
+    color: #777D96;
+    font-size: 12px;
+    text-align: right;
+}
+
+@media (max-width: 800px) {
+
+    .distribution-card {
+        grid-template-columns: 1fr;
+    }
+
+    .distribution-list {
+        padding: 10px 0;
+    }
+}

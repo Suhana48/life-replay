@@ -473,6 +473,176 @@ const unplannedActivities = activities.filter(
                         </div>
 
                     </section>
+                    <section className="replay-section">
+
+                        <div className="section-heading">
+                            <div>
+                                <span className="section-eyebrow">
+                                    TIME DISTRIBUTION
+                                </span>
+
+                                <h2>
+                                    Where your actual time went.
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div className="distribution-card">
+
+                            <div className="donut-chart">
+
+                                <ResponsiveContainer
+                                    width="100%"
+                                    height={340}
+                                >
+                                    <PieChart>
+
+                                        <Pie
+                                            data={activities.filter(
+                                                (activity) =>
+                                                    activity.actualMinutes > 0
+                                            )}
+                                            dataKey="actualMinutes"
+                                            nameKey="activityName"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius={90}
+                                            outerRadius={125}
+                                            paddingAngle={3}
+                                        >
+
+                                            {activities
+                                                .filter(
+                                                    (activity) =>
+                                                        activity.actualMinutes > 0
+                                                )
+                                                .map((activity, index) => (
+
+                                                    <Cell
+                                                        key={activity.activityId}
+                                                        fill={
+                                                            [
+                                                                "#8B7CF6",
+                                                                "#7567D8",
+                                                                "#A18CFF",
+                                                                "#6255B5",
+                                                                "#9183F5",
+                                                                "#51458F"
+                                                            ][index % 6]
+                                                        }
+                                                    />
+
+                                                ))}
+
+                                        </Pie>
+
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: "#1C1E29",
+                                                border: "1px solid #383A4C",
+                                                borderRadius: "12px",
+                                                boxShadow:
+                                                    "0 12px 35px rgba(0, 0, 0, 0.35)"
+                                            }}
+                                            labelStyle={{
+                                                color: "#F1F1F6",
+                                                marginBottom: "6px"
+                                            }}
+                                            itemStyle={{
+                                                color: "#B8B2FF"
+                                            }}
+                                        />
+
+                                    </PieChart>
+                                </ResponsiveContainer>
+
+                                <div className="donut-center">
+
+                                    <strong>
+                                        {formatMinutes(
+                                            replay.totalActualMinutes
+                                        )}
+                                    </strong>
+
+                                    <span>
+                                        actual time
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="distribution-list">
+
+                                {activities
+                                    .filter(
+                                        (activity) =>
+                                            activity.actualMinutes > 0
+                                    )
+                                    .map((activity, index) => {
+
+                                        const percentage =
+                                            replay.totalActualMinutes > 0
+                                                ? (
+                                                    (activity.actualMinutes /
+                                                        replay.totalActualMinutes) *
+                                                    100
+                                                ).toFixed(1)
+                                                : 0;
+
+                                        return (
+                                            <div
+                                                className="distribution-item"
+                                                key={activity.activityId}
+                                            >
+
+                                                <div className="distribution-name">
+
+                                                    <span
+                                                        className="distribution-dot"
+                                                        style={{
+                                                            background:
+                                                                [
+                                                                    "#8B7CF6",
+                                                                    "#7567D8",
+                                                                    "#A18CFF",
+                                                                    "#6255B5",
+                                                                    "#9183F5",
+                                                                    "#51458F"
+                                                                ][index % 6]
+                                                        }}
+                                                    />
+
+                                                    <span>
+                                                        {activity.activityName}
+                                                    </span>
+
+                                                </div>
+
+                                                <div className="distribution-value">
+
+                                                    <strong>
+                                                        {formatMinutes(
+                                                            activity.actualMinutes
+                                                        )}
+                                                    </strong>
+
+                                                    <span>
+                                                        {percentage}%
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+                                        );
+                                    })}
+
+                            </div>
+
+                        </div>
+
+                    </section>
 
 
                     {/* =========================
