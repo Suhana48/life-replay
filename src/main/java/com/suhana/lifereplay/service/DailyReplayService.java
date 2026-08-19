@@ -139,14 +139,26 @@ public class DailyReplayService {
                         .mapToInt(DailyActual::getActualMinutes)
                         .sum();
 
+        int plannedActivityActualMinutes =
+                actuals.stream()
+                        .filter(actual ->
+                                plans.stream().anyMatch(plan ->
+                                        plan.getActivity()
+                                                .getId()
+                                                .equals(actual.getActivity().getId())
+                                )
+                        )
+                        .mapToInt(DailyActual::getActualMinutes)
+                        .sum();
+
         int totalDifferenceMinutes =
-                totalActualMinutes - totalPlannedMinutes;
+                plannedActivityActualMinutes - totalPlannedMinutes;
 
         double overallCompletionPercentage = 0;
 
         if (totalPlannedMinutes > 0) {
             overallCompletionPercentage =
-                    (totalActualMinutes * 100.0)
+                    (plannedActivityActualMinutes * 100.0)
                             / totalPlannedMinutes;
         }
 
