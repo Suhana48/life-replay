@@ -1,9 +1,7 @@
 package com.suhana.lifereplay.controller;
 
-import com.suhana.lifereplay.dto.ReplayResponse;
-import com.suhana.lifereplay.entity.Activity;
+import com.suhana.lifereplay.dto.DailyReplayResponse;
 import com.suhana.lifereplay.entity.User;
-import com.suhana.lifereplay.repository.ActivityRepository;
 import com.suhana.lifereplay.repository.UserRepository;
 import com.suhana.lifereplay.service.ReplayService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +17,10 @@ import java.time.LocalDate;
 public class ReplayController {
 
     private final ReplayService replayService;
-    private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<ReplayResponse> getReplay(
-            @RequestParam Long activityId,
+    public ResponseEntity<DailyReplayResponse> getDailyReplay(
             @RequestParam LocalDate date,
             Authentication authentication) {
 
@@ -32,15 +28,15 @@ public class ReplayController {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("User not found"));
-
-        Activity activity = activityRepository
-                .findByIdAndUserAndActiveTrue(activityId, user)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Activity not found"));
+                        new IllegalArgumentException(
+                                "User not found"
+                        ));
 
         return ResponseEntity.ok(
-                replayService.getReplay(activity, date)
+                replayService.getDailyReplay(
+                        user,
+                        date
+                )
         );
     }
 }

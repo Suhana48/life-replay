@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Activities from "../pages/Activities/Activities";
 import DailyPlan from "../pages/DailyPlan/DailyPlan";
 import DailyActual from "../pages/DailyActual/DailyActual";
+import DailyReplay from "../pages/DailyReplay/DailyReplay";
 
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated } = useAuth();
@@ -71,14 +72,10 @@ const AppRoutes = () => {
                     element={<DailyActual />}
                 />
 
-                <Route
-                    path="/replay/daily"
-                    element={
-                        <div>
-                            Daily Replay
-                        </div>
-                    }
-                />
+              <Route
+                  path="/replay/daily"
+                  element={<DailyReplay />}
+              />
 
                 <Route
                     path="/replay/weekly"
