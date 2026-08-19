@@ -1,6 +1,7 @@
 package com.suhana.lifereplay.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record WeeklyReplayResponse(
         LocalDate startDate,
@@ -8,6 +9,7 @@ public record WeeklyReplayResponse(
         int totalPlannedMinutes,
         int totalActualMinutes,
         int totalDifferenceMinutes,
-        double completionPercentage
+        double completionPercentage,
+        List<WeeklyReplayDay> days
 ) {
 }
