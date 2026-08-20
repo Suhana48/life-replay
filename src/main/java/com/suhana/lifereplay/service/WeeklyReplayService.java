@@ -52,6 +52,7 @@ public class WeeklyReplayService {
                                     currentDate
                             );
 
+
             int plannedMinutes =
                     plans.stream()
                             .mapToInt(DailyPlan::getPlannedMinutes)
