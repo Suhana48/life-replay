@@ -99,6 +99,25 @@ const WeeklyReplay = () => {
         loadWeeklyReplay();
 
     }, [startDate]);
+const chartData = replay?.days.map((day) => {
+    const [year, month, dayNumber] =
+        day.date.split("-").map(Number);
+
+    const date = new Date(
+        year,
+        month - 1,
+        dayNumber
+    );
+
+    return {
+        day: date.toLocaleDateString(
+            "en-US",
+            { weekday: "short" }
+        ),
+        planned: day.plannedMinutes,
+        actual: day.actualMinutes
+    };
+});
 
     return (
         <main className="weekly-replay-page">
@@ -318,6 +337,7 @@ const WeeklyReplay = () => {
                                         month: "short"
                                     }
                                 );
+
 
                                 return (
 
