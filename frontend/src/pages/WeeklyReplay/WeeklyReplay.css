@@ -1,0 +1,170 @@
+/* =========================================================
+   WEEKLY SUMMARY
+========================================================= */
+
+.weekly-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 50px;
+}
+
+.weekly-summary-card {
+    position: relative;
+
+    min-height: 150px;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    border: 1px solid #292b39;
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(139, 124, 246, 0.08),
+            transparent 45%
+        ),
+        #171923;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.weekly-summary-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #3b3d51;
+
+    box-shadow:
+        0 14px 35px rgba(0, 0, 0, 0.16);
+}
+
+.weekly-summary-card > span {
+    color: #737990;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.6px;
+}
+
+.weekly-summary-card strong {
+    display: block;
+
+    margin-top: 13px;
+
+    color: #f3f3f8;
+
+    font-size: 30px;
+    line-height: 1;
+
+    letter-spacing: -0.8px;
+}
+
+.weekly-summary-card small {
+    display: block;
+
+    margin-top: 11px;
+
+    color: #646a80;
+
+    font-size: 11px;
+}
+
+.weekly-positive strong {
+    color: #a18cff;
+}
+
+.weekly-negative strong {
+    color: #f0a0b0;
+}
+
+
+/* =========================================================
+   WEEKLY COMPLETION
+========================================================= */
+
+.weekly-completion-track {
+    height: 5px;
+
+    margin-top: 18px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #292b38;
+}
+
+.weekly-completion-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7568d8,
+            #9a88ff
+        );
+
+    box-shadow:
+        0 0 12px rgba(139, 124, 246, 0.3);
+
+    transition: width 0.5s ease;
+}
+
+
+/* =========================================================
+   TEMPORARY EMPTY SECTION
+========================================================= */
+
+.weekly-empty-section {
+    padding: 42px;
+
+    border: 1px solid #292b39;
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 15% 50%,
+            rgba(139, 124, 246, 0.07),
+            transparent 35%
+        ),
+        #171923;
+}
+
+.weekly-empty-section > span {
+    color: #8c7ff0;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+}
+
+.weekly-empty-section h2 {
+    margin: 10px 0 8px;
+
+    color: #eeeeF5;
+
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.weekly-empty-section p {
+    margin: 0;
+
+    color: #737991;
+
+    font-size: 13px;
+}

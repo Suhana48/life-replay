@@ -7,3 +7,11 @@ export const getDailyReplay = (date) => {
         }
     });
 };
+
+export const getWeeklyReplay = (startDate) => {
+    return api.get("/replay/weekly", {
+        params: {
+            startDate: startDate
+        }
+    });
+};

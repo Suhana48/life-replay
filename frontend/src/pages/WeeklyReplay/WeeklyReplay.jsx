@@ -24,22 +24,30 @@ const formatMinutes = (minutes) => {
 
 const WeeklyReplay = () => {
 
-   const getMonday = (date) => {
-       const day = date.getDay();
+   const getMonday = (dateString) => {
+       const [year, month, day] = dateString.split("-").map(Number);
 
-       const difference =
-           day === 0
-               ? -6
-               : 1 - day;
+       const date = new Date(year, month - 1, day);
+       const dayOfWeek = date.getDay();
 
-       const monday = new Date(date);
-       monday.setDate(date.getDate() + difference);
+       const difference = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
-       return monday.toISOString().split("T")[0];
+       date.setDate(date.getDate() + difference);
+
+       const mondayYear = date.getFullYear();
+       const mondayMonth = String(date.getMonth() + 1).padStart(2, "0");
+       const mondayDay = String(date.getDate()).padStart(2, "0");
+
+       return `${mondayYear}-${mondayMonth}-${mondayDay}`;
    };
 
+   const today = new Date();
+
+   const todayString =
+       `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
    const [startDate, setStartDate] = useState(
-       getMonday(new Date())
+       getMonday(todayString)
    );
 
     const [replay, setReplay] = useState(null);
@@ -117,13 +125,11 @@ const WeeklyReplay = () => {
                        id="week-start"
                        type="date"
                        value={startDate}
-                       onChange={(event) =>
-                           setStartDate(
-                               getMonday(
-                                   new Date(`${event.target.value}T00:00:00`)
-                               )
-                           )
-                       }
+                      onChange={(event) =>
+                          setStartDate(
+                              getMonday(event.target.value)
+                          )
+                      }
                    />
 
                 </div>
