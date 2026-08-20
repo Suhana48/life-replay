@@ -433,6 +433,80 @@ const chartData = replay?.days.map((day) => {
                         </div>
 
                     </section>
+                    <section className="weekly-chart-section">
+
+                        <div className="weekly-section-heading">
+
+                            <span>
+                                PLANNED VS ACTUAL
+                            </span>
+
+                            <h2>
+                                Where your time went.
+                            </h2>
+
+                            <p>
+                                Compare the time you planned with the time you actually spent each day.
+                            </p>
+
+                        </div>
+
+                        <div className="weekly-chart-card">
+
+                            <ResponsiveContainer width="100%" height={340}>
+
+                                <BarChart
+                                    data={chartData}
+                                    margin={{
+                                        top: 10,
+                                        right: 10,
+                                        left: 0,
+                                        bottom: 0
+                                    }}
+                                >
+
+                                    <CartesianGrid
+                                        strokeDasharray="3 3"
+                                        stroke="#292b38"
+                                        vertical={false}
+                                    />
+
+                                    <XAxis
+                                        dataKey="day"
+                                        stroke="#737991"
+                                        tickLine={false}
+                                        axisLine={false}
+                                    />
+
+                                    <YAxis
+                                        stroke="#737991"
+                                        tickLine={false}
+                                        axisLine={false}
+                                    />
+
+                                    <Tooltip />
+
+                                    <Bar
+                                        dataKey="planned"
+                                        name="Planned"
+                                        fill="#7568d8"
+                                        radius={[6, 6, 0, 0]}
+                                    />
+
+                                    <Bar
+                                        dataKey="actual"
+                                        name="Actual"
+                                        fill="#a18cff"
+                                        radius={[6, 6, 0, 0]}
+                                    />
+
+                                </BarChart>
+
+                            </ResponsiveContainer>
+
+                        </div>
+
+                    </section>
 
                 </>
 
