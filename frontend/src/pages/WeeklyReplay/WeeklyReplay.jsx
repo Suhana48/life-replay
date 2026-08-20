@@ -488,12 +488,28 @@ const chartData = replay?.days.map((day) => {
                                       }
                                   />
 
-                                    <Tooltip />
+                                    <Tooltip
+                                    cursor={false}
+                                        contentStyle={{
+                                            backgroundColor: "#171923",
+                                            border: "1px solid #35364a",
+                                            borderRadius: "10px",
+                                            color: "#eeeeF5"
+                                        }}
+                                        labelStyle={{
+                                            color: "#eeeeF5",
+                                            fontWeight: 600
+                                        }}
+                                        itemStyle={{
+                                            color: "#a18cff"
+                                        }}
+                                    />
 
                                     <Bar
                                         dataKey="planned"
                                         name="Planned"
                                         fill="#7568d8"
+                                        activeBar={false}
                                         radius={[6, 6, 0, 0]}
                                     />
 
@@ -501,6 +517,7 @@ const chartData = replay?.days.map((day) => {
                                         dataKey="actual"
                                         name="Actual"
                                         fill="#a18cff"
+                                        activeBar={false}
                                         radius={[6, 6, 0, 0]}
                                     />
 
