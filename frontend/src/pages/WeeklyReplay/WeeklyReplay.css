@@ -580,3 +580,26 @@
         min-height: 300px;
     }
 }
+/* =========================================================
+   PLANNED VS ACTUAL CHART
+========================================================= */
+
+.weekly-chart-section {
+    margin-top: 55px;
+    margin-bottom: 60px;
+}
+
+.weekly-chart-card {
+    padding: 28px 24px;
+
+    border: 1px solid #292b39;
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(139, 124, 246, 0.06),
+            transparent 45%
+        ),
+        #171923;
+}
