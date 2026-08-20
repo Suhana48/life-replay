@@ -129,6 +129,7 @@ const WeeklyReplay = () => {
                           setStartDate(
                               getMonday(event.target.value)
                           )
+
                       }
                    />
 
