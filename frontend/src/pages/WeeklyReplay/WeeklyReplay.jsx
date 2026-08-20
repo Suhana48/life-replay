@@ -288,7 +288,14 @@ const WeeklyReplay = () => {
 
                             {replay.days.map((day) => {
 
-                                const date = new Date(`${day.date}T00:00:00`);
+                                const [year, month, dayNumber] =
+                                    day.date.split("-").map(Number);
+
+                                const date = new Date(
+                                    year,
+                                    month - 1,
+                                    dayNumber
+                                );
 
                                 const dayName = date.toLocaleDateString(
                                     "en-US",
