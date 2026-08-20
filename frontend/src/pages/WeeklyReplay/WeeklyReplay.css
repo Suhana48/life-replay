@@ -312,3 +312,233 @@
     }
 
 }
+/* =========================================================
+   WEEKLY ANALYTICS
+========================================================= */
+
+.weekly-analytics {
+    margin-bottom: 60px;
+}
+
+.weekly-section-heading {
+    margin-bottom: 22px;
+}
+
+.weekly-section-heading > span {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #8c7ff0;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+}
+
+.weekly-section-heading h2 {
+    margin: 0;
+
+    color: #eeeeF5;
+
+    font-size: 25px;
+    font-weight: 600;
+
+    letter-spacing: -0.5px;
+}
+
+.weekly-section-heading p {
+    margin: 8px 0 0;
+
+    color: #737991;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   WEEKLY DAY CARDS
+========================================================= */
+
+.weekly-days {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+.weekly-day-card {
+    position: relative;
+
+    min-height: 190px;
+
+    padding: 18px 15px;
+
+    overflow: hidden;
+
+    border: 1px solid #292b39;
+    border-radius: 18px;
+
+    background: #171923;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.weekly-day-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #3b3d51;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(139, 124, 246, 0.07),
+            transparent 55%
+        ),
+        #171923;
+}
+
+
+/* =========================================================
+   DAY HEADER
+========================================================= */
+
+.weekly-day-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    padding-bottom: 15px;
+
+    border-bottom: 1px solid #292b38;
+}
+
+.weekly-day-header > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+.weekly-day-header > div strong {
+    color: #f1f1f6;
+
+    font-size: 15px;
+}
+
+.weekly-day-header > div span {
+    color: #666c81;
+
+    font-size: 10px;
+}
+
+.weekly-day-header > strong {
+    color: #a18cff;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   DAY STATS
+========================================================= */
+
+.weekly-day-stats {
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+
+    padding: 16px 0;
+}
+
+.weekly-day-stats > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+}
+
+.weekly-day-stats span {
+    color: #666c81;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+}
+
+.weekly-day-stats strong {
+    color: #dfe0e8;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   DAY PROGRESS
+========================================================= */
+
+.weekly-day-progress {
+    height: 5px;
+
+    margin-top: auto;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #292b38;
+}
+
+.weekly-day-progress > div {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #7568d8,
+            #9a88ff
+        );
+
+    box-shadow:
+        0 0 10px rgba(139, 124, 246, 0.25);
+
+    transition: width 0.5s ease;
+}
+@media (max-width: 1050px) {
+
+    .weekly-days {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+
+    .weekly-days {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+
+    .weekly-days {
+        grid-template-columns: 1fr;
+    }
+}
