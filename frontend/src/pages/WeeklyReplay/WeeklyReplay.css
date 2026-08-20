@@ -168,3 +168,147 @@
 
     font-size: 13px;
 }
+/* ================================
+   DAILY BREAKDOWN
+================================ */
+
+.weekly-analytics {
+    margin-top: 48px;
+}
+
+.weekly-section-heading {
+    margin-bottom: 24px;
+}
+
+.weekly-section-heading > span {
+    display: block;
+    margin-bottom: 10px;
+    color: #8f7cff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.weekly-section-heading h2 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.weekly-section-heading p {
+    margin: 0;
+    color: #7f8499;
+    font-size: 14px;
+}
+
+
+/* DAYS */
+
+.weekly-days {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+
+/* DAY CARD */
+
+.weekly-day-card {
+    padding: 24px;
+    background: #171824;
+    border: 1px solid #27283a;
+    border-radius: 18px;
+}
+
+
+/* HEADER */
+
+.weekly-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.weekly-day-header > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.weekly-day-header strong {
+    font-size: 18px;
+}
+
+.weekly-day-header span {
+    color: #7f8499;
+    font-size: 13px;
+}
+
+.weekly-day-header > strong:last-child {
+    color: #9b8cff;
+    font-size: 20px;
+}
+
+
+/* STATS */
+
+.weekly-day-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.weekly-day-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.weekly-day-stats span {
+    color: #6f7488;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.weekly-day-stats strong {
+    font-size: 15px;
+}
+
+
+/* PROGRESS */
+
+.weekly-day-progress {
+    height: 6px;
+    margin-top: 22px;
+    overflow: hidden;
+    background: #292a38;
+    border-radius: 999px;
+}
+
+.weekly-day-progress > div {
+    height: 100%;
+    background: #8f7cff;
+    border-radius: inherit;
+    transition: width 0.3s ease;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .weekly-days {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .weekly-day-stats {
+        grid-template-columns: 1fr;
+    }
+
+}
