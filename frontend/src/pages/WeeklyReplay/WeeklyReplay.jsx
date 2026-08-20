@@ -263,19 +263,138 @@ const WeeklyReplay = () => {
 
                     {/* TEMPORARY NEXT SECTION */}
 
-                    <section className="weekly-empty-section">
+                    {/* DAILY BREAKDOWN */}
 
-                        <span>
-                            WEEKLY ANALYTICS
-                        </span>
+                    <section className="weekly-analytics">
 
-                        <h2>
-                            Your weekly patterns will appear here.
-                        </h2>
+                        <div className="weekly-section-heading">
 
-                        <p>
-                            Daily trends and comparisons are coming next.
-                        </p>
+                            <span>
+                                DAILY BREAKDOWN
+                            </span>
+
+                            <h2>
+                                How your week actually went.
+                            </h2>
+
+                            <p>
+                                Compare your planned time with what you actually completed each day.
+                            </p>
+
+                        </div>
+
+
+                        <div className="weekly-days">
+
+                            {replay.days.map((day) => {
+
+                                const date = new Date(`${day.date}T00:00:00`);
+
+                                const dayName = date.toLocaleDateString(
+                                    "en-US",
+                                    { weekday: "short" }
+                                );
+
+                                const dateLabel = date.toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        day: "numeric",
+                                        month: "short"
+                                    }
+                                );
+
+                                return (
+
+                                    <div
+                                        className="weekly-day-card"
+                                        key={day.date}
+                                    >
+
+                                        <div className="weekly-day-header">
+
+                                            <div>
+                                                <strong>
+                                                    {dayName}
+                                                </strong>
+
+                                                <span>
+                                                    {dateLabel}
+                                                </span>
+                                            </div>
+
+                                            <strong>
+                                                {day.completionPercentage.toFixed(0)}%
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div className="weekly-day-stats">
+
+                                            <div>
+                                                <span>
+                                                    PLANNED
+                                                </span>
+
+                                                <strong>
+                                                    {formatMinutes(
+                                                        day.plannedMinutes
+                                                    )}
+                                                </strong>
+                                            </div>
+
+
+                                            <div>
+                                                <span>
+                                                    ACTUAL
+                                                </span>
+
+                                                <strong>
+                                                    {formatMinutes(
+                                                        day.actualMinutes
+                                                    )}
+                                                </strong>
+                                            </div>
+
+
+                                            <div>
+                                                <span>
+                                                    DIFFERENCE
+                                                </span>
+
+                                                <strong>
+                                                    {day.differenceMinutes > 0
+                                                        ? "+"
+                                                        : ""}
+                                                    {formatMinutes(
+                                                        day.differenceMinutes
+                                                    )}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="weekly-day-progress">
+
+                                            <div
+                                                style={{
+                                                    width: `${Math.min(
+                                                        day.completionPercentage,
+                                                        100
+                                                    )}%`
+                                                }}
+                                            />
+
+                                        </div>
+
+                                    </div>
+
+                                );
+
+                            })}
+
+                        </div>
 
                     </section>
 
