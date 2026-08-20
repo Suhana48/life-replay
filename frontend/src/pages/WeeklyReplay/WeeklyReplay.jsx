@@ -478,11 +478,15 @@ const chartData = replay?.days.map((day) => {
                                         axisLine={false}
                                     />
 
-                                    <YAxis
-                                        stroke="#737991"
-                                        tickLine={false}
-                                        axisLine={false}
-                                    />
+                                  <YAxis
+                                      stroke="#737991"
+                                      tickLine={false}
+                                      axisLine={false}
+                                      tick={{ fill: "#737991", fontSize: 11 }}
+                                      tickFormatter={(value) =>
+                                          formatMinutes(value)
+                                      }
+                                  />
 
                                     <Tooltip />
 
