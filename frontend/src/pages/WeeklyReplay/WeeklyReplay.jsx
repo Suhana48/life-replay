@@ -542,6 +542,7 @@ const biggestGapActivity =
                                       tickFormatter={(value) =>
                                           formatMinutes(value)
                                       }
+                                  domain={[0, "dataMax + 60"]}
                                   />
 
                                    <Tooltip
