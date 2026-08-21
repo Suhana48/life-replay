@@ -130,12 +130,10 @@ const activityChartData = replay?.activities.map(
 );
 const completionChartData = replay?.days.map(
     (day) => ({
-        day: new Date(
-            ...day.date.split("-").map(Number)
-        ).toLocaleDateString(
-            "en-US",
-            { weekday: "short" }
-        ),
+       day: new Date(`${day.date}T00:00:00`).toLocaleDateString(
+           "en-US",
+           { weekday: "short" }
+       ),
         completion: Number(
             day.completionPercentage.toFixed(1)
         )
@@ -598,6 +596,108 @@ const biggestGapActivity =
                                      activeBar={false}
                                      radius={[6, 6, 0, 0]}
                                  />
+
+                                </BarChart>
+
+                            </ResponsiveContainer>
+
+                        </div>
+
+                    </section>
+                    <section className="weekly-completion-chart-section">
+
+                        <div className="weekly-section-heading">
+
+                            <span>
+                                DAILY COMPLETION
+                            </span>
+
+                            <h2>
+                                How consistently you showed up.
+                            </h2>
+
+                            <p>
+                                Track how much of your planned time you completed each day.
+                            </p>
+
+                        </div>
+
+                        <div className="weekly-chart-card">
+
+                            <ResponsiveContainer
+                                width="100%"
+                                height={300}
+                            >
+
+                                <BarChart
+                                    data={completionChartData}
+                                    margin={{
+                                        top: 10,
+                                        right: 20,
+                                        left: 10,
+                                        bottom: 5
+                                    }}
+                                >
+
+                                    <CartesianGrid
+                                        strokeDasharray="3 3"
+                                        stroke="#292b38"
+                                        vertical={false}
+                                    />
+
+                                    <XAxis
+                                        dataKey="day"
+                                        stroke="#737991"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{
+                                            fill: "#737991",
+                                            fontSize: 12
+                                        }}
+                                    />
+
+                                    <YAxis
+                                        stroke="#737991"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tick={{
+                                            fill: "#737991",
+                                            fontSize: 12
+                                        }}
+                                        tickFormatter={(value) =>
+                                            `${value}%`
+                                        }
+                                        domain={[0, 100]}
+                                    />
+
+                                    <Tooltip
+                                        cursor={false}
+                                        formatter={(value) =>
+                                            `${value}%`
+                                        }
+                                        contentStyle={{
+                                            backgroundColor: "#171923",
+                                            border: "1px solid #35364a",
+                                            borderRadius: "10px",
+                                            color: "#eeeeF5"
+                                        }}
+                                        labelStyle={{
+                                            color: "#eeeeF5",
+                                            fontWeight: 600
+                                        }}
+                                        itemStyle={{
+                                            color: "#9b84ff"
+                                        }}
+                                    />
+
+                                    <Bar
+                                        dataKey="completion"
+                                        name="Completion"
+                                        fill="#9b84ff"
+                                        activeBar={false}
+                                        barSize={34}
+                                        radius={[6, 6, 0, 0]}
+                                    />
 
                                 </BarChart>
 
