@@ -473,7 +473,9 @@ const biggestGapActivity =
 
                                 <small>
                                     {formatMinutes(
-                                        biggestGapActivity?.differenceMinutes
+                                        Math.abs(
+                                            biggestGapActivity?.differenceMinutes
+                                        )
                                     )}{" "}
                                     less than planned
                                 </small>
