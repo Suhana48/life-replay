@@ -463,7 +463,7 @@ const activityChartData = replay?.activities.map(
                             <ResponsiveContainer width="100%" height={340}>
 
                                 <BarChart
-                                    data={chartData}
+                                    data={activityChartData}
                                     margin={{
                                         top: 10,
                                         right: 10,
@@ -479,7 +479,7 @@ const activityChartData = replay?.activities.map(
                                     />
 
                                     <XAxis
-                                        dataKey="day"
+                                        dataKey="activity"
                                         stroke="#737991"
                                         tickLine={false}
                                         axisLine={false}
