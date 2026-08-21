@@ -626,7 +626,7 @@ const biggestGapActivity =
 
                             <ResponsiveContainer
                                 width="100%"
-                                height={300}
+                                height={280}
                             >
 
                                 <BarChart
@@ -673,7 +673,8 @@ const biggestGapActivity =
                                     <Tooltip
                                         cursor={false}
                                         formatter={(value) =>
-                                            `${value}%`
+                                            [`${value}%`, "Completion"]
+
                                         }
                                         contentStyle={{
                                             backgroundColor: "#171923",

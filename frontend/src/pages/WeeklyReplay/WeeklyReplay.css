@@ -676,3 +676,11 @@
 
     font-size: 11px;
 }
+/* =========================================================
+   DAILY COMPLETION CHART
+========================================================= */
+
+.weekly-completion-chart-section {
+    margin-top: 55px;
+    margin-bottom: 60px;
+}
