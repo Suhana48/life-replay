@@ -7,7 +7,10 @@ import {
     CartesianGrid,
     Tooltip,
     Legend,
-    ResponsiveContainer
+    ResponsiveContainer,
+    PieChart,
+    Pie,
+    Cell
 } from "recharts";
 import { getWeeklyReplay } from "../../services/replayService";
 import "./WeeklyReplay.css";
@@ -163,6 +166,20 @@ const strongestDay =
                 total + activity.actualMinutes,
             0
         );
+    const strongestDayCompletion = strongestDay
+        ? Math.min(strongestDay.completionPercentage, 100)
+        : 0;
+
+    const completionCircleData = [
+        {
+            name: "Completed",
+            value: strongestDayCompletion
+        },
+        {
+            name: "Remaining",
+            value: 100 - strongestDayCompletion
+        }
+    ];
 const biggestGapActivity =
     replay?.activities
         ?.filter(
@@ -727,6 +744,97 @@ const biggestGapActivity =
                                 </BarChart>
 
                             </ResponsiveContainer>
+
+                        </div>
+
+                    </section>
+                    <section className="weekly-insights">
+
+                        <div className="weekly-section-heading">
+
+                            <span>
+                                WEEKLY INSIGHTS
+                            </span>
+
+                            <h2>
+                                What stood out this week.
+                            </h2>
+
+                            <p>
+                                A quick look at the patterns in your week.
+                            </p>
+
+                        </div>
+
+                        <div className="weekly-insight-card">
+
+                            <span>
+                                STRONGEST DAY
+                            </span>
+
+                            <strong>
+                                {strongestDay
+                                    ? new Date(
+                                        `${strongestDay.date}T00:00:00`
+                                    ).toLocaleDateString(
+                                        "en-US",
+                                        { weekday: "long" }
+                                    )
+                                    : "—"}
+                            </strong>
+
+                            <small>
+                                {strongestDay
+                                    ? `${strongestDay.completionPercentage.toFixed(1)}% completion`
+                                    : "No planned time"}
+                            </small>
+                            <div className="weekly-insight-completion">
+
+                                <ResponsiveContainer
+                                    width="100%"
+                                    height="100%"
+                                >
+                                    <PieChart>
+
+                                        <Pie
+                                            data={completionCircleData}
+                                            dataKey="value"
+                                            cx="50%"
+                                            cy="50%"
+                                            innerRadius="72%"
+                                            outerRadius="92%"
+                                            startAngle={90}
+                                            endAngle={-270}
+                                            paddingAngle={0}
+                                            stroke="none"
+                                        >
+                                            <Cell
+                                                fill="#9b84ff"
+                                                style={{
+                                                    filter: "drop-shadow(0 0 8px rgba(155, 132, 255, 0.45))"
+                                                }}
+                                            />
+                                            <Cell fill="#292b39" />
+                                        </Pie>
+
+                                    </PieChart>
+                                </ResponsiveContainer>
+
+                                <div className="weekly-insight-completion-value">
+
+                                    <strong>
+                                        {strongestDay
+                                            ? strongestDay.completionPercentage.toFixed(0)
+                                            : 0}%
+                                    </strong>
+
+                                    <span>
+                                        COMPLETION
+                                    </span>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
