@@ -449,11 +449,11 @@ const activityChartData = replay?.activities.map(
                             </span>
 
                             <h2>
-                                Where your time went.
+                                Planned vs actual time.
                             </h2>
 
                             <p>
-                                Compare the time you planned with the time you actually spent each day.
+                                See how your planned time compared with what you actually spent on each activity.
                             </p>
 
                         </div>
