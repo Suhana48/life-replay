@@ -10,6 +10,7 @@ public record WeeklyReplayResponse(
         int totalActualMinutes,
         int totalDifferenceMinutes,
         double completionPercentage,
-        List<WeeklyReplayDay> days
+        List<WeeklyReplayDay> days,
+        List<WeeklyReplayActivity> activities
 ) {
 }
