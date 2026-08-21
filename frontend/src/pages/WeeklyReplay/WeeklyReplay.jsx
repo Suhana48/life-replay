@@ -544,22 +544,23 @@ const biggestGapActivity =
                                       }
                                   />
 
-                                    <Tooltip
-                                    cursor={false}
-                                        contentStyle={{
-                                            backgroundColor: "#171923",
-                                            border: "1px solid #35364a",
-                                            borderRadius: "10px",
-                                            color: "#eeeeF5"
-                                        }}
-                                        labelStyle={{
-                                            color: "#eeeeF5",
-                                            fontWeight: 600
-                                        }}
-                                        itemStyle={{
-                                            color: "#a18cff"
-                                        }}
-                                    />
+                                   <Tooltip
+                                       cursor={false}
+                                       formatter={(value) => formatMinutes(value)}
+                                       contentStyle={{
+                                           backgroundColor: "#171923",
+                                           border: "1px solid #35364a",
+                                           borderRadius: "10px",
+                                           color: "#eeeeF5"
+                                       }}
+                                       labelStyle={{
+                                           color: "#eeeeF5",
+                                           fontWeight: 600
+                                       }}
+                                       itemStyle={{
+                                           color: "#a18cff"
+                                       }}
+                                   />
                                     <Legend
                                         wrapperStyle={{
                                             paddingTop: "18px"
