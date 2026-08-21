@@ -559,11 +559,13 @@ const biggestGapActivity =
                                            color: "#eeeeF5"
                                        }}
                                    />
-                                    <Legend
-                                        wrapperStyle={{
-                                            paddingTop: "18px"
-                                        }}
-                                    />
+                                   <Legend
+                                       align="center"
+                                       verticalAlign="bottom"
+                                       wrapperStyle={{
+                                           paddingTop: "18px"
+                                       }}
+                                   />
 
                                  <Bar
                                      dataKey="planned"
