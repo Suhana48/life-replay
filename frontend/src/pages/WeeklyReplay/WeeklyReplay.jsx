@@ -520,19 +520,17 @@ const biggestGapActivity =
                                         vertical={false}
                                     />
 
-                                   <XAxis
-                                       dataKey="activity"
-                                       stroke="#737991"
-                                       tickLine={false}
-                                       axisLine={false}
-                                       tick={{
-                                           fill: "#737991",
-                                           fontSize: 11
-                                       }}
-                                       angle={-25}
-                                       textAnchor="end"
-                                       height={60}
-                                   />
+                                  <XAxis
+                                      dataKey="activity"
+                                      stroke="#737991"
+                                      tickLine={false}
+                                      axisLine={false}
+                                      tick={{
+                                          fill: "#737991",
+                                          fontSize: 13
+                                      }}
+                                      height={45}
+                                  />
 
                                   <YAxis
                                       stroke="#737991"
@@ -558,7 +556,7 @@ const biggestGapActivity =
                                            fontWeight: 600
                                        }}
                                        itemStyle={{
-                                           color: "#a18cff"
+                                           color: "#eeeeF5"
                                        }}
                                    />
                                     <Legend
