@@ -693,7 +693,7 @@ const biggestGapActivity =
                                     <Bar
                                         dataKey="completion"
                                         name="Completion"
-                                        fill="#9b84ff"
+                                       fill="#8c7ff0"
                                         activeBar={false}
                                         barSize={34}
                                         radius={[6, 6, 0, 0]}
