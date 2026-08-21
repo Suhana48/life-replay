@@ -347,7 +347,7 @@
 ========================================================= */
 
 .overview-card {
-    padding: 28px 30px;
+    padding: 34px 38px;
 
     border: 1px solid #292b39;
     border-radius: 21px;
@@ -366,36 +366,41 @@
     align-items: center;
     justify-content: space-between;
 
-    margin-bottom: 10px;
+    gap: 20px;
+
+    margin-bottom: 12px;
 }
 
 .overview-label {
     display: flex;
     align-items: center;
 
-    gap: 9px;
+    gap: 10px;
 
-    color: #9b9fb2;
-
-    font-size: 12px;
-}
-
-.overview-row strong {
-    color: #eeeeF5;
+    color: #aaaec2;
 
     font-size: 14px;
 }
 
+.overview-row strong {
+    color: #f1f1f6;
+
+    font-size: 15px;
+}
+
 .planned-dot,
-.actual-dot {
-    width: 7px;
-    height: 7px;
+.actual-dot,
+.unplanned-dot {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
 
     border-radius: 50%;
 }
 
 .planned-dot {
-    background: #5b5f70;
+    background: #55596b;
 }
 
 .actual-dot {
@@ -405,38 +410,62 @@
         0 0 9px rgba(139, 124, 246, 0.35);
 }
 
-.overview-track {
-    height: 8px;
+.unplanned-dot {
+    background: #a18cff;
+}
 
-    margin-bottom: 23px;
+.overview-track {
+    width: 100%;
+
+    height: 9px;
+
+    margin-bottom: 28px;
 
     overflow: hidden;
 
-    border-radius: 20px;
+    border-radius: 999px;
 
-    background: #242632;
+    background: #242633;
 }
 
 .overview-planned,
-.overview-actual {
+.overview-actual,
+.overview-unplanned {
     height: 100%;
 
     border-radius: inherit;
 
-    transition: width 0.5s ease;
+    transition: width 0.4s ease;
 }
 
 .overview-planned {
-    background: #4d5162;
+    background: #55596b;
 }
 
 .overview-actual {
     background:
         linear-gradient(
             90deg,
-            #6f62d0,
-            #9180f6
+            #7567d8,
+            #9183f5
         );
+}
+
+.overview-unplanned {
+    background:
+        linear-gradient(
+            90deg,
+            #8b7cf6,
+            #a18cff
+        );
+}
+
+.unplanned-row {
+    margin-top: 4px;
+}
+
+.unplanned-row .overview-label {
+    color: #b8b2ff;
 }
 
 
@@ -577,14 +606,14 @@
 
 
 /* =========================================================
-   RECHARTS
+   RECHARTS - GENERAL
 ========================================================= */
 
 .replay-chart-card .recharts-cartesian-grid-horizontal line,
 .replay-chart-card .recharts-cartesian-grid-vertical line {
-    stroke: #282a36;
+    stroke: #292b39;
 
-    stroke-dasharray: 2 7;
+    stroke-dasharray: 3 7;
 }
 
 .replay-chart-card .recharts-xAxis line,
@@ -594,19 +623,22 @@
 
 .replay-chart-card .recharts-xAxis-tick text,
 .replay-chart-card .recharts-yAxis-tick text {
-    fill: #6f758b;
+    fill: #737991;
 
-    font-size: 11px;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .replay-chart-card .recharts-label {
-    fill: #70768c;
+    fill: #737991;
+
+    font-size: 13px;
 }
 
 .replay-chart-card .recharts-legend-item-text {
     color: #858ba0 !important;
 
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .replay-chart-card .recharts-tooltip-wrapper {
@@ -629,6 +661,61 @@
 
 .replay-chart-card .recharts-tooltip-item {
     color: #b8b2ff !important;
+}
+
+
+/* =========================================================
+   COMPLETION CHART
+========================================================= */
+
+.completion-chart-card {
+    overflow: hidden;
+}
+
+.completion-chart-card
+.recharts-yAxis-tick
+text {
+    fill: #737991;
+
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.completion-chart-card
+.recharts-xAxis-tick
+text {
+    fill: #737991;
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.completion-chart-card
+.recharts-cartesian-grid-vertical
+line {
+    stroke: #292b39;
+
+    stroke-dasharray: 3 7;
+}
+
+.completion-chart-card
+.recharts-cartesian-grid-horizontal
+line {
+    display: none;
+}
+
+.completion-chart-card
+.recharts-bar-rectangle
+path {
+    transition:
+        opacity 0.2s ease,
+        filter 0.2s ease;
+}
+
+.completion-chart-card
+.recharts-bar-rectangle:hover
+path {
+    filter: brightness(1.08);
 }
 
 
@@ -755,6 +842,7 @@
     color: #70768b;
 
     font-size: 11px;
+
     text-align: right;
 }
 
@@ -1067,105 +1155,8 @@
     .activity-times {
         gap: 35px;
     }
-}
-/* =========================
-   DAY OVERVIEW
-========================= */
 
-.overview-card {
-    padding: 34px 38px;
-}
-
-.overview-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 12px;
-}
-
-.overview-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    font-size: 14px;
-    color: #aaaec2;
-}
-
-.overview-row strong {
-    font-size: 15px;
-    color: #f1f1f6;
-}
-
-.overview-track {
-    width: 100%;
-    height: 9px;
-
-    margin-bottom: 28px;
-
-    background: #242633;
-    border-radius: 999px;
-
-    overflow: hidden;
-}
-
-.overview-planned,
-.overview-actual,
-.overview-unplanned {
-    height: 100%;
-    border-radius: inherit;
-
-    transition: width 0.4s ease;
-}
-
-.overview-planned {
-    background: #55596b;
-}
-
-.overview-actual {
-    background: linear-gradient(
-        90deg,
-        #7567d8,
-        #9183f5
-    );
-}
-
-.overview-unplanned {
-    background: linear-gradient(
-        90deg,
-        #8b7cf6,
-        #a18cff
-    );
-}
-
-.planned-dot,
-.actual-dot,
-.unplanned-dot {
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    flex-shrink: 0;
-}
-
-.planned-dot {
-    background: #55596b;
-}
-
-.actual-dot {
-    background: #8b7cf6;
-}
-
-.unplanned-dot {
-    background: #a18cff;
-}
-
-.unplanned-row {
-    margin-top: 4px;
-}
-
-.unplanned-row .overview-label {
-    color: #b8b2ff;
+    .completion-chart-card {
+        padding: 18px 8px;
+    }
 }
