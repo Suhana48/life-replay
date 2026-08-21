@@ -490,9 +490,9 @@ const biggestGapActivity =
                                 PLANNED VS ACTUAL
                             </span>
 
-                            <h2>
-                                Planned vs actual time.
-                            </h2>
+                           <h2>
+                               Where your time went.
+                           </h2>
 
                             <p>
                                 See how your planned time compared with what you actually spent on each activity.
