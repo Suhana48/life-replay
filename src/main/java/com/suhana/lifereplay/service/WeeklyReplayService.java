@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Service
 @RequiredArgsConstructor
 public class WeeklyReplayService {
@@ -33,7 +32,7 @@ public class WeeklyReplayService {
 
         int totalPlannedMinutes = 0;
         int totalActualMinutes = 0;
-        int totalPlannedActivityActualMinutes = 0;
+
         Map<Long, String> activityNames =
                 new LinkedHashMap<>();
 
@@ -56,6 +55,7 @@ public class WeeklyReplayService {
                                     user.getId(),
                                     currentDate
                             );
+
             for (DailyPlan plan : plans) {
 
                 Long activityId =
@@ -79,6 +79,7 @@ public class WeeklyReplayService {
                                     user.getId(),
                                     currentDate
                             );
+
             for (DailyActual actual : actuals) {
 
                 Long activityId =
@@ -96,7 +97,6 @@ public class WeeklyReplayService {
                 );
             }
 
-
             int plannedMinutes =
                     plans.stream()
                             .mapToInt(DailyPlan::getPlannedMinutes)
@@ -107,30 +107,14 @@ public class WeeklyReplayService {
                             .mapToInt(DailyActual::getActualMinutes)
                             .sum();
 
-            int plannedActivityActualMinutes =
-                    actuals.stream()
-                            .filter(actual ->
-                                    plans.stream().anyMatch(plan ->
-                                            plan.getActivity()
-                                                    .getId()
-                                                    .equals(
-                                                            actual.getActivity()
-                                                                    .getId()
-                                                    )
-                                    )
-                            )
-                            .mapToInt(DailyActual::getActualMinutes)
-                            .sum();
-
             int differenceMinutes =
-                    plannedActivityActualMinutes
-                            - plannedMinutes;
+                    actualMinutes - plannedMinutes;
 
             double completionPercentage = 0;
 
             if (plannedMinutes > 0) {
                 completionPercentage =
-                        (plannedActivityActualMinutes * 100.0)
+                        (actualMinutes * 100.0)
                                 / plannedMinutes;
             }
 
@@ -146,24 +130,22 @@ public class WeeklyReplayService {
 
             totalPlannedMinutes += plannedMinutes;
             totalActualMinutes += actualMinutes;
-            totalPlannedActivityActualMinutes +=
-                    plannedActivityActualMinutes;
 
             currentDate =
                     currentDate.plusDays(1);
         }
 
         int totalDifferenceMinutes =
-                totalPlannedActivityActualMinutes
-                        - totalPlannedMinutes;
+                totalActualMinutes - totalPlannedMinutes;
 
         double completionPercentage = 0;
 
         if (totalPlannedMinutes > 0) {
             completionPercentage =
-                    (totalPlannedActivityActualMinutes * 100.0)
+                    (totalActualMinutes * 100.0)
                             / totalPlannedMinutes;
         }
+
         List<WeeklyReplayActivity> activities =
                 new ArrayList<>();
 
