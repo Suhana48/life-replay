@@ -454,6 +454,32 @@ const biggestGapActivity =
 
                     </section>
                     <section className="weekly-chart-section">
+                        <div className="weekly-biggest-gap">
+
+                            <div className="weekly-gap-icon">
+                                ✦
+                            </div>
+
+                            <div className="weekly-gap-content">
+
+                                <span>
+                                    BIGGEST GAP
+                                </span>
+
+                                <strong>
+                                    {biggestGapActivity?.activityName}
+                                </strong>
+
+                                <small>
+                                    {formatMinutes(
+                                        biggestGapActivity?.differenceMinutes
+                                    )}{" "}
+                                    less than planned
+                                </small>
+
+                            </div>
+
+                        </div>
 
                         <div className="weekly-section-heading">
 
