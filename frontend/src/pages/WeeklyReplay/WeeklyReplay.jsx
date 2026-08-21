@@ -517,12 +517,19 @@ const biggestGapActivity =
                                         vertical={false}
                                     />
 
-                                    <XAxis
-                                        dataKey="activity"
-                                        stroke="#737991"
-                                        tickLine={false}
-                                        axisLine={false}
-                                    />
+                                   <XAxis
+                                       dataKey="activity"
+                                       stroke="#737991"
+                                       tickLine={false}
+                                       axisLine={false}
+                                       tick={{
+                                           fill: "#737991",
+                                           fontSize: 11
+                                       }}
+                                       angle={-25}
+                                       textAnchor="end"
+                                       height={60}
+                                   />
 
                                   <YAxis
                                       stroke="#737991"
