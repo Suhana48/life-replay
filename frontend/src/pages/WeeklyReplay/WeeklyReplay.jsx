@@ -564,21 +564,21 @@ const biggestGapActivity =
                                         }}
                                     />
 
-                                    <Bar
-                                        dataKey="planned"
-                                        name="Planned"
-                                        fill="#7568d8"
-                                        activeBar={false}
-                                        radius={[6, 6, 0, 0]}
-                                    />
+                                  <Bar
+                                      dataKey="planned"
+                                      name="Planned"
+                                      fill="#6f7282"
+                                      activeBar={false}
+                                      radius={[6, 6, 0, 0]}
+                                  />
 
-                                    <Bar
-                                        dataKey="actual"
-                                        name="Actual"
-                                        fill="#a18cff"
-                                        activeBar={false}
-                                        radius={[6, 6, 0, 0]}
-                                    />
+                                  <Bar
+                                      dataKey="actual"
+                                      name="Actual"
+                                      fill="#9b84ff"
+                                      activeBar={false}
+                                      radius={[6, 6, 0, 0]}
+                                  />
 
                                 </BarChart>
 
