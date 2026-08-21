@@ -6,6 +6,7 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
+    Legend,
     ResponsiveContainer
 } from "recharts";
 import { getWeeklyReplay } from "../../services/replayService";
@@ -555,6 +556,11 @@ const biggestGapActivity =
                                         }}
                                         itemStyle={{
                                             color: "#a18cff"
+                                        }}
+                                    />
+                                    <Legend
+                                        wrapperStyle={{
+                                            paddingTop: "18px"
                                         }}
                                     />
 
