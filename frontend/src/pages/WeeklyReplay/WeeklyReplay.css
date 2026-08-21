@@ -967,3 +967,28 @@
 .weekly-gap-insight strong {
     color: #f0a0b0;
 }
+/* =========================================================
+   UNPLANNED TIME INSIGHT
+========================================================= */
+
+.weekly-unplanned-insight {
+    margin-top: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139, 124, 246, 0.05),
+            transparent 45%
+        ),
+        #171923;
+
+    border-color: #302d47;
+}
+
+.weekly-unplanned-insight > span {
+    color: #8c7ff0;
+}
+
+.weekly-unplanned-insight strong {
+    color: #c5bbff;
+}

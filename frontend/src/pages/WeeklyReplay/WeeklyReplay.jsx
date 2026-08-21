@@ -860,6 +860,23 @@ const biggestGapActivity =
                             </small>
 
                         </div>
+                        <div className="weekly-insight-card weekly-unplanned-insight">
+
+                            <span>
+                                UNPLANNED TIME
+                            </span>
+
+                            <strong>
+                                {formatMinutes(
+                                    totalUnplannedMinutes || 0
+                                )}
+                            </strong>
+
+                            <small>
+                                time spent on activities that were not planned
+                            </small>
+
+                        </div>
 
                     </section>
 
