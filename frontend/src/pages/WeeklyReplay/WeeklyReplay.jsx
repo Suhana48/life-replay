@@ -508,9 +508,9 @@ const biggestGapActivity =
                                     data={activityChartData}
                                     margin={{
                                         top: 10,
-                                        right: 10,
-                                        left: 0,
-                                        bottom: 0
+                                        right: 20,
+                                        left: 10,
+                                        bottom: 5
                                     }}
                                 >
 
