@@ -139,6 +139,30 @@ const completionChartData = replay?.days.map(
         )
     })
 );
+const strongestDay =
+    replay?.days
+        ?.filter(
+            (day) => day.plannedMinutes > 0
+        )
+        .reduce(
+            (best, current) =>
+                current.completionPercentage >
+                best.completionPercentage
+                    ? current
+                    : best
+        );
+    const unplannedActivities =
+        replay?.activities?.filter(
+            (activity) =>
+                activity.plannedMinutes === 0 &&
+                activity.actualMinutes > 0
+        );
+    const totalUnplannedMinutes =
+        unplannedActivities?.reduce(
+            (total, activity) =>
+                total + activity.actualMinutes,
+            0
+        );
 const biggestGapActivity =
     replay?.activities
         ?.filter(
