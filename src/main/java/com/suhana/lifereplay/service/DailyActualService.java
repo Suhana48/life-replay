@@ -2,12 +2,12 @@ package com.suhana.lifereplay.service;
 
 import com.suhana.lifereplay.dto.DailyActualRequest;
 import com.suhana.lifereplay.dto.DailyActualResponse;
+import com.suhana.lifereplay.dto.DailyActualUpdateRequest;
 import com.suhana.lifereplay.entity.Activity;
 import com.suhana.lifereplay.entity.DailyActual;
 import com.suhana.lifereplay.entity.User;
 import com.suhana.lifereplay.repository.ActivityRepository;
 import com.suhana.lifereplay.repository.DailyActualRepository;
-import com.suhana.lifereplay.dto.DailyActualUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class DailyActualService {
     public DailyActualResponse createActual(
             DailyActualRequest request,
             User user) {
+
         if (!isActualDateOpen(request.getDate())) {
             throw new IllegalArgumentException(
                     "Actual time cannot be recorded for this date"
@@ -86,6 +86,7 @@ public class DailyActualService {
                 .map(this::toResponse)
                 .toList();
     }
+
     public DailyActualResponse updateActual(
             Long id,
             DailyActualUpdateRequest request,
@@ -119,6 +120,7 @@ public class DailyActualService {
 
         return toResponse(updatedActual);
     }
+
     public void deleteActual(
             Long id,
             User user) {
@@ -136,7 +138,8 @@ public class DailyActualService {
             );
         }
 
-        if (actual.getDate().isBefore(LocalDate.now(APP_ZONE))) {
+        // Use the same 5 AM grace-period rule as create and update
+        if (!isActualDateOpen(actual.getDate())) {
             throw new IllegalArgumentException(
                     "You cannot delete actual time from a past date"
             );
@@ -144,6 +147,7 @@ public class DailyActualService {
 
         dailyActualRepository.delete(actual);
     }
+
     private boolean isActualDateOpen(LocalDate date) {
 
         ZonedDateTime now =
