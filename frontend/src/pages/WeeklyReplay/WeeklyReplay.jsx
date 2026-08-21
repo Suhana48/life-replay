@@ -121,7 +121,9 @@ const chartData = replay?.days.map((day) => {
 });
 const activityChartData = replay?.activities.map(
     (activity) => ({
-        activity: activity.activityName,
+        activity: activity.activityName
+            .toLowerCase()
+            .replace(/\b\w/g, (char) => char.toUpperCase()),
         planned: activity.plannedMinutes,
         actual: activity.actualMinutes
     })
