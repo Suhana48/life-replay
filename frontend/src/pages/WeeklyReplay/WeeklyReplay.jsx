@@ -118,6 +118,13 @@ const chartData = replay?.days.map((day) => {
         actual: day.actualMinutes
     };
 });
+const activityChartData = replay?.activities.map(
+    (activity) => ({
+        activity: activity.activityName,
+        planned: activity.plannedMinutes,
+        actual: activity.actualMinutes
+    })
+);
 
     return (
         <main className="weekly-replay-page">
