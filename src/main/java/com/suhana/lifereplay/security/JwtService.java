@@ -14,7 +14,7 @@ public class JwtService {
     private final String SECRET_KEY =
             "my-super-secret-key-for-life-replay-project-12345";
 
-    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 2; // 2 hours
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(
