@@ -837,6 +837,29 @@ const biggestGapActivity =
                             </div>
 
                         </div>
+                        <div className="weekly-insight-card weekly-gap-insight">
+
+                            <span>
+                                BIGGEST GAP
+                            </span>
+
+                            <strong>
+                                {biggestGapActivity
+                                    ? biggestGapActivity.activityName
+                                    : "—"}
+                            </strong>
+
+                            <small>
+                                {biggestGapActivity
+                                    ? `${formatMinutes(
+                                        Math.abs(
+                                            biggestGapActivity.differenceMinutes
+                                        )
+                                    )} less than planned`
+                                    : "No significant gap"}
+                            </small>
+
+                        </div>
 
                     </section>
 

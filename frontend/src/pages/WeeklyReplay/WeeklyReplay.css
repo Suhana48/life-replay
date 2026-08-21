@@ -942,3 +942,28 @@
 
     letter-spacing: 1.2px;
 }
+/* =========================================================
+   BIGGEST GAP INSIGHT
+========================================================= */
+
+.weekly-gap-insight {
+    margin-top: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(240, 160, 176, 0.05),
+            transparent 45%
+        ),
+        #171923;
+
+    border-color: #39303a;
+}
+
+.weekly-gap-insight > span {
+    color: #d58b9d;
+}
+
+.weekly-gap-insight strong {
+    color: #f0a0b0;
+}
