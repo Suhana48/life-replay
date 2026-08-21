@@ -128,6 +128,19 @@ const activityChartData = replay?.activities.map(
         actual: activity.actualMinutes
     })
 );
+const completionChartData = replay?.days.map(
+    (day) => ({
+        day: new Date(
+            ...day.date.split("-").map(Number)
+        ).toLocaleDateString(
+            "en-US",
+            { weekday: "short" }
+        ),
+        completion: Number(
+            day.completionPercentage.toFixed(1)
+        )
+    })
+);
 const biggestGapActivity =
     replay?.activities
         ?.filter(
