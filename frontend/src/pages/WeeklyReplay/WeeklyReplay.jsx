@@ -125,6 +125,19 @@ const activityChartData = replay?.activities.map(
         actual: activity.actualMinutes
     })
 );
+const biggestGapActivity =
+    replay?.activities
+        ?.filter(
+            (activity) =>
+                activity.plannedMinutes > 0
+        )
+        .reduce(
+            (largest, current) =>
+                Math.abs(current.differenceMinutes) >
+                Math.abs(largest.differenceMinutes)
+                    ? current
+                    : largest
+        );
 
     return (
         <main className="weekly-replay-page">
